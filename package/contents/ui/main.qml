@@ -29,6 +29,15 @@ Item {
     Plasmoid.fullRepresentation: ColumnLayout {
         anchors.fill: parent
 
+        Connections {
+            target: plasmoid
+            onExpandedChanged: {
+                if (plasmoid.expanded) {
+                    viewStack.reset();
+                }
+            }
+        }
+
         PasswordSortProxyModel {
             id: passwordsModel
             dynamicSortFilter: true
@@ -88,6 +97,12 @@ Item {
             function popPage() {
                 pop();
                 currentPath.popName();
+            }
+
+            function clear() {
+                while (depth > 1) {
+                    popPage();
+                }
             }
 
             Component.onCompleted: {
