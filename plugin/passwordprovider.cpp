@@ -46,7 +46,7 @@ using namespace std::chrono_literals;
 
 namespace {
 
-static const auto PasswordTimeout = 10s;
+static const auto PasswordTimeout = 45s;
 static const auto PasswordTimeoutUpdateInterval = 100ms;
 
 }
