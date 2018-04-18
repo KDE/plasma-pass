@@ -32,7 +32,7 @@ Item {
         Connections {
             target: plasmoid
             onExpandedChanged: {
-                if (plasmoid.expanded) {
+                if (!plasmoid.expanded) {
                     viewStack.reset();
                 }
             }
@@ -40,6 +40,7 @@ Item {
 
         PasswordSortProxyModel {
             id: passwordsModel
+
             dynamicSortFilter: true
             isSortLocaleAware: true
             sortCaseSensitivity: Qt.CaseInsensitive
@@ -49,6 +50,7 @@ Item {
 
         Component {
             id: passwordsPage
+
             PasswordsPage {
                 stack: viewStack
                 model: passwordsModel
@@ -65,6 +67,7 @@ Item {
                 onClicked: viewStack.popPage()
                 enabled: viewStack.depth > 1
             }
+
             PlasmaComponents.Label {
                 id: currentPath
 

@@ -37,12 +37,18 @@ PlasmaExtras.ScrollArea {
 
     ListView {
         id: listView
+
         focus: true
         model: DelegateModel {
             id: delegateModel
+
             rootIndex: scroll.rootIndex
+
             delegate: PasswordItemDelegate {
+                id: delegate
+
                 width: parent.parent.width
+
                 name: model.name
                 icon: model.type == PasswordsModel.FolderEntry ? "inode-directory" : "lock"
 
@@ -50,7 +56,7 @@ PlasmaExtras.ScrollArea {
                     if (model.type == PasswordsModel.FolderEntry) {
                         scroll.itemSelected(delegateModel.modelIndex(index), model.name)
                     } else {
-                        password = model.password
+                        delegate.password = model.password
                     }
                 }
             }

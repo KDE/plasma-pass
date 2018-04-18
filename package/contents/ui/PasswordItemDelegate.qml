@@ -39,8 +39,6 @@ PlasmaComponents.ListItem {
     // the 1.6 comes from ToolButton's default height
     height: Math.max(row.height, Math.round(units.gridUnit * 1.6)) + 2 * units.smallSpacing
 
-    enabled: true
-
     onClicked: {
         root.itemSelected(index);
     }
