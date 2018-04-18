@@ -24,22 +24,25 @@ import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.plasma.components 2.0 as PlasmaComponents
 import org.kde.kirigami 2.0 // for Units
 
+import org.kde.plasma.private.plasmapass 1.0
+
 PlasmaComponents.ListItem {
-    id: menuItem
+    id: root
 
     property alias name: label.text
-    property alias icon: icon.source
+    property string icon
 
-    signal itemSelected(string uuid)
+    property PasswordProvider password: null
+
+    signal itemSelected(var index)
 
     // the 1.6 comes from ToolButton's default height
-    height: Math.max(label.height, Math.round(units.gridUnit * 1.6)) + 2 * units.smallSpacing
+    height: Math.max(row.height, Math.round(units.gridUnit * 1.6)) + 2 * units.smallSpacing
 
     enabled: true
 
     onClicked: {
-        menuItem.itemSelected(index);
-        plasmoid.expanded = false;
+        root.itemSelected(index);
     }
 
     onContainsMouseChanged: {
@@ -50,9 +53,26 @@ PlasmaComponents.ListItem {
         }
     }
 
+    // When password becomes invalid again, forget about it
+    Connections {
+        property bool wasValid : false
+        target: root.password
+        onValidChanged: {
+            if (wasValid && !target.valid) {
+                root.password = null;
+            } else if (!wasValid && target.valid) {
+                wasValid = true;
+                // Password has become valid, we can close the applet
+                plasmoid.expanded = false;
+            }
+        }
+    }
+
+
     RowLayout {
-        height: childrenRect.height
         spacing: Units.largeSpacing
+        id: row
+
         anchors {
             left: parent.left
             right: parent.right
@@ -60,22 +80,40 @@ PlasmaComponents.ListItem {
         }
 
         PlasmaCore.IconItem {
-            id: icon
+            id: entryTypeIcon
+            animated: root.password != null && password.valid
+            source: root.password == null ? root.icon : (password.valid ? "dialog-ok" : "process-working")
             width: Units.iconSizes.small
             height: Units.iconSizes.small
         }
 
-        PlasmaComponents.Label {
-            id: label
-
-            height: undefined // unset PlasmaComponents.Label default height
-
+        ColumnLayout {
             Layout.fillWidth: true
 
-            maximumLineCount: 1
-            verticalAlignment: Text.AlignLeft
-            elide: Text.ElideRight
-            textFormat: Text.StyledText
+            PlasmaComponents.Label {
+                id: label
+
+                height: undefined // unset PlasmaComponents.Label default height
+
+                Layout.fillWidth: true
+
+                maximumLineCount: 1
+                verticalAlignment: Text.AlignLeft
+                elide: Text.ElideRight
+                textFormat: Text.StyledText
+            }
+
+            PlasmaComponents.ProgressBar {
+                id: passwordTimeoutBar
+
+                Layout.fillWidth: true
+
+                visible: root.password != null && password.valid
+
+                minimumValue: 0
+                maximumValue: root.password == null ? 0 : password.defaultTimeout
+                value: root.password == null ? 0 : password.timeout
+            }
         }
     }
 }

@@ -50,7 +50,7 @@ PlasmaExtras.ScrollArea {
                     if (model.type == PasswordsModel.FolderEntry) {
                         scroll.itemSelected(delegateModel.modelIndex(index), model.name)
                     } else {
-                        // TODO: Request password
+                        password = model.password
                     }
                 }
             }

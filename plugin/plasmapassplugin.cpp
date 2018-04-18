@@ -19,6 +19,7 @@
 #include "plasmapassplugin.h"
 #include "passwordsmodel.h"
 #include "passwordsortproxymodel.h"
+#include "passwordprovider.h"
 
 #include <QJSEngine>
 #include <QQmlEngine>
@@ -30,6 +31,7 @@ void PlasmaPassPlugin::registerTypes(const char* uri)
 
     qmlRegisterType<PlasmaPass::PasswordsModel>(uri, 1, 0, "PasswordsModel");
     qmlRegisterType<PlasmaPass::PasswordSortProxyModel>(uri, 1, 0, "PasswordSortProxyModel");
+    qmlRegisterUncreatableType<PlasmaPass::PasswordProvider>(uri, 1, 0, "PasswordProvider", "");
 
     qmlProtectModule("org.kde.plasma.private.plasmapass", 1);
 }

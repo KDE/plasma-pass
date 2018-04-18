@@ -77,6 +77,9 @@ Item {
         PlasmaComponents.PageStack {
             id: viewStack
 
+            Layout.fillHeight: true
+            Layout.fillWidth: true
+
             function pushPage(index, name) {
                 push(passwordsPage.createObject(viewStack, { "rootIndex": index, "stack": viewStack }));
                 currentPath.pushName(name);

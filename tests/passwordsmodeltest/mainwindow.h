@@ -24,6 +24,7 @@
 
 class QLabel;
 class QPushButton;
+class QProgressBar;
 
 class MainWindow : public QMainWindow
 {
@@ -36,11 +37,12 @@ private Q_SLOTS:
     void onPasswordClicked(const QModelIndex &idx);
 
 private:
-    QLabel *mTitle;
-    QLabel *mType;
-    QLabel *mPath;
-    QLabel *mPassword;
-    QPushButton *mPassBtn;
+    QLabel *mTitle = nullptr;
+    QLabel *mType = nullptr;
+    QLabel *mPath = nullptr;
+    QLabel *mPassword = nullptr;
+    QPushButton *mPassBtn = nullptr;
+    QProgressBar *mPassProgress = nullptr;
     QModelIndex mCurrent;
 };
 

@@ -17,25 +17,56 @@
  */
 
 #include "passwordprovider.h"
+#include "klipperinterface.h"
+#include "plasmapass_debug.h"
 
 #include <QProcess>
 #include <QStandardPaths>
-#include <QDebug>
+#include <QCryptographicHash>
+#include <QClipboard>
+#include <QGuiApplication>
 
-#define PASSWORD_TIMEOUT 45
+#include <QDBusConnection>
+#include <QDBusInterface>
+#include <QDBusPendingCall>
+#include <QDBusPendingCallWatcher>
+
+#include <Plasma/PluginLoader>
+#include <Plasma/DataEngineConsumer>
+#include <Plasma/DataEngine>
+#include <Plasma/Service>
+#include <Plasma/ServiceJob>
+
+#include <KLocalizedString>
+
+#include <chrono>
+
+using namespace std::chrono;
+using namespace std::chrono_literals;
+
+namespace {
+
+static const auto PasswordTimeout = 10s;
+static const auto PasswordTimeoutUpdateInterval = 100ms;
+
+}
+
+#define KLIPPER_DBUS_SERVICE QStringLiteral("org.kde.klipper")
+#define KLIPPER_DBUS_PATH QStringLiteral("/klipper")
+#define KLIPPER_DATA_ENGINE QStringLiteral("org.kde.plasma.clipboard")
 
 using namespace PlasmaPass;
 
 PasswordProvider::PasswordProvider(const QString &path, QObject *parent)
     : QObject(parent)
 {
-    mTimer.setInterval(1000);
+    mTimer.setInterval(duration_cast<milliseconds>(PasswordTimeoutUpdateInterval).count());
     connect(&mTimer, &QTimer::timeout,
             this, [this]() {
-                --mTimeout;
+                mTimeout -= mTimer.interval();
                 Q_EMIT timeoutChanged();
                 if (mTimeout == 0) {
-                    mTimer.stop();
+                    expirePassword();
                 }
             });
 
@@ -46,7 +77,9 @@ PasswordProvider::PasswordProvider(const QString &path, QObject *parent)
         isGpg2 = false;
     }
     if (gpgExe.isEmpty()) {
-        // TODO: Error handling!
+        qCWarning(PLASMAPASS_LOG, "Failed to find gpg or gpg2 executables");
+        setError(i18n("Failed to decrypt password: GPG is not available"));
+        return;
     }
 
     QStringList args = { QStringLiteral("-d"),
@@ -61,21 +94,17 @@ PasswordProvider::PasswordProvider(const QString &path, QObject *parent)
 
     mGpg = new QProcess;
     // Let's not be like animals and deal with this asynchronously
-    connect(mGpg, &QProcess::stateChanged,
-            this, [this](QProcess::ProcessState state) {
-                if (state == QProcess::NotRunning) {
-                    // TODO: Error handling!
+    connect(mGpg, &QProcess::errorOccurred,
+            this, [this, gpgExe](QProcess::ProcessError state) {
+                if (state == QProcess::FailedToStart) {
+                    qCWarning(PLASMAPASS_LOG, "Failed to start %s: %s", qUtf8Printable(gpgExe), qUtf8Printable(mGpg->errorString()));
+                    setError(i18n("Failed to decrypt password: Failed to start GPG"));
                 }
             });
     connect(mGpg, &QProcess::readyReadStandardOutput,
             this, [this]() {
                 // We only read the first line, second line usually the username
-                mPassword = QString::fromUtf8(mGpg->readLine()).trimmed();
-                Q_EMIT validChanged();
-                Q_EMIT passwordChanged();
-                Q_EMIT timeoutChanged();
-                mTimeout = PASSWORD_TIMEOUT;
-                mTimer.start();
+                setPassword(QString::fromUtf8(mGpg->readLine()).trimmed());
             });
     connect(mGpg, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished),
             this, [this]() {
@@ -105,7 +134,113 @@ QString PasswordProvider::password() const
     return mPassword;
 }
 
+void PasswordProvider::setPassword(const QString &password)
+{
+    qGuiApp->clipboard()->setText(password);
+    mPassword = password;
+    Q_EMIT validChanged();
+    Q_EMIT passwordChanged();
+
+    mTimeout = defaultTimeout();
+    Q_EMIT timeoutChanged();
+    mTimer.start();
+}
+
+void PasswordProvider::expirePassword()
+{
+    removePasswordFromClipboard(mPassword);
+
+    mPassword.clear();
+    mTimer.stop();
+    Q_EMIT validChanged();
+    Q_EMIT passwordChanged();
+}
+
 int PasswordProvider::timeout() const
 {
     return mTimeout;
+}
+
+int PasswordProvider::defaultTimeout() const
+{
+    return duration_cast<milliseconds>(PasswordTimeout).count();
+}
+
+QString PasswordProvider::error() const
+{
+    return mError;
+}
+
+bool PasswordProvider::hasError() const
+{
+    return !mError.isNull();
+}
+
+void PasswordProvider::setError(const QString &error)
+{
+    mError = error;
+    Q_EMIT errorChanged();
+}
+
+
+void PasswordProvider::removePasswordFromClipboard(const QString &password)
+{
+    // Clear the WS clipboard itself
+    const auto clipboard = qGuiApp->clipboard();
+    if (clipboard->text() == password) {
+        clipboard->clear();
+    }
+
+    const auto engine = Plasma::DataEngineConsumer().dataEngine(KLIPPER_DATA_ENGINE);
+
+    // Klipper internally identifies each history entry by it's SHA1 hash
+    // (see klipper/historystringitem.cpp) so we try here to obtain a service directly
+    // for the history item with our password so that we can only remove the
+    // password from the history without having to clear the entire history.
+    const auto service = engine->serviceForSource(
+        QString::fromLatin1(
+            QCryptographicHash::hash(password.toUtf8(), QCryptographicHash::Sha1).toBase64()));
+    if (!service) {
+        qCWarning(PLASMAPASS_LOG, "Failed to obtain PlasmaService for the password, falling back to clearClipboard()");
+        clearClipboard();
+        return;
+    }
+
+    auto job = service->startOperationCall(service->operationDescription(QStringLiteral("remove")));
+
+    // FIXME: KJob::result() is an overloaded QPrivateSignal and cannot be QOverload()ed,
+    // so we have to do it the old-school way
+    connect(job, SIGNAL(result(KJob*)), this, SLOT(onPlasmaServiceRemovePasswordResult(KJob*)));
+}
+
+void PasswordProvider::onPlasmaServiceRemovePasswordResult(KJob* job)
+{
+    // Disconnect from the job: Klipper's ClipboardJob is buggy and emits result() twice
+    disconnect(job, SIGNAL(result(KJob*)), this, SLOT(onPlasmaServiceRemovePasswordResult(KJob*)));
+
+    auto serviceJob = qobject_cast<Plasma::ServiceJob*>(job);
+    if (serviceJob->error()) {
+        qCWarning(PLASMAPASS_LOG, "ServiceJob for clipboard failed: %s", qUtf8Printable(serviceJob->errorString()));
+        clearClipboard();
+        return;
+    }
+    // If something went wrong fallback to clearing the entire clipboard
+    if (!serviceJob->result().toBool()) {
+        qCWarning(PLASMAPASS_LOG, "ServiceJob for clipboard failed internally, falling back to clearClipboard()");
+        clearClipboard();
+        return;
+    }
+
+    qCDebug(PLASMAPASS_LOG, "Successfuly removed password from Klipper");
+}
+
+void PasswordProvider::clearClipboard()
+{
+    org::kde::klipper::klipper klipper(KLIPPER_DBUS_SERVICE, KLIPPER_DBUS_PATH, QDBusConnection::sessionBus());
+    if (!klipper.isValid()) {
+        return;
+    }
+
+    klipper.clearClipboardHistory();
+    klipper.clearClipboardContents();
 }

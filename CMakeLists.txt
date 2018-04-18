@@ -2,22 +2,32 @@ cmake_minimum_required(VERSION 2.8.12)
 
 project(plasma-plasmapass)
 
+set(PROJECT_VERSION "0.1")
+set(PROJECT_VERSION_MAJOR 0)
+
+set(QT_MIN_VERSION "5.9")
+set(KF5_MIN_VERSION "5.42.0")
+
+set(CMAKE_CXX_STANDARD 14)
+
 find_package(ECM 1.4.0 REQUIRED NO_MODULE)
 set(CMAKE_MODULE_PATH ${ECM_MODULE_PATH} ${ECM_KDE_MODULE_DIR})
 
 include(KDEInstallDirs)
 include(KDECMakeSettings)
 include(KDECompilerSettings NO_POLICY_SCOPE)
+include(ECMQtDeclareLoggingCategory)
 
-find_package(KF5 REQUIRED COMPONENTS
+find_package(KF5 ${KF5_MIN_VERSION} REQUIRED COMPONENTS
     Plasma
     I18n
 )
 
-find_package(Qt5 CONFIG REQUIRED COMPONENTS
-    Qml
-    Gui
+find_package(Qt5 ${QT_MIN_VERSION} CONFIG REQUIRED COMPONENTS
     Core
+    DBus
+    Gui
+    Qml
 )
 
 # plasmoid

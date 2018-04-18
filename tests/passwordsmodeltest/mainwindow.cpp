@@ -25,6 +25,7 @@
 #include <QTreeView>
 #include <QLabel>
 #include <QPushButton>
+#include <QProgressBar>
 
 using namespace PlasmaPass;
 
@@ -57,6 +58,8 @@ MainWindow::MainWindow(QWidget *parent)
     v->addLayout(g);
     g->addRow(QStringLiteral("Type:"), mType = new QLabel());
     g->addRow(QStringLiteral("Password:"), mPassword = new QLabel());
+    g->addRow(QStringLiteral("Expiration:"), mPassProgress = new QProgressBar());
+    mPassProgress->setTextVisible(false);
 
     v->addWidget(mPassBtn = new QPushButton(QStringLiteral("Display Password")));
     connect(mPassBtn, &QPushButton::clicked,
@@ -65,8 +68,19 @@ MainWindow::MainWindow(QWidget *parent)
                 auto provider = mCurrent.data(PasswordsModel::PasswordRole).value<PasswordProvider*>();
                 connect(provider, &PasswordProvider::passwordChanged,
                         this, [this, provider]() {
-                            mPassword->setVisible(true);
-                            mPassword->setText(provider->password());
+                            const auto pass = provider->password();
+                            if (!pass.isEmpty()) {
+                                mPassword->setVisible(true);
+                                mPassword->setText(provider->password());
+                            } else {
+                                onPasswordClicked(mCurrent);
+                            }
+                        });
+                connect(provider, &PasswordProvider::timeoutChanged,
+                        this, [this, provider]() {
+                            mPassProgress->setVisible(true);
+                            mPassProgress->setMaximum(provider->defaultTimeout());
+                            mPassProgress->setValue(provider->timeout());
                         });
             });
 
@@ -90,4 +104,5 @@ void MainWindow::onPasswordClicked(const QModelIndex &idx)
     mPassword->setText({});
     mPassBtn->setEnabled(type == PasswordsModel::PasswordEntry);
     mPassBtn->setVisible(true);
+    mPassProgress->setVisible(false);
 }

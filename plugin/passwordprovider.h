@@ -23,6 +23,8 @@
 #include <QTimer>
 
 class QProcess;
+class QDBusPendingCallWatcher;
+class KJob;
 
 namespace PlasmaPass {
 
@@ -35,25 +37,43 @@ class PasswordProvider : public QObject
     Q_PROPERTY(QString password READ password NOTIFY passwordChanged)
     Q_PROPERTY(bool valid READ isValid NOTIFY validChanged)
     Q_PROPERTY(int timeout READ timeout NOTIFY timeoutChanged)
+    Q_PROPERTY(int defaultTimeout READ defaultTimeout CONSTANT)
+    Q_PROPERTY(bool hasError READ hasError NOTIFY errorChanged)
+    Q_PROPERTY(QString error READ error NOTIFY errorChanged)
 public:
     ~PasswordProvider() override;
 
     QString password() const;
     bool isValid() const;
     int timeout() const;
+    int defaultTimeout() const;
+    bool hasError() const;
+    QString error() const;
 
 Q_SIGNALS:
     void passwordChanged();
     void validChanged();
     void timeoutChanged();
+    void errorChanged();
+
+private Q_SLOTS:
+    void onPlasmaServiceRemovePasswordResult(KJob *job);
 
 private:
+    void setError(const QString &error);
+    void setPassword(const QString &password);
+    void expirePassword();
+
+    void removePasswordFromClipboard(const QString &password);
+    void clearClipboard();
+
     friend class PasswordsModel;
     explicit PasswordProvider(const QString &path, QObject *parent = nullptr);
 
     QProcess *mGpg = nullptr;
     QString mPath;
     QString mPassword;
+    QString mError;
     QTimer mTimer;
     int mTimeout = 0;
 };
