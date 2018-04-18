@@ -62,10 +62,16 @@ PlasmaComponents.ListItem {
                 root.password = null;
             } else if (!wasValid && target.valid) {
                 wasValid = true;
-                // Password has become valid, we can close the applet
-                plasmoid.expanded = false;
+                // Password has become valid, wait a little bit and then close the plasmoid
+                hideTimer.start()
             }
         }
+    }
+
+    Timer {
+        id: hideTimer
+        interval: Units.longDuration
+        onTriggered: plasmoid.expanded = false;
     }
 
 
