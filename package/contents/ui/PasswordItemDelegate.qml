@@ -36,6 +36,8 @@ PlasmaComponents.ListItem {
 
     signal itemSelected(var index)
 
+    enabled: true
+
     // the 1.6 comes from ToolButton's default height
     height: Math.max(row.height, Math.round(units.gridUnit * 1.6)) + 2 * units.smallSpacing
 
@@ -79,10 +81,30 @@ PlasmaComponents.ListItem {
 
         PlasmaCore.IconItem {
             id: entryTypeIcon
-            animated: root.password != null && password.valid
-            source: root.password == null ? root.icon : (password.valid ? "dialog-ok" : "process-working")
+            visible: root.password == null || root.password.valid || root.password.hasError
+            source: {
+                if (root.password == null) {
+                    return root.icon;
+                } else {
+                    if (root.password.hasError) {
+                        return "dialog-error";
+                    } else {
+                        return "dialog-ok";
+                    }
+                }
+            }
             width: Units.iconSizes.small
             height: Units.iconSizes.small
+        }
+
+        PlasmaComponents.BusyIndicator {
+            id: busyIndicator
+            visible: root.password != null && !root.password.valid && !root.password.hasError
+            smoothAnimation: true
+
+            // Hack around BI wanting to be too large by default
+            Layout.maximumWidth: entryTypeIcon.width
+            Layout.maximumHeight: entryTypeIcon.height
         }
 
         ColumnLayout {
@@ -106,11 +128,22 @@ PlasmaComponents.ListItem {
 
                 Layout.fillWidth: true
 
-                visible: root.password != null && password.valid
+                visible: root.password != null && root.password.valid
 
                 minimumValue: 0
-                maximumValue: root.password == null ? 0 : password.defaultTimeout
-                value: root.password == null ? 0 : password.timeout
+                maximumValue: root.password == null ? 0 : root.password.defaultTimeout
+                value: root.password == null ? 0 : root.password.timeout
+            }
+
+            PlasmaComponents.Label {
+                id: errorLabel
+
+                height: undefined
+
+                Layout.fillWidth: true
+
+                visible: root.password != null && root.password.hasError
+                text: root.password != null ? root.password.error : ""
             }
         }
     }

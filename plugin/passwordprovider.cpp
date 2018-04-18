@@ -105,6 +105,10 @@ PasswordProvider::PasswordProvider(const QString &path, QObject *parent)
             });
     connect(mGpg, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished),
             this, [this]() {
+                if (mPassword.isEmpty()) {
+                    setError(i18n("Failed to decrypt password"));
+                }
+
                 mGpg->deleteLater();
                 mGpg = nullptr;
             });
