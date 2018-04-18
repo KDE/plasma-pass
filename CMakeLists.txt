@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 2.8.12)
 
 project(plasma-plasmapass)
- 
+
 find_package(ECM 1.4.0 REQUIRED NO_MODULE)
 set(CMAKE_MODULE_PATH ${ECM_MODULE_PATH} ${ECM_KDE_MODULE_DIR})
 
@@ -21,7 +21,11 @@ find_package(Qt5 CONFIG REQUIRED COMPONENTS
 )
 
 # plasmoid
-plasma_install_package(package org.kde.plasmapass)
+plasma_install_package(package org.kde.plasma.pass)
 
 # qml extension plugin
 add_subdirectory(plugin)
+
+if (BUILD_TESTING)
+    add_subdirectory(tests)
+endif()

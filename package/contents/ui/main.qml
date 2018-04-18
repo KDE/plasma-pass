@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) %{CURRENT_YEAR} by %{AUTHOR} <%{EMAIL}>                            *
+ *   Copyright (C) 2018  Daniel Vrátil <dvratil@kde.org>                   *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -19,18 +19,72 @@
 
 import QtQuick 2.1
 import QtQuick.Layouts 1.1
-import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.plasma.plasmoid 2.0
 import org.kde.plasma.components 2.0 as PlasmaComponents
+import org.kde.kirigami 2.0 // for Units
 
 import org.kde.plasma.private.plasmapass 1.0
 
 Item {
     Plasmoid.fullRepresentation: ColumnLayout {
         anchors.fill: parent
-        PlasmaComponents.Label {
-            Layout.alignment: Qt.AlignCenter
-            text: HelloWorld.text
+
+        PasswordsModel {
+            id: passwordsModel
+        }
+
+        Component {
+            id: passwordsPage
+            PasswordsPage {
+                stack: viewStack
+                model: passwordsModel
+                onItemSelected: {
+                    stack.pushPage(index, name);
+                }
+            }
+        }
+
+
+        RowLayout {
+            PlasmaComponents.ToolButton {
+                iconSource: "draw-arrow-back"
+                onClicked: viewStack.popPage()
+                enabled: viewStack.depth > 1
+            }
+            PlasmaComponents.Label {
+                id: currentPath
+
+                Layout.fillWidth: true
+
+                property var _path: []
+
+                function pushName(name) {
+                    _path.push(name);
+                    text = _path.join("/");
+                }
+                function popName() {
+                    _path.pop();
+                    text = _path.join("/");
+                }
+            }
+        }
+
+        PlasmaComponents.PageStack {
+            id: viewStack
+
+            function pushPage(index, name) {
+                push(passwordsPage.createObject(viewStack, { "rootIndex": index, "stack": viewStack }));
+                currentPath.pushName(name);
+            }
+
+            function popPage() {
+                pop();
+                currentPath.popName();
+            }
+
+            Component.onCompleted: {
+                initialPage = passwordsPage.createObject(viewStack);
+            }
         }
     }
 }

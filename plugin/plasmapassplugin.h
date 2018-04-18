@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) %{CURRENT_YEAR} by %{AUTHOR} <%{EMAIL}>
+ *   Copyright (C) 2018  Daniel Vrátil <dvratil@kde.org>
  *   This program is free software; you can redistribute it and/or modify
  *   it under the terms of the GNU Library General Public License as
  *   published by the Free Software Foundation; either version 2, or
@@ -21,7 +21,7 @@
 
 #include <QQmlExtensionPlugin>
 
-class plasmapassPlugin : public QQmlExtensionPlugin
+class PlasmaPassPlugin : public QQmlExtensionPlugin
 {
     Q_OBJECT
     Q_PLUGIN_METADATA(IID "org.qt-project.Qt.QQmlExtensionInterface")

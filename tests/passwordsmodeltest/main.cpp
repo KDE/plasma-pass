@@ -16,18 +16,15 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#include "plasmapassplugin.h"
-#include "passwordsmodel.h"
+#include <QApplication>
 
-#include <QJSEngine>
-#include <QQmlEngine>
-#include <QQmlContext>
+#include "mainwindow.h"
 
-void PlasmaPassPlugin::registerTypes(const char* uri)
+int main(int argc, char **argv)
 {
-    Q_ASSERT(uri == QLatin1String("org.kde.plasma.private.plasmapass"));
+    QApplication app(argc, argv);
 
-    qmlRegisterType<PlasmaPass::PasswordsModel>(uri, 1, 0, "PasswordsModel");
-
-    qmlProtectModule("org.kde.plasma.private.plasmapass", 1);
+    MainWindow window;
+    window.showNormal();
+    return app.exec();
 }
