@@ -27,9 +27,6 @@
 #include <QGuiApplication>
 
 #include <QDBusConnection>
-#include <QDBusInterface>
-#include <QDBusPendingCall>
-#include <QDBusPendingCallWatcher>
 
 #include <Plasma/PluginLoader>
 #include <Plasma/DataEngineConsumer>
