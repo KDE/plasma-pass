@@ -16,20 +16,28 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#include "plasmapassplugin.h"
-#include "passwordsmodel.h"
 #include "passwordsortproxymodel.h"
+#include "passwordsmodel.h"
 
-#include <QJSEngine>
-#include <QQmlEngine>
-#include <QQmlContext>
+#include <QDebug>
 
-void PlasmaPassPlugin::registerTypes(const char* uri)
+using namespace PlasmaPass;
+
+PasswordSortProxyModel::PasswordSortProxyModel(QObject *parent)
+    : QSortFilterProxyModel(parent)
 {
-    Q_ASSERT(uri == QLatin1String("org.kde.plasma.private.plasmapass"));
+    sort(0); // enable sorting
+}
 
-    qmlRegisterType<PlasmaPass::PasswordsModel>(uri, 1, 0, "PasswordsModel");
-    qmlRegisterType<PlasmaPass::PasswordSortProxyModel>(uri, 1, 0, "PasswordSortProxyModel");
+bool PasswordSortProxyModel::lessThan(const QModelIndex &source_left, const QModelIndex &source_right) const
+{
+    const auto typeLeft = static_cast<PasswordsModel::EntryType>(source_left.data(PasswordsModel::EntryTypeRole).toInt());
+    const auto typeRight = static_cast<PasswordsModel::EntryType>(source_right.data(PasswordsModel::EntryTypeRole).toInt());
 
-    qmlProtectModule("org.kde.plasma.private.plasmapass", 1);
+    // Folders first
+    if (typeLeft != typeRight) {
+        return typeLeft == PasswordsModel::FolderEntry;
+    }
+
+    return QSortFilterProxyModel::lessThan(source_left, source_right);
 }

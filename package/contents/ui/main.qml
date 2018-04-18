@@ -29,8 +29,13 @@ Item {
     Plasmoid.fullRepresentation: ColumnLayout {
         anchors.fill: parent
 
-        PasswordsModel {
+        PasswordSortProxyModel {
             id: passwordsModel
+            dynamicSortFilter: true
+            isSortLocaleAware: true
+            sortCaseSensitivity: Qt.CaseInsensitive
+
+            sourceModel: PasswordsModel {}
         }
 
         Component {

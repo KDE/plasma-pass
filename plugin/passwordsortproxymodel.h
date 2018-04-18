@@ -16,20 +16,23 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#include "plasmapassplugin.h"
-#include "passwordsmodel.h"
-#include "passwordsortproxymodel.h"
+#ifndef PASSWORDSORTPROXYMODEL_H_
+#define PASSWORDSORTPROXYMODEL_H_
 
-#include <QJSEngine>
-#include <QQmlEngine>
-#include <QQmlContext>
+#include <QSortFilterProxyModel>
 
-void PlasmaPassPlugin::registerTypes(const char* uri)
+namespace PlasmaPass {
+
+class PasswordSortProxyModel : public QSortFilterProxyModel
 {
-    Q_ASSERT(uri == QLatin1String("org.kde.plasma.private.plasmapass"));
+    Q_OBJECT
+public:
+    explicit PasswordSortProxyModel(QObject *parent = nullptr);
 
-    qmlRegisterType<PlasmaPass::PasswordsModel>(uri, 1, 0, "PasswordsModel");
-    qmlRegisterType<PlasmaPass::PasswordSortProxyModel>(uri, 1, 0, "PasswordSortProxyModel");
+protected:
+    bool lessThan(const QModelIndex &source_left, const QModelIndex &source_right) const override;
+};
 
-    qmlProtectModule("org.kde.plasma.private.plasmapass", 1);
 }
+
+#endif

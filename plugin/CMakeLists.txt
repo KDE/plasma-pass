@@ -1,5 +1,6 @@
 set(plasmapassplugin_SRCS
     passwordsmodel.cpp
+    passwordsortproxymodel.cpp
     passwordprovider.cpp
     plasmapassplugin.cpp
 )
