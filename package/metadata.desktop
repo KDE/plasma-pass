@@ -2,7 +2,7 @@
 Name=Plasma Pass
 Comment=Plasma applet to access passwords form the pass password manager
 
-Icon=applications-system
+Icon=lock
 Type=Service
 ServiceTypes=Plasma/Applet
 
