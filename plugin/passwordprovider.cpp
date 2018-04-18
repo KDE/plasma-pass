@@ -37,6 +37,7 @@
 #include <KLocalizedString>
 
 #include <chrono>
+#include <utility>
 
 using namespace std::chrono;
 using namespace std::chrono_literals;
@@ -155,6 +156,9 @@ void PasswordProvider::expirePassword()
     mTimer.stop();
     Q_EMIT validChanged();
     Q_EMIT passwordChanged();
+
+    // Delete the provider, it's no longer needed
+    deleteLater();
 }
 
 int PasswordProvider::timeout() const
@@ -192,7 +196,10 @@ void PasswordProvider::removePasswordFromClipboard(const QString &password)
         clipboard->clear();
     }
 
-    const auto engine = Plasma::DataEngineConsumer().dataEngine(KLIPPER_DATA_ENGINE);
+    if (!mEngineConsumer) {
+        mEngineConsumer = new Plasma::DataEngineConsumer();
+    }
+    auto engine = mEngineConsumer->dataEngine(KLIPPER_DATA_ENGINE);
 
     // Klipper internally identifies each history entry by it's SHA1 hash
     // (see klipper/historystringitem.cpp) so we try here to obtain a service directly
@@ -203,6 +210,7 @@ void PasswordProvider::removePasswordFromClipboard(const QString &password)
             QCryptographicHash::hash(password.toUtf8(), QCryptographicHash::Sha1).toBase64()));
     if (!service) {
         qCWarning(PLASMAPASS_LOG, "Failed to obtain PlasmaService for the password, falling back to clearClipboard()");
+        delete std::exchange(mEngineConsumer, nullptr);
         clearClipboard();
         return;
     }
@@ -218,6 +226,7 @@ void PasswordProvider::onPlasmaServiceRemovePasswordResult(KJob* job)
 {
     // Disconnect from the job: Klipper's ClipboardJob is buggy and emits result() twice
     disconnect(job, SIGNAL(result(KJob*)), this, SLOT(onPlasmaServiceRemovePasswordResult(KJob*)));
+    QTimer::singleShot(0, this, [this]() { delete std::exchange(mEngineConsumer, nullptr); });
 
     auto serviceJob = qobject_cast<Plasma::ServiceJob*>(job);
     if (serviceJob->error()) {

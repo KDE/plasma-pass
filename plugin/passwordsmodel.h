@@ -41,7 +41,8 @@ public:
         NameRole = Qt::DisplayRole,
         EntryTypeRole = Qt::UserRole,
         PathRole,
-        PasswordRole
+        PasswordRole,
+        HasPasswordRole
     };
 
     explicit PasswordsModel(QObject *parent = nullptr);

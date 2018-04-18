@@ -21,6 +21,7 @@
 
 #include <QDir>
 #include <QDebug>
+#include <QPointer>
 
 using namespace PlasmaPass;
 
@@ -59,6 +60,7 @@ public:
 
     QString name;
     PasswordsModel::EntryType type;
+    QPointer<PasswordProvider> provider;
     Node *parent = nullptr;
     QVector<Node*> children;
 };
@@ -92,6 +94,7 @@ QHash<int, QByteArray> PasswordsModel::roleNames() const
     return { { NameRole, "name" },
              { EntryTypeRole, "type" },
              { PathRole, "path" },
+             { HasPasswordRole, "hasPassword" },
              { PasswordRole, "password" } };
 }
 
@@ -152,7 +155,12 @@ QVariant PasswordsModel::data(const QModelIndex &index, int role) const
     case PathRole:
         return node->path();
     case PasswordRole:
-        return QVariant::fromValue(new PasswordProvider(node->path()));
+        if (!node->provider) {
+            node->provider = new PasswordProvider(node->path());
+        }
+        return QVariant::fromValue(node->provider.data());
+    case HasPasswordRole:
+        return !node->provider.isNull();
     }
 
     return {};

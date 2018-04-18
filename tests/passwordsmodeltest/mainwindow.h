@@ -21,10 +21,15 @@
 
 #include <QMainWindow>
 #include <QModelIndex>
+#include <QPointer>
 
 class QLabel;
 class QPushButton;
 class QProgressBar;
+
+namespace PlasmaPass {
+class PasswordProvider;
+}
 
 class MainWindow : public QMainWindow
 {
@@ -37,13 +42,17 @@ private Q_SLOTS:
     void onPasswordClicked(const QModelIndex &idx);
 
 private:
+    void setProvider(PlasmaPass::PasswordProvider *provider);
+
     QLabel *mTitle = nullptr;
     QLabel *mType = nullptr;
     QLabel *mPath = nullptr;
     QLabel *mPassword = nullptr;
+    QLabel *mError = nullptr;
     QPushButton *mPassBtn = nullptr;
     QProgressBar *mPassProgress = nullptr;
     QModelIndex mCurrent;
+    QPointer<PlasmaPass::PasswordProvider> mProvider;
 };
 
 

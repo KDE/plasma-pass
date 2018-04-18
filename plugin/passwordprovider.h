@@ -26,6 +26,10 @@ class QProcess;
 class QDBusPendingCallWatcher;
 class KJob;
 
+namespace Plasma {
+class DataEngineConsumer;
+}
+
 namespace PlasmaPass {
 
 class PasswordsModel;
@@ -70,6 +74,7 @@ private:
     friend class PasswordsModel;
     explicit PasswordProvider(const QString &path, QObject *parent = nullptr);
 
+    Plasma::DataEngineConsumer *mEngineConsumer = nullptr;
     QProcess *mGpg = nullptr;
     QString mPath;
     QString mPassword;

@@ -26,24 +26,31 @@
 #include <QLabel>
 #include <QPushButton>
 #include <QProgressBar>
+#include <QSplitter>
 
 using namespace PlasmaPass;
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
 {
+    resize(900, 350);
+
     QWidget *w = new QWidget;
     setCentralWidget(w);
 
     auto h = new QHBoxLayout(w);
 
+    auto splitter = new QSplitter;
+    h->addWidget(splitter);
+
     auto treeView = new QTreeView;
+    treeView->setHeaderHidden(true);
     treeView->setModel(new PasswordsModel(this));
     connect(treeView, &QTreeView::clicked, this, &MainWindow::onPasswordClicked);
-    h->addWidget(treeView);
+    splitter->addWidget(treeView);
 
     w = new QWidget;
-    h->addWidget(w);
+    splitter->addWidget(w);
 
     auto v = new QVBoxLayout(w);
 
@@ -52,36 +59,19 @@ MainWindow::MainWindow(QWidget *parent)
     font.setBold(true);
     mTitle->setFont(font);
 
-    v->addWidget(mPath = new QLabel);
-
     auto g = new QFormLayout;
     v->addLayout(g);
+    g->addRow(QStringLiteral("Path:"), mPath = new QLabel());
     g->addRow(QStringLiteral("Type:"), mType = new QLabel());
     g->addRow(QStringLiteral("Password:"), mPassword = new QLabel());
     g->addRow(QStringLiteral("Expiration:"), mPassProgress = new QProgressBar());
+    g->addRow(QStringLiteral("Error:"), mError = new QLabel());
     mPassProgress->setTextVisible(false);
 
     v->addWidget(mPassBtn = new QPushButton(QStringLiteral("Display Password")));
     connect(mPassBtn, &QPushButton::clicked,
             this, [this]() {
-                mPassBtn->setVisible(false);
-                auto provider = mCurrent.data(PasswordsModel::PasswordRole).value<PasswordProvider*>();
-                connect(provider, &PasswordProvider::passwordChanged,
-                        this, [this, provider]() {
-                            const auto pass = provider->password();
-                            if (!pass.isEmpty()) {
-                                mPassword->setVisible(true);
-                                mPassword->setText(provider->password());
-                            } else {
-                                onPasswordClicked(mCurrent);
-                            }
-                        });
-                connect(provider, &PasswordProvider::timeoutChanged,
-                        this, [this, provider]() {
-                            mPassProgress->setVisible(true);
-                            mPassProgress->setMaximum(provider->defaultTimeout());
-                            mPassProgress->setValue(provider->timeout());
-                        });
+                setProvider(mCurrent.data(PasswordsModel::PasswordRole).value<PasswordProvider*>());
             });
 
     v->addStretch(2.0);
@@ -93,16 +83,58 @@ MainWindow::~MainWindow()
 {
 }
 
+void MainWindow::setProvider(PasswordProvider *provider)
+{
+    mProvider = provider;
+    if (provider->isValid()) {
+        mPassBtn->setVisible(false);
+        mPassword->setVisible(true);
+        mPassword->setText(provider->password());
+    }
+    connect(provider, &PasswordProvider::passwordChanged,
+            this, [this, provider]() {
+                const auto pass = provider->password();
+                if (!pass.isEmpty()) {
+                    mPassword->setVisible(true);
+                    mPassword->setText(provider->password());
+                } else {
+                    onPasswordClicked(mCurrent);
+                }
+            });
+    connect(provider, &PasswordProvider::timeoutChanged,
+            this, [this, provider]() {
+                mPassProgress->setVisible(true);
+                mPassProgress->setMaximum(provider->defaultTimeout());
+                mPassProgress->setValue(provider->timeout());
+            });
+    connect(provider, &PasswordProvider::errorChanged,
+            this, [this, provider]() {
+                mError->setVisible(true);
+                mError->setText(provider->error());
+            });
+}
+
+
 void MainWindow::onPasswordClicked(const QModelIndex &idx)
 {
+    if (mProvider) {
+        mProvider->disconnect(this);
+    }
     mCurrent = idx;
     mTitle->setText(idx.data(PasswordsModel::NameRole).toString());
     mPath->setText(idx.data(PasswordsModel::PathRole).toString());
     const auto type = idx.isValid() ? static_cast<PasswordsModel::EntryType>(idx.data(PasswordsModel::EntryTypeRole).toInt()) : PasswordsModel::FolderEntry;
     mType->setText(type == PasswordsModel::PasswordEntry ? QStringLiteral("Password") : QStringLiteral("Folder"));
     mPassword->setVisible(false);
-    mPassword->setText({});
+    mPassword->clear();
     mPassBtn->setEnabled(type == PasswordsModel::PasswordEntry);
     mPassBtn->setVisible(true);
     mPassProgress->setVisible(false);
+    mError->clear();
+    mError->setVisible(false);
+
+    const auto hasProvider = mCurrent.data(PasswordsModel::HasPasswordRole).toBool();
+    if (hasProvider) {
+        setProvider(mCurrent.data(PasswordsModel::PasswordRole).value<PasswordProvider*>());
+    }
 }
