@@ -77,6 +77,10 @@ PasswordsModel::PasswordsModel(QObject *parent)
         mPassStore = QDir(QStringLiteral("%1/.password-store").arg(QDir::homePath()));
     }
 
+    // FIXME: Try to figure out what has actually changed and update the model
+    // accordingly instead of reseting it
+    connect(&mWatcher, &QFileSystemWatcher::directoryChanged, this, &PasswordsModel::populate);
+
     populate();
 }
 
@@ -179,6 +183,7 @@ void PasswordsModel::populate()
 
 void PasswordsModel::populateDir(const QDir& dir, Node *parent)
 {
+    mWatcher.addPath(dir.absolutePath());
     auto entries = dir.entryInfoList({ QStringLiteral("*.gpg") }, QDir::Files, QDir::NoSort);
     for (const auto &entry : qAsConst(entries)) {
         new Node(entry.completeBaseName(), PasswordEntry, parent);
