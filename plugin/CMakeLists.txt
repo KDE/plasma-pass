@@ -1,6 +1,8 @@
 ###### STATIC LIBRARY ######
 
 set(plasmapasslib_SRCS
+    abbreviations.cpp
+    passwordfiltermodel.cpp
     passwordsmodel.cpp
     passwordsortproxymodel.cpp
     passwordprovider.cpp
@@ -24,6 +26,7 @@ target_link_libraries(plasmapass
     Qt5::Qml
     KF5::Plasma
     KF5::I18n
+    KF5::ItemModels
 )
 
 ########### PLUGN ###########

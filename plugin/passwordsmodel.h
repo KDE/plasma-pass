@@ -41,9 +41,10 @@ public:
     enum Roles {
         NameRole = Qt::DisplayRole,
         EntryTypeRole = Qt::UserRole,
+        FullNameRole,
         PathRole,
         PasswordRole,
-        HasPasswordRole
+        HasPasswordRole,
     };
 
     explicit PasswordsModel(QObject *parent = nullptr);

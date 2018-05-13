@@ -21,6 +21,7 @@ include(ECMQtDeclareLoggingCategory)
 find_package(KF5 ${KF5_MIN_VERSION} REQUIRED COMPONENTS
     Plasma
     I18n
+    ItemModels
 )
 
 find_package(Qt5 ${QT_MIN_VERSION} CONFIG REQUIRED COMPONENTS

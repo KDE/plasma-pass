@@ -51,12 +51,30 @@ public:
         if (!parent) {
             return name;
         } else {
-            QString fullName = name;
+            QString fileName = name;
             if (type == PasswordsModel::PasswordEntry) {
-                fullName += QStringLiteral(".gpg");
+                fileName += QStringLiteral(".gpg");
             }
-            return parent->path() + QLatin1Char('/') + fullName;
+            return parent->path() + QLatin1Char('/') + fileName;
         }
+    }
+
+    QString fullName() const
+    {
+        if (!mFullName.isNull()) {
+            return mFullName;
+        }
+
+        if (!parent) {
+            return {};
+        }
+        const auto p = parent->fullName();
+        if (p.isEmpty()) {
+            mFullName = name;
+        } else {
+            mFullName = p + QLatin1Char('/') + name;
+        }
+        return mFullName;
     }
 
     QString name;
@@ -64,6 +82,9 @@ public:
     QPointer<PasswordProvider> provider;
     Node *parent = nullptr;
     QVector<Node*> children;
+
+private:
+    mutable QString mFullName;
 };
 
 
@@ -98,6 +119,7 @@ QHash<int, QByteArray> PasswordsModel::roleNames() const
 {
     return { { NameRole, "name" },
              { EntryTypeRole, "type" },
+             { FullNameRole, "fullName" },
              { PathRole, "path" },
              { HasPasswordRole, "hasPassword" },
              { PasswordRole, "password" } };
@@ -159,6 +181,8 @@ QVariant PasswordsModel::data(const QModelIndex &index, int role) const
         return node->type;
     case PathRole:
         return node->path();
+    case FullNameRole:
+        return node->fullName();
     case PasswordRole:
         if (!node->provider) {
             node->provider = new PasswordProvider(node->path());

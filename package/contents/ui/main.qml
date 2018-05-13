@@ -34,6 +34,8 @@ Item {
             onExpandedChanged: {
                 if (!plasmoid.expanded) {
                     viewStack.reset();
+                } else {
+                    filterField.focus = true
                 }
             }
         }
@@ -48,18 +50,25 @@ Item {
             sourceModel: PasswordsModel {}
         }
 
+        PasswordFilterModel {
+            id: filterModel
+
+            filter: filterField.text
+
+            sourceModel: passwordsModel
+        }
+
         Component {
             id: passwordsPage
 
             PasswordsPage {
                 stack: viewStack
-                model: passwordsModel
+                model: filterModel.filter == "" ? passwordsModel : filterModel
                 onItemSelected: {
                     stack.pushPage(index, name);
                 }
             }
         }
-
 
         RowLayout {
             PlasmaComponents.ToolButton {
@@ -83,6 +92,17 @@ Item {
                     _path.pop();
                     text = _path.join("/");
                 }
+            }
+        }
+
+        RowLayout {
+            PlasmaComponents.TextField {
+                id: filterField
+
+                placeholderText: i18n("Filter...")
+                clearButtonShown: true
+
+                Layout.fillWidth: true
             }
         }
 
