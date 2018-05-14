@@ -30,6 +30,12 @@ PlasmaExtras.ScrollArea {
 
     signal folderSelected(var index, var name)
 
+    function activateCurrentItem() {
+        if (listView.currentItem) {
+            listView.currentItem.activate();
+        }
+    }
+
     property Item stack
     property var rootIndex: null
     property alias model: delegateModel.model
@@ -57,7 +63,7 @@ PlasmaExtras.ScrollArea {
                 }
                 event.accepted = true;
             } else if (event.key == Qt.Key_Enter || event.key == Qt.Key_Return) {
-                if (listView.currentItem != null) {
+                if (listView.currentItem) {
                     listView.currentItem.activate();
                 }
                 event.accepted = true;

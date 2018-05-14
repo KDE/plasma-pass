@@ -137,9 +137,14 @@ Item {
                     Layout.fillWidth: true
 
                     Keys.priority: Keys.BeforeItem
-                    Keys.onDownPressed: {
-                        viewStack.currentPage.focus = true;
-                        event.accepted = true;
+                    Keys.onPressed: {
+                        if (event.key == Qt.Key_Down) {
+                            viewStack.currentPage.focus = true;
+                            event.accepted = true;
+                        } else if (event.key == Qt.Key_Enter || event.key == Qt.Key_Return) {
+                            viewStack.currentPage.activateCurrentItem();
+                            event.accepted = true;
+                        }
                     }
                 }
             }
