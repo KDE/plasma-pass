@@ -1,0 +1,43 @@
+# Plasma Pass
+
+Plasma Pass is a Plasma applet to access password from [pass, the standard UNIX password manager](https://www.passwordstore.org).
+
+More details and a video in [my blog post about Plasma Pass](https://www.dvratil.cz/2018/05/plasma-pass/).
+
+## Build Instructions
+
+1) Install necessary dependencies
+
+Fedora:
+
+    dnf install qt5-qtbase-devel kf5-plasma-devel kf5-ki18n-devel kf5-kitemmodels-devel
+
+Debian/Ubuntu:
+
+    apt-get install qtbase5-dev libkf5plasma-dev libkf5i18n-dev libkf5itemmodels-dev
+
+2) Clone source code:
+
+    git clone https://anongit.kde.org/scratch/dvratil/plasma-pass.git
+
+3) Compile:
+
+    cd plasma-pass
+    mkdir build
+    cd build
+    cmake -DCMAKE_INSTALL_PREFIX=YOURPREFIX ..
+    make
+    make install
+
+(replace `YOURPREFIX` with where your Plasma is installed)
+
+4) Restart Plasma:
+
+    kquitapp5 plasmashell
+    plasmashell &
+
+
+Alternatively you can also view the applet with `plasmoidviewer`:
+
+    plasmoidviewer -a org.kde.plasma.pass
+
