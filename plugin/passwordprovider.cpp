@@ -107,8 +107,13 @@ PasswordProvider::PasswordProvider(const QString &path, QObject *parent)
             });
     connect(mGpg, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished),
             this, [this]() {
+                const auto err = mGpg->readAllStandardError();
                 if (mPassword.isEmpty()) {
-                    setError(i18n("Failed to decrypt password"));
+                    if (err.isEmpty()) {
+                        setError(i18n("Failed to decrypt password"));
+                    } else {
+                        setError(i18n("Failed to decrypt password: %1").arg(QString::fromUtf8(err)));
+                    }
                 }
 
                 mGpg->deleteLater();

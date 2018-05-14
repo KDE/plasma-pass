@@ -92,6 +92,11 @@ void MainWindow::setProvider(PasswordProvider *provider)
         mPassword->setVisible(true);
         mPassword->setText(provider->password());
     }
+    if (provider->hasError()) {
+        mError->setVisible(true);
+        mError->setText(provider->error());
+    }
+
     connect(provider, &PasswordProvider::passwordChanged,
             this, [this, provider]() {
                 const auto pass = provider->password();
