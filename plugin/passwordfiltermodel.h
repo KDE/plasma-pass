@@ -21,7 +21,9 @@
 #define PASSWORDFILTERMODEL_H_
 
 #include <QSortFilterProxyModel>
+#include <QVector>
 
+class QStringRef;
 class KDescendantsProxyModel;
 
 namespace PlasmaPass {
@@ -51,7 +53,7 @@ protected:
 private:
     KDescendantsProxyModel *mFlatModel = nullptr;
     QString mFilter;
-    QStringList mParts;
+    QVector<QStringRef> mParts;
     mutable QHash<QModelIndex, int> mSortingLookup;
 };
 

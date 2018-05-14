@@ -23,7 +23,7 @@
 
 #include <KDescendantsProxyModel>
 
-#include <QRegularExpression>
+#include <QDebug>
 
 using namespace PlasmaPass;
 
@@ -53,7 +53,7 @@ void PasswordFilterModel::setFilter(const QString &filter)
 {
     if (mFilter != filter) {
         mFilter = filter;
-        mParts = filter.split(QStringLiteral("/"), QString::SkipEmptyParts);
+        mParts = filter.splitRef(QLatin1Char('/'), QString::SkipEmptyParts);
         Q_EMIT filterChanged();
         mSortingLookup.clear();
         invalidate();
@@ -84,7 +84,7 @@ bool PasswordFilterModel::filterAcceptsRow(int source_row, const QModelIndex &so
 
     const auto path = sourceModel()->data(src_index, PasswordsModel::FullNameRole).toString();
 
-    const auto weight = matchPathFilter(path.split(QStringLiteral("/")), mParts);
+    const auto weight = matchPathFilter(path.splitRef(QLatin1Char('/')), mParts);
     if (weight > -1) {
         mSortingLookup.insert(src_index, weight);
         return true;
@@ -97,6 +97,12 @@ bool PasswordFilterModel::lessThan(const QModelIndex &source_left, const QModelI
 {
     const auto weightLeft = mSortingLookup.value(source_left, -1);
     const auto weightRight = mSortingLookup.value(source_right, -1);
+
+    if (weightLeft == weightRight) {
+        const auto nameLeft = source_left.data(PasswordsModel::FullNameRole).toString();
+        const auto nameRight = source_right.data(PasswordsModel::FullNameRole).toString();
+        return QString::localeAwareCompare(nameLeft, nameRight) < 0;
+    }
 
     return weightLeft < weightRight;
 }

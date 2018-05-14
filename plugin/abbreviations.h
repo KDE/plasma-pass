@@ -22,33 +22,23 @@
 #ifndef PLASMAPASS_ABBREVIATIONS_H
 #define PLASMAPASS_ABBREVIATIONS_H
 
+#include <QVector>
+
 class QStringList;
 class QStringRef;
 class QString;
 
 namespace PlasmaPass {
 
-bool matchesAbbreviation(const QStringRef& word, const QString& typed);
+bool matchesAbbreviation(const QStringRef &word, const QStringRef &typed);
 
-bool matchesPath(const QString& path, const QString& typed);
-
-/**
- * @brief Matches a word against a list of search fragments.
- * The word will be split at separation characters (space, / and \c @) and
- * the resulting fragments will be matched one-by-one against the typed fragments.
- * If all typed fragments can be matched against a fragment in word in the right order
- * (skipping is allowed), true will be returned.
- * @param word the word to search in
- * @param typedFragments the fragments which were typed
- * @return bool true if match, else false
- */
-bool matchesAbbreviationMulti(const QString& word, const QStringList& typedFragments);
+bool matchesPath(const QStringRef &path, const QStringRef &typed);
 
 /**
  * @brief Matches a path against a list of search fragments.
  * @return -1 when no match is found, otherwise a positive integer, higher values mean lower quality
  */
-int matchPathFilter(const QStringList &toFilter, const QStringList &text);
+int matchPathFilter(const QVector<QStringRef> &toFilter, const QVector<QStringRef> &text);
 
 }
 
