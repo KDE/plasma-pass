@@ -32,6 +32,7 @@ PasswordFilterModel::PasswordFilterModel(QObject *parent)
     , mFlatModel(new KDescendantsProxyModel(this))
 {
     mFlatModel->setDisplayAncestorData(false);
+    sort(0); // enable sorting
 }
 
 void PasswordFilterModel::setSourceModel(QAbstractItemModel *sourceModel)
@@ -52,9 +53,10 @@ void PasswordFilterModel::setFilter(const QString &filter)
 {
     if (mFilter != filter) {
         mFilter = filter;
-        mParts = filter.split(QRegularExpression(QStringLiteral("[/@]")), QString::SkipEmptyParts);
+        mParts = filter.split(QStringLiteral("/"), QString::SkipEmptyParts);
         Q_EMIT filterChanged();
-        invalidateFilter();
+        mSortingLookup.clear();
+        invalidate();
     }
 }
 
@@ -82,6 +84,19 @@ bool PasswordFilterModel::filterAcceptsRow(int source_row, const QModelIndex &so
 
     const auto path = sourceModel()->data(src_index, PasswordsModel::FullNameRole).toString();
 
-    return path.contains(mFilter, Qt::CaseInsensitive) || matchesAbbreviationMulti(path, mParts);
+    const auto weight = matchPathFilter(path.split(QStringLiteral("/")), mParts);
+    if (weight > -1) {
+        mSortingLookup.insert(src_index, weight);
+        return true;
+    }
+
+    return false;
 }
 
+bool PasswordFilterModel::lessThan(const QModelIndex &source_left, const QModelIndex &source_right) const
+{
+    const auto weightLeft = mSortingLookup.value(source_left, -1);
+    const auto weightRight = mSortingLookup.value(source_right, -1);
+
+    return weightLeft < weightRight;
+}

@@ -84,7 +84,7 @@ bool PlasmaPass::matchesAbbreviation(const QStringRef &word, const QString &type
 
     // First, check if all letters are contained in the word in the right order.
     int atLetter = 0;
-    foreach ( const QChar c, typed ) {
+    for (const auto c : typed) {
         while ( c.toLower() != word.at(atLetter).toLower() ) {
             atLetter += 1;
             if ( atLetter >= word.size() ) {
@@ -142,7 +142,7 @@ bool PlasmaPass::matchesAbbreviationMulti(const QString &word, const QStringList
         if (c != QLatin1Char(' ') && c != QLatin1Char('/') && c != QLatin1Char('@') && i != word.size() - 1) {
             continue;
         }
-        // if it's '/', ' ' or '::', split the word here and check the next sub-word.
+        // if it's '/', ' ' or '@', split the word here and check the next sub-word.
         const QStringRef wordFragment = word.midRef(lastSpace, i-lastSpace);
         const QString& typedFragment = typedFragments.at(matchedFragments);
         Q_ASSERT(!typedFragment.isEmpty());
@@ -157,8 +157,7 @@ bool PlasmaPass::matchesAbbreviationMulti(const QString &word, const QStringList
     return matchedFragments == typedFragments.size();
 }
 
-#if 0
-int matchPathFilter(const Path &toFilter, const QStringList &text, const Path &prefixPath)
+int PlasmaPass::matchPathFilter(const QStringList &toFilter, const QStringList &text)
 {
     enum PathFilterMatchQuality {
         NoMatch = -1,
@@ -166,7 +165,7 @@ int matchPathFilter(const Path &toFilter, const QStringList &text, const Path &p
         StartMatch = 1,
         OtherMatch = 2 // and anything higher than that
     };
-    const QVector<QString>& segments = toFilter.segments();
+    const auto segments = toFilter;
 
     if (text.count() > segments.count()) {
         // number of segments mismatches, thus item cannot match
@@ -217,19 +216,14 @@ int matchPathFilter(const Path &toFilter, const QStringList &text, const Path &p
     }
 
     const int segmentMatchDistance = segments.size() - (pathIndex + 1);
-    const bool inPrefixPath = segmentMatchDistance > (segments.size() - prefixPath.segments().size())
-                              && prefixPath.isParentOf(toFilter);
-    // penalize matches that fall into the shared suffix
-    const int penalty = (inPrefixPath ) ? 1024 : 0;
 
-    if (allMatched && !inPrefixPath) {
-        return ExactMatch + penalty;
+    if (allMatched) {
+        return ExactMatch;
     } else if (lastMatchIndex == 0) {
         // prefer matches whose last element starts with the filter
-        return StartMatch + penalty;
+        return StartMatch;
     } else {
         // prefer matches closer to the end of the path
-        return OtherMatch + segmentMatchDistance + penalty;
+        return OtherMatch + segmentMatchDistance;
     }
 }
-#endif

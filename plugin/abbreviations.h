@@ -44,9 +44,11 @@ bool matchesPath(const QString& path, const QString& typed);
  */
 bool matchesAbbreviationMulti(const QString& word, const QStringList& typedFragments);
 
-#if 0
-int matchPathFilter(const Path& toFilter, const QStringList& text, const Path& prefixPath)
-#endif
+/**
+ * @brief Matches a path against a list of search fragments.
+ * @return -1 when no match is found, otherwise a positive integer, higher values mean lower quality
+ */
+int matchPathFilter(const QStringList &toFilter, const QStringList &text);
 
 }
 
