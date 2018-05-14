@@ -42,7 +42,7 @@ Item {
         }
 
         Keys.onPressed: {
-            if (event.key == Qt.Key_Backspace) {
+            if (!viewStack.filterMode && event.key == Qt.Key_Backspace) {
                 viewStack.popPage();
                 event.accepted = true;
             }
