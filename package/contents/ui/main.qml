@@ -46,11 +46,12 @@ Item {
         }
 
         onExpandedChanged: {
-            if (!expanded) {
-                viewStack.reset();
-            } else {
+            if (expanded) {
                 filterField.focus = true;
                 filterField.forceActiveFocus();
+            } else {
+                filterField.text = "";
+                viewStack.clear();
             }
         }
 
