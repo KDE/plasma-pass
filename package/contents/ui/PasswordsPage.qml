@@ -34,10 +34,40 @@ PlasmaExtras.ScrollArea {
     property var rootIndex: null
     property alias model: delegateModel.model
 
+    focus: true
+
     ListView {
         id: listView
 
+        onActiveFocusChanged: {
+            if (activeFocus && listView.currentIndex == -1) {
+                listView.currentIndex = 0;
+            }
+        }
+
+        Keys.onPressed: {
+            if (event.key == Qt.Key_Down) {
+                if (listView.currentIndex < listView.count - 1) {
+                    listView.currentIndex++;
+                }
+                event.accepted = true;
+            } else if (event.key == Qt.Key_Up) {
+                if (listView.currentIndex > 0) {
+                    listView.currentIndex--;
+                }
+                event.accepted = true;
+            } else if (event.key == Qt.Key_Enter || event.key == Qt.Key_Return) {
+                if (listView.currentItem != null) {
+                    listView.currentItem.activate();
+                }
+                event.accepted = true;
+            }
+        }
+
         focus: true
+        activeFocusOnTab: true
+        highlightFollowsCurrentItem: true
+
         model: DelegateModel {
             id: delegateModel
 
@@ -50,8 +80,11 @@ PlasmaExtras.ScrollArea {
 
                 name: model.name
                 icon: model.type == PasswordsModel.FolderEntry ? "inode-directory" : "lock"
+                entryType: model.type
 
-                onItemSelected: {
+                onItemSelected: activate();
+
+                function activate() {
                     if (model.type == PasswordsModel.FolderEntry) {
                         scroll.itemSelected(delegateModel.modelIndex(index), model.name)
                     } else {

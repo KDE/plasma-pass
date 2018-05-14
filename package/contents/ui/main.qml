@@ -26,110 +26,143 @@ import org.kde.kirigami 2.0 // for Units
 import org.kde.plasma.private.plasmapass 1.0
 
 Item {
-    Plasmoid.fullRepresentation: ColumnLayout {
-        anchors.fill: parent
+    id: root
 
-        Connections {
-            target: plasmoid
-            onExpandedChanged: {
-                if (!plasmoid.expanded) {
-                    viewStack.reset();
-                } else {
-                    filterField.focus = true
+    Plasmoid.fullRepresentation: FocusScope {
+
+        property bool expanded: false
+
+        Component.onCompleted: {
+            // FIXME: I'm probably doing something wrong, but I'm unable to access
+            // "plasmoid" from elsewhere
+            expanded = Qt.binding(function() { return plasmoid.expanded; });
+        }
+
+        Keys.onPressed: {
+            if (event.key == Qt.Key_Backspace) {
+                viewStack.popPage();
+                event.accepted = true;
+            }
+        }
+
+        onExpandedChanged: {
+            if (!expanded) {
+                viewStack.reset();
+            } else {
+                filterField.focus = true;
+                filterField.forceActiveFocus();
+            }
+        }
+
+        ColumnLayout {
+            anchors.fill: parent
+
+            PasswordSortProxyModel {
+                id: passwordsModel
+
+                dynamicSortFilter: true
+                isSortLocaleAware: true
+                sortCaseSensitivity: Qt.CaseInsensitive
+
+                sourceModel: PasswordsModel {}
+            }
+
+            PasswordFilterModel {
+                id: filterModel
+
+                filter: filterField.text
+
+                sourceModel: passwordsModel
+            }
+
+            Component {
+                id: passwordsPage
+
+                PasswordsPage {
+                    stack: viewStack
+                    model: filterModel.filter == "" ? passwordsModel : filterModel
+                    onItemSelected: {
+                        stack.pushPage(index, name);
+                    }
                 }
             }
-        }
 
-        PasswordSortProxyModel {
-            id: passwordsModel
+            RowLayout {
+                PlasmaComponents.ToolButton {
+                    iconSource: "draw-arrow-back"
+                    onClicked: viewStack.popPage()
+                    enabled: viewStack.depth > 1
+                }
 
-            dynamicSortFilter: true
-            isSortLocaleAware: true
-            sortCaseSensitivity: Qt.CaseInsensitive
+                PlasmaComponents.Label {
+                    id: currentPath
 
-            sourceModel: PasswordsModel {}
-        }
+                    Layout.fillWidth: true
 
-        PasswordFilterModel {
-            id: filterModel
+                    property var _path: []
 
-            filter: filterField.text
-
-            sourceModel: passwordsModel
-        }
-
-        Component {
-            id: passwordsPage
-
-            PasswordsPage {
-                stack: viewStack
-                model: filterModel.filter == "" ? passwordsModel : filterModel
-                onItemSelected: {
-                    stack.pushPage(index, name);
+                    function pushName(name) {
+                        _path.push(name);
+                        text = _path.join("/");
+                    }
+                    function popName() {
+                        _path.pop();
+                        text = _path.join("/");
+                    }
                 }
             }
-        }
 
-        RowLayout {
-            PlasmaComponents.ToolButton {
-                iconSource: "draw-arrow-back"
-                onClicked: viewStack.popPage()
-                enabled: viewStack.depth > 1
+            RowLayout {
+                PlasmaComponents.TextField {
+                    id: filterField
+                    focus: true
+                    activeFocusOnTab: true
+
+                    placeholderText: i18n("Filter...")
+                    clearButtonShown: true
+
+                    Layout.fillWidth: true
+
+                    Keys.priority: Keys.BeforeItem
+                    Keys.onDownPressed: {
+                        viewStack.currentPage.focus = true;
+                        viewStack.currentPage.forceActiveFocus();
+                        event.accepted = true;
+                    }
+                }
             }
 
-            PlasmaComponents.Label {
-                id: currentPath
+            PlasmaComponents.PageStack {
+                id: viewStack
 
+                Layout.fillHeight: true
                 Layout.fillWidth: true
 
-                property var _path: []
-
-                function pushName(name) {
-                    _path.push(name);
-                    text = _path.join("/");
+                onCurrentPageChanged: {
+                    currentPage.focus = true;
+                    currentPage.forceActiveFocus();
                 }
-                function popName() {
-                    _path.pop();
-                    text = _path.join("/");
+
+                function pushPage(index, name) {
+                    var newPage = passwordsPage.createObject(viewStack, { "rootIndex": index, "stack": viewStack });
+                    push(newPage);
+                    currentPath.pushName(name);
                 }
-            }
-        }
 
-        RowLayout {
-            PlasmaComponents.TextField {
-                id: filterField
-
-                placeholderText: i18n("Filter...")
-                clearButtonShown: true
-
-                Layout.fillWidth: true
-            }
-        }
-
-        PlasmaComponents.PageStack {
-            id: viewStack
-
-            Layout.fillHeight: true
-            Layout.fillWidth: true
-
-            function pushPage(index, name) {
-                push(passwordsPage.createObject(viewStack, { "rootIndex": index, "stack": viewStack }));
-                currentPath.pushName(name);
-            }
-
-            function popPage() {
-                pop();
-                currentPath.popName();
-            }
-
-            function clear() {
-                while (depth > 1) {
-                    popPage();
+                function popPage() {
+                    pop();
+                    currentPath.popName();
                 }
-            }
 
-            Component.onCompleted: {
-                initialPage = passwordsPage.createObject(viewStack);
+                function clear() {
+                    while (depth > 1) {
+                        popPage();
+                    }
+                }
+
+                Component.onCompleted: {
+                    initialPage = passwordsPage.createObject(viewStack);
+                }
             }
         }
     }

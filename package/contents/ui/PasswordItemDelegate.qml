@@ -31,6 +31,7 @@ PlasmaComponents.ListItem {
 
     property alias name: label.text
     property string icon
+    property var entryType
 
     property PasswordProvider password: null
 
