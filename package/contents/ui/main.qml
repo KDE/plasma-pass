@@ -30,6 +30,9 @@ Item {
 
     Plasmoid.fullRepresentation: FocusScope {
 
+        Layout.minimumWidth: units.gridUnit * 5
+        Layout.minimumHeight: units.gridUnit * 5
+
         property bool expanded: false
 
         Component.onCompleted: {
