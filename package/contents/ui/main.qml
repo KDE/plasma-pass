@@ -84,10 +84,19 @@ Item {
 
                 PasswordsPage {
                     stack: viewStack
-                    model: filterModel.filter == "" ? passwordsModel : filterModel
-                    onItemSelected: {
+                    model: passwordsModel
+                    onFolderSelected: {
                         stack.pushPage(index, name);
                     }
+                }
+            }
+
+            Component {
+                id: filterPage
+
+                PasswordsPage {
+                    stack: viewStack
+                    model: filterModel
                 }
             }
 
@@ -130,7 +139,6 @@ Item {
                     Keys.priority: Keys.BeforeItem
                     Keys.onDownPressed: {
                         viewStack.currentPage.focus = true;
-                        viewStack.currentPage.forceActiveFocus();
                         event.accepted = true;
                     }
                 }
@@ -142,9 +150,20 @@ Item {
                 Layout.fillHeight: true
                 Layout.fillWidth: true
 
+                readonly property bool filterMode: filterField.text != ""
+
                 onCurrentPageChanged: {
                     currentPage.focus = true;
                     currentPage.forceActiveFocus();
+                }
+
+                onFilterModeChanged: {
+                    clear();
+                    if (filterMode) {
+                        push(filterPage.createObject(viewStack, { "rootIndex": null, "stack": viewStack }));
+                    }
+                    // Keep focus on the filter field
+                    filterField.focus = true;
                 }
 
                 function pushPage(index, name) {

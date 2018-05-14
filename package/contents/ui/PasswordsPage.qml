@@ -28,7 +28,7 @@ import org.kde.plasma.private.plasmapass 1.0
 PlasmaExtras.ScrollArea {
     id: scroll
 
-    signal itemSelected(var index, var name)
+    signal folderSelected(var index, var name)
 
     property Item stack
     property var rootIndex: null
@@ -86,7 +86,7 @@ PlasmaExtras.ScrollArea {
 
                 function activate() {
                     if (model.type == PasswordsModel.FolderEntry) {
-                        scroll.itemSelected(delegateModel.modelIndex(index), model.name)
+                        scroll.folderSelected(delegateModel.modelIndex(index), model.name)
                     } else {
                         delegate.password = model.password
                     }
