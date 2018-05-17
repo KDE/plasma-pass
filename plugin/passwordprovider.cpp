@@ -26,6 +26,7 @@
 #include <QCryptographicHash>
 #include <QClipboard>
 #include <QGuiApplication>
+#include <QMimeData>
 
 #include <QDBusConnection>
 
@@ -142,9 +143,25 @@ QString PasswordProvider::password() const
     return mPassword;
 }
 
+QMimeData *PasswordProvider::mimeDataForPassword(const QString &password) const
+{
+    auto mimeData = new QMimeData;
+    mimeData->setText(password);
+    // https://phabricator.kde.org/D12539
+    mimeData->setData(QStringLiteral("x-kde-passwordManagerHint"), password.toUtf8());
+    return mimeData;
+}
+
 void PasswordProvider::setPassword(const QString &password)
 {
-    qGuiApp->clipboard()->setText(password);
+    qGuiApp->clipboard()->setMimeData(mimeDataForPassword(password),
+                                      QClipboard::Clipboard);
+
+    if (qGuiApp->clipboard()->supportsSelection()) {
+        qGuiApp->clipboard()->setMimeData(mimeDataForPassword(password),
+                                          QClipboard::Selection);
+    }
+
     mPassword = password;
     Q_EMIT validChanged();
     Q_EMIT passwordChanged();

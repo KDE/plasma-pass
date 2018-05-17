@@ -26,6 +26,7 @@
 class QProcess;
 class QDBusPendingCallWatcher;
 class KJob;
+class QMimeData;
 
 namespace Plasma {
 class DataEngineConsumer;
@@ -71,6 +72,8 @@ private:
 
     void removePasswordFromClipboard(const QString &password);
     void clearClipboard();
+
+    QMimeData *mimeDataForPassword(const QString &password) const;
 
     friend class PasswordsModel;
     explicit PasswordProvider(const QString &path, QObject *parent = nullptr);
