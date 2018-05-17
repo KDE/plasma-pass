@@ -214,7 +214,7 @@ void PasswordsModel::populateDir(const QDir& dir, Node *parent)
     }
     entries = dir.entryInfoList(QDir::Dirs | QDir::NoDotAndDotDot, QDir::NoSort);
     for (const auto &entry : qAsConst(entries)) {
-        auto node = new Node(entry.baseName(), FolderEntry, parent);
+        auto node = new Node(entry.fileName(), FolderEntry, parent);
         populateDir(entry.absoluteFilePath(), node);
     }
 }
