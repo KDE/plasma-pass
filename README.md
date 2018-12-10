@@ -4,6 +4,12 @@ Plasma Pass is a Plasma applet to access password from [pass, the standard UNIX 
 
 More details and a video in [my blog post about Plasma Pass](https://www.dvratil.cz/2018/05/plasma-pass/).
 
+You don't need the *pass* utility installed on your system in order for Plasma Pass to work,
+only GnuPG is needed in order to be able to decrypt the password.
+
+Plasma Pass looks for the password directory by default in `$HOME/.password-store`, but
+it can be customized through `PASSWORD_STORE_DIR` environment variable.
+
 ## Build Instructions
 
 1) Install necessary dependencies
