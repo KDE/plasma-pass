@@ -148,7 +148,7 @@ QMimeData *PasswordProvider::mimeDataForPassword(const QString &password) const
     auto mimeData = new QMimeData;
     mimeData->setText(password);
     // https://phabricator.kde.org/D12539
-    mimeData->setData(QStringLiteral("x-kde-passwordManagerHint"), password.toUtf8());
+    mimeData->setData(QStringLiteral("x-kde-passwordManagerHint"), "secret");
     return mimeData;
 }
 
