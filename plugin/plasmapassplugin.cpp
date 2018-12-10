@@ -29,12 +29,12 @@
 
 void PlasmaPassPlugin::registerTypes(const char* uri)
 {
-    Q_ASSERT(uri == QLatin1String("org.kde.plasma.private.plasmapass"));
+    Q_ASSERT(QLatin1String(uri) == QLatin1String("org.kde.plasma.private.plasmapass"));
 
     qmlRegisterType<PlasmaPass::PasswordsModel>(uri, 1, 0, "PasswordsModel");
     qmlRegisterType<PlasmaPass::PasswordSortProxyModel>(uri, 1, 0, "PasswordSortProxyModel");
     qmlRegisterType<PlasmaPass::PasswordFilterModel>(uri, 1, 0, "PasswordFilterModel");
-    qmlRegisterUncreatableType<PlasmaPass::PasswordProvider>(uri, 1, 0, "PasswordProvider", "");
+    qmlRegisterUncreatableType<PlasmaPass::PasswordProvider>(uri, 1, 0, "PasswordProvider", QString());
 
     qmlProtectModule("org.kde.plasma.private.plasmapass", 1);
 }
