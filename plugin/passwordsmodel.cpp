@@ -33,8 +33,8 @@ class PasswordsModel::Node
 public:
     Node() {}
 
-    Node(const QString &name, PasswordsModel::EntryType type, Node *parent)
-        : name(name), type(type), parent(parent)
+    Node(const QString &name, PasswordsModel::EntryType type, Node *nodeParent)
+        : name(name), type(type), parent(nodeParent)
     {
         if (parent) {
             parent->children.append(this);
