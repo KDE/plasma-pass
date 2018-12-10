@@ -24,7 +24,7 @@ Debian/Ubuntu:
 
 2) Clone source code:
 
-    git clone https://anongit.kde.org/scratch/dvratil/plasma-pass.git
+    git clone https://anongit.kde.org/plasma-pass.git
 
 3) Compile:
 
