@@ -2,6 +2,7 @@
 Name=Plasma Pass
 Name[ca]=Plasma Pass
 Name[ca@valencia]=Plasma Pass
+Name[de]=Plasma Pass
 Name[gl]=Pass para Plasma
 Name[nl]=Plasma Pass
 Name[pt]=Plasma Pass
@@ -12,6 +13,7 @@ Name[x-test]=xxPlasma Passxx
 Comment=Plasma applet to access passwords form the pass password manager
 Comment[ca]=Miniaplicació del Plasma per accedir al formulari de contrasenyes del gestor de les contrasenyes de pas
 Comment[ca@valencia]=Miniaplicació del Plasma per accedir al formulari de contrasenyes del gestor de les contrasenyes de pas
+Comment[de]=Plasma-Miniprogramm für den Zugriff auf Passwörter Passwort-Verwaltung Pass
 Comment[gl]=Miniaplicativo de Plasma para acceder aos contrasinais do xestor de contrasinais pass
 Comment[nl]=Plasma-applet voor toegang tot wachtwoordenformulier van de wachtwoordbeheerder pass
 Comment[pt]=Elemento do Plasma para aceder às senhas do gestor de senhas Pass
