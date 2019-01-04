@@ -28,7 +28,6 @@ ServiceTypes=Plasma/Applet
 
 X-KDE-PluginInfo-Author=Daniel Vrátil
 X-KDE-PluginInfo-Email=dvratil@kde.org
-X-KDE-PluginInfo-Name=plasmapass
 X-KDE-PluginInfo-Version=1.0
 X-KDE-PluginInfo-Website=https://www.kde.org/plasma-desktop
 X-KDE-PluginInfo-Category=Utilities
