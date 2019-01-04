@@ -42,7 +42,7 @@ Item {
         }
 
         Keys.onPressed: {
-            if (!viewStack.filterMode && event.key == Qt.Key_Backspace) {
+            if (!viewStack.filterMode && event.key === Qt.Key_Backspace) {
                 viewStack.popPage();
                 event.accepted = true;
             }
@@ -141,7 +141,7 @@ Item {
                         if (event.key == Qt.Key_Down) {
                             viewStack.currentPage.focus = true;
                             event.accepted = true;
-                        } else if (event.key == Qt.Key_Enter || event.key == Qt.Key_Return) {
+                        } else if (event.key === Qt.Key_Enter || event.key === Qt.Key_Return) {
                             viewStack.currentPage.activateCurrentItem();
                             event.accepted = true;
                         }
@@ -155,7 +155,7 @@ Item {
                 Layout.fillHeight: true
                 Layout.fillWidth: true
 
-                readonly property bool filterMode: filterField.text != ""
+                readonly property bool filterMode: filterField.text !== ""
 
                 onCurrentPageChanged: {
                     currentPage.focus = true;
