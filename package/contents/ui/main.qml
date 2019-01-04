@@ -74,7 +74,7 @@ Item {
             PasswordFilterModel {
                 id: filterModel
 
-                filter: filterField.text
+                passwordFilter: filterField.text
 
                 sourceModel: passwordsModel
             }

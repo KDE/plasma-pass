@@ -32,19 +32,19 @@ class PasswordFilterModel : public QSortFilterProxyModel
 {
     Q_OBJECT
 
-    Q_PROPERTY(QString filter READ filter WRITE setFilter NOTIFY filterChanged)
+    Q_PROPERTY(QString passwordFilter READ passwordFilter WRITE setPasswordFilter NOTIFY passwordFilterChanged)
 public:
     explicit PasswordFilterModel(QObject *parent = nullptr);
 
     void setSourceModel(QAbstractItemModel *sourceModel) override;
 
-    QString filter() const;
-    void setFilter(const QString &filter);
+    QString passwordFilter() const;
+    void setPasswordFilter(const QString &filter);
 
     QVariant data(const QModelIndex &index, int role) const override;
 
 Q_SIGNALS:
-    void filterChanged();
+    void passwordFilterChanged();
 
 protected:
     bool lessThan(const QModelIndex &source_left, const QModelIndex &source_right) const override;

@@ -44,17 +44,17 @@ void PasswordFilterModel::setSourceModel(QAbstractItemModel *sourceModel)
     }
 }
 
-QString PasswordFilterModel::filter() const
+QString PasswordFilterModel::passwordFilter() const
 {
     return mFilter;
 }
 
-void PasswordFilterModel::setFilter(const QString &filter)
+void PasswordFilterModel::setPasswordFilter(const QString &filter)
 {
     if (mFilter != filter) {
         mFilter = filter;
         mParts = filter.splitRef(QLatin1Char('/'), QString::SkipEmptyParts);
-        Q_EMIT filterChanged();
+        Q_EMIT passwordFilterChanged();
         mSortingLookup.clear();
         invalidate();
     }
