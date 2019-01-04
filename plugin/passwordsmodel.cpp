@@ -32,7 +32,6 @@ class PasswordsModel::Node
 {
 public:
     Node() {}
-
     Node(const QString &name, PasswordsModel::EntryType type, Node *nodeParent)
         : name(name), type(type), parent(nodeParent)
     {
@@ -40,6 +39,11 @@ public:
             parent->children.append(this);
         }
     }
+
+    Node(const Node &other) = delete;
+    Node(Node &&other) = default;
+    Node &operator=(const Node &other) = delete;
+    Node &operator=(Node &&other) = delete;
 
     ~Node()
     {
