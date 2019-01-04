@@ -242,13 +242,13 @@ void PasswordProvider::removePasswordFromClipboard(const QString &password)
 
     // FIXME: KJob::result() is an overloaded QPrivateSignal and cannot be QOverload()ed,
     // so we have to do it the old-school way
-    connect(job, SIGNAL(result(KJob*)), this, SLOT(onPlasmaServiceRemovePasswordResult(KJob*)));
+    connect(job, &KJob::result, this, &PasswordProvider::onPlasmaServiceRemovePasswordResult);
 }
 
 void PasswordProvider::onPlasmaServiceRemovePasswordResult(KJob* job)
 {
     // Disconnect from the job: Klipper's ClipboardJob is buggy and emits result() twice
-    disconnect(job, SIGNAL(result(KJob*)), this, SLOT(onPlasmaServiceRemovePasswordResult(KJob*)));
+    disconnect(job, &KJob::result, this, &PasswordProvider::onPlasmaServiceRemovePasswordResult);
     QTimer::singleShot(0, this, [this]() { delete std::exchange(mEngineConsumer, nullptr); });
 
     auto serviceJob = qobject_cast<Plasma::ServiceJob*>(job);
