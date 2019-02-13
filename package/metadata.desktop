@@ -16,6 +16,7 @@ Name[sk]=Plasma Pass
 Name[sv]=Plasma pass
 Name[uk]=Паролі Плазми
 Name[x-test]=xxPlasma Passxx
+Name[zh_TW]=Plasma Pass
 Comment=Plasma applet to access passwords form the pass password manager
 Comment[ca]=Miniaplicació del Plasma per accedir al formulari de contrasenyes del gestor de les contrasenyes de pas
 Comment[ca@valencia]=Miniaplicació del Plasma per accedir al formulari de contrasenyes del gestor de les contrasenyes de pas
@@ -32,6 +33,7 @@ Comment[sk]=Plasma applet na prístup k heslám cez správcu hesiel
 Comment[sv]=Plasma miniprogram för att komma åt lösenord från lösenordshanteraren pass
 Comment[uk]=Аплет Плазми для доступу до форми паролів програми для керування паролями
 Comment[x-test]=xxPlasma applet to access passwords form the pass password managerxx
+Comment[zh_TW]=用來從 Pass 密碼管理程式存取密碼的 Plasma 元件
 
 Icon=lock
 Type=Service
