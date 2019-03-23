@@ -20,6 +20,7 @@ Name[x-test]=xxPlasma Passxx
 Name[zh_TW]=Plasma Pass
 Comment=Plasma applet to access passwords from the 'pass' password manager
 Comment[ca]=Miniaplicació del Plasma per accedir a les contrasenyes des del gestor de contrasenyes «pas»
+Comment[es]=Miniaplicación de Plasma para acceder a las contraseñas desde el gestor de contraseñas «pass»
 Comment[gl]=Miniaplicativo de Plasma para acceder aos contrasinais do xestor de contrasinais «pass»
 Comment[nl]=Plasma-applet voor toegang tot wachtwoorden vanuit de wachtwoordenbeheerder pass
 Comment[sv]=Plasma miniprogram för att komma åt lösenord från lösenordshanteraren 'pass'
