@@ -31,6 +31,7 @@ Comment[it]=Applet per Plasma per accedere alle password dal gestore delle passw
 Comment[ko]='패스' 비밀번호 관리자에서 비밀번호에 접속하기 위한 Plasma 애플릿
 Comment[nl]=Plasma-applet voor toegang tot wachtwoorden vanuit de wachtwoordenbeheerder pass
 Comment[pt]=Elemento do Plasma para aceder às senhas do gestor de senhas 'pass'
+Comment[pt_BR]=Miniaplicativo do Plasma para acessar as senhas do gerenciador de senhas 'pass'
 Comment[sv]=Plasma miniprogram för att komma åt lösenord från lösenordshanteraren 'pass'
 Comment[uk]=Аплет Плазми для доступу до паролів програми для керування паролями «pass»
 Comment[x-test]=xxPlasma applet to access passwords from the 'pass' password managerxx
