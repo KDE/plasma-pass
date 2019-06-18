@@ -1,5 +1,6 @@
 [Desktop Entry]
 Name=Plasma Pass
+Name[ast]=Plasma Pass
 Name[ca]=Plasma Pass
 Name[ca@valencia]=Plasma Pass
 Name[cs]=Plasma Pass
@@ -22,6 +23,7 @@ Name[uk]=Паролі Плазми
 Name[x-test]=xxPlasma Passxx
 Name[zh_TW]=Plasma Pass
 Comment=Plasma applet to access passwords from the 'pass' password manager
+Comment[ast]=L'aplicación de Plasma p'acceder a les contraseñes del xestor de contraseñes pass
 Comment[ca]=Miniaplicació del Plasma per accedir a les contrasenyes des del gestor de contrasenyes «pas»
 Comment[ca@valencia]=Miniaplicació del Plasma per accedir a les contrasenyes des del gestor de contrasenyes «pas»
 Comment[de]=Plasma-Miniprogramm für den Zugriff auf Passwörter Passwort-Verwaltung Pass
