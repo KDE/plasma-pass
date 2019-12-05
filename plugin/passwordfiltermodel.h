@@ -22,6 +22,7 @@
 
 #include <QSortFilterProxyModel>
 #include <QVector>
+#include <QTimer>
 
 class QStringRef;
 class KDescendantsProxyModel;
@@ -51,10 +52,13 @@ protected:
     bool filterAcceptsRow(int source_row, const QModelIndex &source_parent) const override;
 
 private:
+    void delayedUpdateFilter();
+
     KDescendantsProxyModel *mFlatModel = nullptr;
     QString mFilter;
     QVector<QStringRef> mParts;
     mutable QHash<QModelIndex, int> mSortingLookup;
+    QTimer mUpdateTimer;
 };
 
 }

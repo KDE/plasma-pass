@@ -23,9 +23,19 @@
 
 #include <KDescendantsProxyModel>
 
-#include <QDebug>
+#include <QSortFilterProxyModel>
+
+#include <chrono>
 
 using namespace PlasmaPass;
+
+namespace {
+
+constexpr static const auto invalidateDelay = std::chrono::milliseconds(100);
+constexpr static const char newFilterProperty[] = "newFilter";
+
+}
+
 
 PasswordFilterModel::PasswordFilterModel(QObject *parent)
     : QSortFilterProxyModel(parent)
@@ -33,6 +43,9 @@ PasswordFilterModel::PasswordFilterModel(QObject *parent)
 {
     mFlatModel->setDisplayAncestorData(false);
     sort(0); // enable sorting
+
+    mUpdateTimer.setSingleShot(true);
+    connect(&mUpdateTimer, &QTimer::timeout, this, &PasswordFilterModel::delayedUpdateFilter);
 }
 
 void PasswordFilterModel::setSourceModel(QAbstractItemModel *sourceModel)
@@ -52,13 +65,26 @@ QString PasswordFilterModel::passwordFilter() const
 void PasswordFilterModel::setPasswordFilter(const QString &filter)
 {
     if (mFilter != filter) {
-        mFilter = filter;
-        mParts = filter.splitRef(QLatin1Char('/'), QString::SkipEmptyParts);
-        Q_EMIT passwordFilterChanged();
-        mSortingLookup.clear();
-        invalidate();
+        if (mUpdateTimer.isActive()) {
+            mUpdateTimer.stop();
+        }
+
+        mUpdateTimer.setProperty(newFilterProperty, filter);
+        mUpdateTimer.start(invalidateDelay);
     }
 }
+
+void PasswordFilterModel::delayedUpdateFilter()
+{
+    Q_ASSERT(sender() == &mUpdateTimer);
+
+    mFilter = mUpdateTimer.property(newFilterProperty).toString();
+    mParts = mFilter.splitRef(QLatin1Char('/'), QString::SkipEmptyParts);
+    Q_EMIT passwordFilterChanged();
+    mSortingLookup.clear();
+    invalidate();
+}
+
 
 QVariant PasswordFilterModel::data(const QModelIndex &index, int role) const
 {
