@@ -1,10 +1,10 @@
 cmake_minimum_required(VERSION 3.5)
 
-set(PROJECT_VERSION "0.2")
+set(PROJECT_VERSION "1.1.0")
 
 project(plasma-plasmapass VERSION ${PROJECT_VERSION})
 
-set(PROJECT_VERSION_MAJOR 0)
+set(PROJECT_VERSION_MAJOR 1)
 
 set(QT_MIN_VERSION "5.9")
 set(KF5_MIN_VERSION "5.42.0")
