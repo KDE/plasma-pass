@@ -24,8 +24,11 @@
 #include <KDescendantsProxyModel>
 
 #include <QSortFilterProxyModel>
+#include <QFutureWatcher>
+#include <QtConcurrent>
 
 #include <chrono>
+#include <iterator>
 
 using namespace PlasmaPass;
 
@@ -34,8 +37,108 @@ namespace {
 constexpr static const auto invalidateDelay = std::chrono::milliseconds(100);
 constexpr static const char newFilterProperty[] = "newFilter";
 
+class ModelIterator
+{
+public:
+    using reference = const QModelIndex &;
+    using pointer = QModelIndex *;
+    using value_type = QModelIndex;
+    using difference_type = int;
+    using iterator_category = std::forward_iterator_tag;
+
+    static ModelIterator begin(QAbstractItemModel *model)
+    {
+        return ModelIterator(model, model->index(0, 0));
+    }
+
+    static ModelIterator end(QAbstractItemModel *model)
+    {
+        return ModelIterator(model, {});
+    }
+
+    bool operator==(const ModelIterator &other) const {
+        return mModel == other.mModel && mIndex == other.mIndex;
+    }
+
+    bool operator!=(const ModelIterator &other) const {
+        return !(*this == other);
+    }
+
+    QModelIndex operator*() const {
+        return mIndex;
+    }
+
+    const QModelIndex *operator->() const {
+        return &mIndex;
+    }
+
+    ModelIterator &operator++() {
+        if (mIndex.row() < mModel->rowCount() - 1) {
+            mIndex = mModel->index(mIndex.row() + 1, mIndex.column());
+        } else {
+            mIndex = {};
+        }
+        return *this;
+    }
+
+    ModelIterator operator++(int) {
+        ModelIterator it = *this;
+        ++*this;
+        return it;
+    }
+
+private:
+    ModelIterator(QAbstractItemModel *model, const QModelIndex &index)
+        : mModel(model), mIndex(index)
+    {}
+
+private:
+    QAbstractItemModel *mModel = nullptr;
+    QModelIndex mIndex;
+};
+
+} // namespace
+
+PasswordFilterModel::PathFilter::PathFilter(const QString &filter)
+    : filter(filter)
+{}
+
+PasswordFilterModel::PathFilter::PathFilter(const PathFilter &other)
+    : filter(other.filter)
+{
+    updateParts();
 }
 
+PasswordFilterModel::PathFilter &PasswordFilterModel::PathFilter::operator=(const PathFilter &other)
+{
+    filter = other.filter;
+    updateParts();
+    return *this;
+}
+
+PasswordFilterModel::PathFilter::PathFilter(PathFilter &&other) noexcept
+    : filter(std::move(other.filter))
+{
+    updateParts();
+}
+
+PasswordFilterModel::PathFilter &PasswordFilterModel::PathFilter::operator=(PathFilter &&other) noexcept
+{
+    filter = std::move(other.filter);
+    updateParts();
+    return *this;
+}
+
+void PasswordFilterModel::PathFilter::updateParts()
+{
+    mParts = filter.splitRef(QLatin1Char('/'), QString::SkipEmptyParts);
+}
+
+PasswordFilterModel::PathFilter::result_type PasswordFilterModel::PathFilter::operator()(const QModelIndex &index) const {
+    const auto path = index.model()->data(index, PasswordsModel::FullNameRole).toString();
+    const auto weight = matchPathFilter(path.splitRef(QLatin1Char('/')), mParts);
+    return std::make_pair(index, weight);
+}
 
 PasswordFilterModel::PasswordFilterModel(QObject *parent)
     : QSortFilterProxyModel(parent)
@@ -46,6 +149,7 @@ PasswordFilterModel::PasswordFilterModel(QObject *parent)
 
     mUpdateTimer.setSingleShot(true);
     connect(&mUpdateTimer, &QTimer::timeout, this, &PasswordFilterModel::delayedUpdateFilter);
+    connect(&mUpdateTimer, &QTimer::timeout, this, []() { qDebug() << "Update timer timeout, will calculate results lazily."; });
 }
 
 void PasswordFilterModel::setSourceModel(QAbstractItemModel *sourceModel)
@@ -59,29 +163,58 @@ void PasswordFilterModel::setSourceModel(QAbstractItemModel *sourceModel)
 
 QString PasswordFilterModel::passwordFilter() const
 {
-    return mFilter;
+    return mFilter.filter;
 }
+
 
 void PasswordFilterModel::setPasswordFilter(const QString &filter)
 {
-    if (mFilter != filter) {
+    if (mFilter.filter != filter) {
         if (mUpdateTimer.isActive()) {
             mUpdateTimer.stop();
         }
 
         mUpdateTimer.setProperty(newFilterProperty, filter);
         mUpdateTimer.start(invalidateDelay);
+
+        if (mFuture.isRunning()) {
+            mFuture.cancel();
+        }
+        if (!filter.isEmpty()) {
+            mFuture = QtConcurrent::mappedReduced<QHash<QModelIndex, int>>(
+                        ModelIterator::begin(sourceModel()), ModelIterator::end(sourceModel()),
+                        PathFilter{filter},
+                        [](QHash<QModelIndex, int> &result, const std::pair<QModelIndex, int> &value) {
+                            result.insert(value.first, value.second);
+                        });
+            auto watcher = new QFutureWatcher<QHash<QModelIndex, int>>();
+            connect(watcher, &QFutureWatcherBase::finished, this,
+                    [this, watcher]() {
+                        mSortingLookup = mFuture.result();
+                        watcher->deleteLater();
+                        // If the timer is not active it means we were to slow, so don't invoke
+                        // delayedUpdateFilter() again, just update mSortingLookup with our
+                        // results.
+                        if (mUpdateTimer.isActive()) {
+                            mUpdateTimer.stop();
+                            delayedUpdateFilter();
+                        }
+                    });
+            connect(watcher, &QFutureWatcherBase::canceled, watcher, &QObject::deleteLater);
+            watcher->setFuture(mFuture);
+        }
     }
 }
 
 void PasswordFilterModel::delayedUpdateFilter()
 {
-    Q_ASSERT(sender() == &mUpdateTimer);
-
-    mFilter = mUpdateTimer.property(newFilterProperty).toString();
-    mParts = mFilter.splitRef(QLatin1Char('/'), QString::SkipEmptyParts);
+    mFilter = PathFilter(mUpdateTimer.property(newFilterProperty).toString());
     Q_EMIT passwordFilterChanged();
-    mSortingLookup.clear();
+    if (mFuture.isRunning()) {
+        // If the future is still running, clear up the lookup table, we will have to
+        // calculate the intermediate results ourselves
+        mSortingLookup.clear();
+    }
     invalidate();
 }
 
@@ -104,19 +237,20 @@ bool PasswordFilterModel::filterAcceptsRow(int source_row, const QModelIndex &so
         return false;
     }
 
-    if (mFilter.isEmpty()) {
+    if (mFilter.filter.isEmpty()) {
         return true;
     }
 
-    const auto path = sourceModel()->data(src_index, PasswordsModel::FullNameRole).toString();
-
-    const auto weight = matchPathFilter(path.splitRef(QLatin1Char('/')), mParts);
-    if (weight > -1) {
-        mSortingLookup.insert(src_index, weight);
-        return true;
+    // Try to lookup the weight in the lookup table, the worker thread may have put it in there
+    // while the updateTimer was ticking
+    auto weight = mSortingLookup.find(src_index);
+    if (weight == mSortingLookup.end()) {
+        // It's not there, let's calculate the value now
+        const auto result = mFilter(src_index);
+        weight = mSortingLookup.insert(result.first, result.second);
     }
 
-    return false;
+    return *weight > -1;
 }
 
 bool PasswordFilterModel::lessThan(const QModelIndex &source_left, const QModelIndex &source_right) const

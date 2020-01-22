@@ -20,6 +20,7 @@
 #include "mainwindow.h"
 #include "passwordsmodel.h"
 #include "passwordprovider.h"
+#include "passwordfiltermodel.h"
 
 #include <QVBoxLayout>
 #include <QFormLayout>
@@ -28,6 +29,9 @@
 #include <QPushButton>
 #include <QProgressBar>
 #include <QSplitter>
+#include <QStackedWidget>
+#include <QListView>
+#include <QLineEdit>
 
 using namespace PlasmaPass;
 
@@ -44,16 +48,39 @@ MainWindow::MainWindow(QWidget *parent)
     auto splitter = new QSplitter;
     h->addWidget(splitter);
 
-    auto treeView = new QTreeView;
-    treeView->setHeaderHidden(true);
-    treeView->setModel(new PasswordsModel(this));
-    connect(treeView, &QTreeView::clicked, this, &MainWindow::onPasswordClicked);
-    splitter->addWidget(treeView);
-
     w = new QWidget;
     splitter->addWidget(w);
 
     auto v = new QVBoxLayout(w);
+
+    auto input = new QLineEdit;
+    input->setClearButtonEnabled(true);
+    input->setPlaceholderText(QStringLiteral("Search ..."));
+    connect(input, &QLineEdit::textChanged, this, &MainWindow::onSearchChanged);
+    v->addWidget(input);
+
+    mStack = new QStackedWidget;
+    v->addWidget(mStack);
+
+    auto treeView = new QTreeView;
+    treeView->setHeaderHidden(true);
+    treeView->setModel(new PasswordsModel(this));
+    connect(treeView, &QTreeView::clicked, this, &MainWindow::onPasswordClicked);
+    mStack->addWidget(treeView);
+
+    auto listView = new QListView;
+    mFilterModel = new PasswordFilterModel(listView);
+    mFilterModel->setSourceModel(treeView->model());
+    listView->setModel(mFilterModel);
+    connect(listView, &QListView::clicked, this, &MainWindow::onPasswordClicked);
+    mStack->addWidget(listView);
+
+    mStack->setCurrentIndex(0);
+
+    w = new QWidget;
+    splitter->addWidget(w);
+
+    v = new QVBoxLayout(w);
 
     v->addWidget(mTitle = new QLabel);
     auto font = mTitle->font();
@@ -143,4 +170,10 @@ void MainWindow::onPasswordClicked(const QModelIndex &idx)
     if (hasProvider) {
         setProvider(mCurrent.data(PasswordsModel::PasswordRole).value<PasswordProvider*>());
     }
+}
+
+void MainWindow::onSearchChanged(const QString &text)
+{
+    mStack->setCurrentIndex(text.isEmpty() ? 0 : 1);
+    mFilterModel->setPasswordFilter(text);
 }

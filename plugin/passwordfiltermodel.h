@@ -23,6 +23,7 @@
 #include <QSortFilterProxyModel>
 #include <QVector>
 #include <QTimer>
+#include <QFuture>
 
 class QStringRef;
 class KDescendantsProxyModel;
@@ -52,13 +53,32 @@ protected:
     bool filterAcceptsRow(int source_row, const QModelIndex &source_parent) const override;
 
 private:
+    struct PathFilter {
+        using result_type = std::pair<QModelIndex, int>;
+
+        explicit PathFilter() = default;
+        PathFilter(const QString &filter);
+
+        PathFilter(const PathFilter &);
+        PathFilter(PathFilter &&) noexcept;
+        PathFilter &operator=(const PathFilter &);
+        PathFilter &operator=(PathFilter &&) noexcept;
+
+        result_type operator()(const QModelIndex &index) const;
+
+        QString filter;
+    private:
+        void updateParts();
+        QVector<QStringRef> mParts;
+    };
+
     void delayedUpdateFilter();
 
     KDescendantsProxyModel *mFlatModel = nullptr;
-    QString mFilter;
-    QVector<QStringRef> mParts;
+    PathFilter mFilter;
     mutable QHash<QModelIndex, int> mSortingLookup;
     QTimer mUpdateTimer;
+    QFuture<QHash<QModelIndex, int>> mFuture;
 };
 
 }

@@ -27,9 +27,11 @@
 class QLabel;
 class QPushButton;
 class QProgressBar;
+class QStackedWidget;
 
 namespace PlasmaPass {
 class PasswordProvider;
+class PasswordFilterModel;
 }
 
 class MainWindow : public QMainWindow
@@ -41,6 +43,7 @@ public:
 
 private Q_SLOTS:
     void onPasswordClicked(const QModelIndex &idx);
+    void onSearchChanged(const QString &text);
 
 private:
     void setProvider(PlasmaPass::PasswordProvider *provider);
@@ -54,6 +57,8 @@ private:
     QProgressBar *mPassProgress = nullptr;
     QModelIndex mCurrent;
     QPointer<PlasmaPass::PasswordProvider> mProvider;
+    QStackedWidget *mStack = nullptr;
+    PlasmaPass::PasswordFilterModel *mFilterModel = nullptr;
 };
 
 

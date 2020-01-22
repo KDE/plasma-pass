@@ -24,6 +24,7 @@ target_link_libraries(plasmapass
     Qt5::Core
     Qt5::DBus
     Qt5::Qml
+    Qt5::Concurrent
     KF5::Plasma
     KF5::I18n
     KF5::ItemModels
