@@ -6,8 +6,8 @@ project(plasma-plasmapass VERSION ${PROJECT_VERSION})
 
 set(PROJECT_VERSION_MAJOR 1)
 
-set(QT_MIN_VERSION "5.9")
-set(KF5_MIN_VERSION "5.42.0")
+set(QT_MIN_VERSION "5.11")
+set(KF5_MIN_VERSION "5.57.0")
 
 set(CMAKE_CXX_STANDARD 14)
 
