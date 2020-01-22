@@ -26,17 +26,16 @@
 
 using namespace PlasmaPass;
 
-#define PASSWORD_STORE_DIR "PASSWORD_STORE_DIR"
+static constexpr const char *passwordStoreDir = "PASSWORD_STORE_DIR";
 
-class PasswordsModel::Node
+struct PasswordsModel::Node
 {
-public:
-    Node() {}
-    Node(const QString &name, PasswordsModel::EntryType type, Node *nodeParent)
-        : name(name), type(type), parent(nodeParent)
+    explicit Node() = default;
+    Node(QString name, PasswordsModel::EntryType type, Node *nodeParent)
+        : name(std::move(name)), type(type), parent(nodeParent)
     {
-        if (parent) {
-            parent->children.append(this);
+        if (parent != nullptr) {
+            parent->children.push_back(std::unique_ptr<Node>(this));
         }
     }
 
@@ -45,22 +44,19 @@ public:
     Node &operator=(const Node &other) = delete;
     Node &operator=(Node &&other) = delete;
 
-    ~Node()
-    {
-        qDeleteAll(children);
-    }
+    ~Node() = default;
 
     QString path() const
     {
-        if (!parent) {
+        if (parent == nullptr) {
             return name;
-        } else {
-            QString fileName = name;
-            if (type == PasswordsModel::PasswordEntry) {
-                fileName += QStringLiteral(".gpg");
-            }
-            return parent->path() + QLatin1Char('/') + fileName;
         }
+
+        QString fileName = name;
+        if (type == PasswordsModel::PasswordEntry) {
+            fileName += QStringLiteral(".gpg");
+        }
+        return parent->path() + QLatin1Char('/') + fileName;
     }
 
     QString fullName() const
@@ -69,7 +65,7 @@ public:
             return mFullName;
         }
 
-        if (!parent) {
+        if (parent == nullptr) {
             return {};
         }
         const auto p = parent->fullName();
@@ -82,10 +78,10 @@ public:
     }
 
     QString name;
-    PasswordsModel::EntryType type;
+    PasswordsModel::EntryType type = PasswordsModel::FolderEntry;
     QPointer<PasswordProvider> provider;
     Node *parent = nullptr;
-    QVector<Node*> children;
+    std::vector<std::unique_ptr<Node>> children;
 
 private:
     mutable QString mFullName;
@@ -96,8 +92,8 @@ PasswordsModel::PasswordsModel(QObject *parent)
     : QAbstractItemModel(parent)
     , mWatcher(this)
 {
-    if (qEnvironmentVariableIsSet(PASSWORD_STORE_DIR)) {
-        mPassStore = QDir(QString::fromUtf8(qgetenv(PASSWORD_STORE_DIR)));
+    if (qEnvironmentVariableIsSet(passwordStoreDir)) {
+        mPassStore = QDir(QString::fromUtf8(qgetenv(passwordStoreDir)));
     } else {
         mPassStore = QDir(QStringLiteral("%1/.password-store").arg(QDir::homePath()));
     }
@@ -109,12 +105,9 @@ PasswordsModel::PasswordsModel(QObject *parent)
     populate();
 }
 
-PasswordsModel::~PasswordsModel()
-{
-    delete mRoot;
-}
+PasswordsModel::~PasswordsModel() = default;
 
-PasswordsModel::Node *PasswordsModel::node(const QModelIndex& index) const
+PasswordsModel::Node *PasswordsModel::node(const QModelIndex& index)
 {
     return static_cast<Node*>(index.internalPointer());
 }
@@ -131,8 +124,8 @@ QHash<int, QByteArray> PasswordsModel::roleNames() const
 
 int PasswordsModel::rowCount(const QModelIndex &parent) const
 {
-    const auto parentNode = parent.isValid() ? node(parent) : mRoot;
-    return parentNode ? parentNode->children.count() : 0;
+    const auto parentNode = parent.isValid() ? node(parent) : mRoot.get();
+    return parentNode != nullptr ? static_cast<int>(parentNode->children.size()) : 0;
 }
 
 int PasswordsModel::columnCount(const QModelIndex &parent) const
@@ -143,12 +136,12 @@ int PasswordsModel::columnCount(const QModelIndex &parent) const
 
 QModelIndex PasswordsModel::index(int row, int column, const QModelIndex &parent) const
 {
-    const auto parentNode = parent.isValid() ? node(parent) : mRoot;
-    if (!parentNode || row < 0 || row >= parentNode->children.count() || column != 0) {
+    const auto parentNode = parent.isValid() ? node(parent) : mRoot.get();
+    if (parentNode == nullptr || row < 0 || static_cast<std::size_t>(row) >= parentNode->children.size() || column != 0) {
         return {};
     }
 
-    return createIndex(row, column, parentNode->children.at(row));
+    return createIndex(row, column, parentNode->children.at(row).get());
 }
 
 QModelIndex PasswordsModel::parent(const QModelIndex &child) const
@@ -158,14 +151,19 @@ QModelIndex PasswordsModel::parent(const QModelIndex &child) const
     }
 
     const auto childNode = node(child);
-    if (!childNode || !childNode->parent) {
+    if (childNode == nullptr || childNode->parent == nullptr) {
         return {};
     }
     const auto parentNode = childNode->parent;
-    if (parentNode == mRoot) {
+    if (parentNode == mRoot.get()) {
         return {};
     }
-    return createIndex(parentNode->parent->children.indexOf(parentNode), 0, parentNode);
+
+    auto &children = parentNode->parent->children;
+    const auto it = std::find_if(children.cbegin(), children.cend(),
+                         [parentNode](const auto &node) { return node.get() == parentNode; });
+    Q_ASSERT(it != children.cend());
+    return createIndex(std::distance(children.cbegin(), it), 0, parentNode);
 }
 
 QVariant PasswordsModel::data(const QModelIndex &index, int role) const
@@ -174,7 +172,7 @@ QVariant PasswordsModel::data(const QModelIndex &index, int role) const
         return {};
     }
     const auto node = this->node(index);
-    if (!node) {
+    if (node == nullptr) {
         return {};
     }
 
@@ -188,24 +186,23 @@ QVariant PasswordsModel::data(const QModelIndex &index, int role) const
     case FullNameRole:
         return node->fullName();
     case PasswordRole:
-        if (!node->provider) {
+        if (node->provider == nullptr) {
             node->provider = new PasswordProvider(node->path());
         }
         return QVariant::fromValue(node->provider.data());
     case HasPasswordRole:
         return !node->provider.isNull();
+    default:
+        return {};
     }
-
-    return {};
 }
 
 void PasswordsModel::populate()
 {
     beginResetModel();
-    delete mRoot;
-    mRoot = new Node;
+    mRoot = std::make_unique<Node>();
     mRoot->name = mPassStore.absolutePath();
-    populateDir(mPassStore, mRoot);
+    populateDir(mPassStore, mRoot.get());
     endResetModel();
 }
 

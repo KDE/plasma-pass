@@ -27,5 +27,5 @@ int main(int argc, char **argv)
 
     MainWindow window;
     window.showNormal();
-    return app.exec();
+    return QApplication::exec();
 }

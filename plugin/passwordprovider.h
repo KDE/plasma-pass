@@ -23,6 +23,8 @@
 #include <QObject>
 #include <QTimer>
 
+#include <memory>
+
 class QProcess;
 class QDBusPendingCallWatcher;
 class KJob;
@@ -71,15 +73,15 @@ private:
     void expirePassword();
 
     void removePasswordFromClipboard(const QString &password);
-    void clearClipboard();
+    static void clearClipboard();
 
-    QMimeData *mimeDataForPassword(const QString &password) const;
+    static QMimeData *mimeDataForPassword(const QString &password);
 
     friend class PasswordsModel;
     explicit PasswordProvider(const QString &path, QObject *parent = nullptr);
 
-    Plasma::DataEngineConsumer *mEngineConsumer = nullptr;
-    QProcess *mGpg = nullptr;
+    std::unique_ptr<Plasma::DataEngineConsumer> mEngineConsumer;
+    std::unique_ptr<QProcess> mGpg;
     QString mPath;
     QString mPassword;
     QString mError;

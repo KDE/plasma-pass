@@ -38,9 +38,9 @@ using namespace PlasmaPass;
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
 {
-    resize(900, 350);
+    resize(900, 350); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
 
-    QWidget *w = new QWidget;
+    auto w = new QWidget;
     setCentralWidget(w);
 
     auto h = new QHBoxLayout(w);
@@ -102,14 +102,12 @@ MainWindow::MainWindow(QWidget *parent)
                 setProvider(mCurrent.data(PasswordsModel::PasswordRole).value<PasswordProvider*>());
             });
 
-    v->addStretch(2.0);
+    v->addStretch(2.0); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
 
     onPasswordClicked({});
 }
 
-MainWindow::~MainWindow()
-{
-}
+MainWindow::~MainWindow() = default;
 
 void MainWindow::setProvider(PasswordProvider *provider)
 {
@@ -150,7 +148,7 @@ void MainWindow::setProvider(PasswordProvider *provider)
 
 void MainWindow::onPasswordClicked(const QModelIndex &idx)
 {
-    if (mProvider) {
+    if (mProvider != nullptr) {
         mProvider->disconnect(this);
     }
     mCurrent = idx;

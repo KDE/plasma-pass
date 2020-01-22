@@ -57,7 +57,7 @@ private:
         using result_type = std::pair<QModelIndex, int>;
 
         explicit PathFilter() = default;
-        PathFilter(const QString &filter);
+        PathFilter(QString filter);
 
         PathFilter(const PathFilter &);
         PathFilter(PathFilter &&) noexcept;

@@ -34,8 +34,8 @@ using namespace PlasmaPass;
 
 namespace {
 
-constexpr static const auto invalidateDelay = std::chrono::milliseconds(100);
-constexpr static const char newFilterProperty[] = "newFilter";
+constexpr const auto invalidateDelay = std::chrono::milliseconds(100);
+constexpr const char *newFilterProperty = "newFilter";
 
 class ModelIterator
 {
@@ -48,12 +48,12 @@ public:
 
     static ModelIterator begin(QAbstractItemModel *model)
     {
-        return ModelIterator(model, model->index(0, 0));
+        return ModelIterator{model, model->index(0, 0)};
     }
 
     static ModelIterator end(QAbstractItemModel *model)
     {
-        return ModelIterator(model, {});
+        return ModelIterator{model, {}};
     }
 
     bool operator==(const ModelIterator &other) const {
@@ -99,8 +99,8 @@ private:
 
 } // namespace
 
-PasswordFilterModel::PathFilter::PathFilter(const QString &filter)
-    : filter(filter)
+PasswordFilterModel::PathFilter::PathFilter(QString filter)
+    : filter(std::move(filter))
 {}
 
 PasswordFilterModel::PathFilter::PathFilter(const PathFilter &other)
@@ -156,7 +156,7 @@ void PasswordFilterModel::setSourceModel(QAbstractItemModel *sourceModel)
 {
     mFlatModel->setSourceModel(sourceModel);
 
-    if (!this->sourceModel()) {
+    if (this->sourceModel() == nullptr) {
         QSortFilterProxyModel::setSourceModel(mFlatModel);
     }
 }

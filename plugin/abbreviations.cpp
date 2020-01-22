@@ -26,10 +26,13 @@
 
 namespace {
 
+constexpr const std::size_t offsetsSize = 32;
+constexpr const int maxDepth = 128;
+
 // Taken and adapted for kdevelop from katecompletionmodel.cpp
-static bool matchesAbbreviationHelper(const QStringRef &word, const QStringRef &typed,
-                                      const QVarLengthArray< int, 32 > &offsets,
-                                      int &depth, int atWord = -1, int i = 0)
+bool matchesAbbreviationHelper(const QStringRef &word, const QStringRef &typed,
+                               const QVarLengthArray<int, offsetsSize> &offsets,
+                               int &depth, int atWord = -1, int i = 0)
 {
     int atLetter = 1;
     for ( ; i < typed.size(); i++ ) {
@@ -47,7 +50,7 @@ static bool matchesAbbreviationHelper(const QStringRef &word, const QStringRef &
             // complexity. Thus ensure we don't run into this case, by limiting the amount of branches
             // we walk through to 128.
             depth++;
-            if (depth > 128) {
+            if (depth > maxDepth) {
                 return false;
             }
             // the letter matches both the next word beginning and the next character in the word
@@ -58,12 +61,15 @@ static bool matchesAbbreviationHelper(const QStringRef &word, const QStringRef &
             // otherwise, continue by taking the next letter in the current word.
             atLetter += 1;
             continue;
-        } else if (haveNextWord && c == word.at(offsets.at(atWord + 1)).toLower()) {
+        }
+
+        if (haveNextWord && c == word.at(offsets.at(atWord + 1)).toLower()) {
             // the typed letter matches the next word beginning
             atWord++;
             atLetter = 1;
             continue;
         }
+
         // no match
         return false;
     }
@@ -93,7 +99,7 @@ bool PlasmaPass::matchesAbbreviation(const QStringRef &word, const QStringRef &t
     }
 
     bool haveUnderscore = true;
-    QVarLengthArray<int, 32> offsets;
+    QVarLengthArray<int, offsetsSize> offsets;
     // We want to make "KComplM" match "KateCompletionModel"; this means we need
     // to allow parts of the typed text to be not part of the actual abbreviation,
     // which consists only of the uppercased / underscored letters (so "KCM" in this case).
@@ -136,7 +142,7 @@ int PlasmaPass::matchPathFilter(const QVector<QStringRef> &toFilter, const QVect
         StartMatch = 1,
         OtherMatch = 2 // and anything higher than that
     };
-    const auto segments = toFilter;
+    const auto &segments = toFilter;
 
     if (text.count() > segments.count()) {
         // number of segments mismatches, thus item cannot match
@@ -190,11 +196,13 @@ int PlasmaPass::matchPathFilter(const QVector<QStringRef> &toFilter, const QVect
 
     if (allMatched) {
         return ExactMatch;
-    } else if (lastMatchIndex == 0) {
+    }
+
+    if (lastMatchIndex == 0) {
         // prefer matches whose last element starts with the filter
         return StartMatch;
-    } else {
-        // prefer matches closer to the end of the path
-        return OtherMatch + segmentMatchDistance;
     }
+
+    // prefer matches closer to the end of the path
+    return OtherMatch + segmentMatchDistance;
 }

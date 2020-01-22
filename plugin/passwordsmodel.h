@@ -24,13 +24,15 @@
 #include <QFileSystemWatcher>
 #include <QDir>
 
+#include <memory>
+
 namespace PlasmaPass {
 
 class PasswordsModel : public QAbstractItemModel
 {
     Q_OBJECT
 
-    class Node;
+    struct Node;
 public:
     enum EntryType {
         FolderEntry,
@@ -64,12 +66,12 @@ private:
     void populate();
     void populateDir(const QDir &dir, Node *parent);
 
-    Node *node(const QModelIndex &index) const;
+    static Node *node(const QModelIndex &index);
 
     QFileSystemWatcher mWatcher;
     QDir mPassStore;
 
-    Node *mRoot = nullptr;
+    std::unique_ptr<Node> mRoot;
 };
 
 }
