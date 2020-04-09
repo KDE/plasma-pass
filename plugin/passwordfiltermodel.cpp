@@ -131,7 +131,11 @@ PasswordFilterModel::PathFilter &PasswordFilterModel::PathFilter::operator=(Path
 
 void PasswordFilterModel::PathFilter::updateParts()
 {
+#if QT_VERSION < QT_VERSION_CHECK(5, 15, 0)
     mParts = filter.splitRef(QLatin1Char('/'), QString::SkipEmptyParts);
+#else
+    mParts = filter.splitRef(QLatin1Char('/'), Qt::SkipEmptyParts);
+#endif
 }
 
 PasswordFilterModel::PathFilter::result_type PasswordFilterModel::PathFilter::operator()(const QModelIndex &index) const {
