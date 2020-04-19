@@ -1,3 +1,4 @@
+find_package(Qt5Widgets CONFIG REQUIRED)
 include_directories(${CMAKE_SOURCE_DIR}/plugin)
 
 set(passwordsmodeltest_SRCS
