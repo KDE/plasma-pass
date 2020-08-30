@@ -113,7 +113,7 @@ PasswordProvider::PasswordProvider(const QString &path, QObject *parent)
                     if (err.isEmpty()) {
                         setError(i18n("Failed to decrypt password"));
                     } else {
-                        setError(i18n("Failed to decrypt password: %1").arg(QString::fromUtf8(err)));
+                        setError(i18n("Failed to decrypt password: %1", QString::fromUtf8(err)));
                     }
                 }
 

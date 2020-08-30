@@ -151,6 +151,7 @@ PlasmaComponents.ListItem {
 
                 visible: root.password != null && root.password.hasError
                 text: root.password != null ? root.password.error : ""
+                wrapMode: Text.WordWrap
             }
         }
     }
