@@ -20,19 +20,20 @@
 #include "passwordsmodel.h"
 #include "passwordprovider.h"
 
-#include <QDir>
 #include <QDebug>
+#include <QDir>
 #include <QPointer>
 
 using namespace PlasmaPass;
 
 static constexpr const char *passwordStoreDir = "PASSWORD_STORE_DIR";
 
-struct PasswordsModel::Node
-{
+struct PasswordsModel::Node {
     explicit Node() = default;
     Node(QString name, PasswordsModel::EntryType type, Node *nodeParent)
-        : name(std::move(name)), type(type), parent(nodeParent)
+        : name(std::move(name))
+        , type(type)
+        , parent(nodeParent)
     {
         if (parent != nullptr) {
             parent->children.push_back(std::unique_ptr<Node>(this));
@@ -87,7 +88,6 @@ private:
     mutable QString mFullName;
 };
 
-
 PasswordsModel::PasswordsModel(QObject *parent)
     : QAbstractItemModel(parent)
     , mWatcher(this)
@@ -107,19 +107,19 @@ PasswordsModel::PasswordsModel(QObject *parent)
 
 PasswordsModel::~PasswordsModel() = default;
 
-PasswordsModel::Node *PasswordsModel::node(const QModelIndex& index)
+PasswordsModel::Node *PasswordsModel::node(const QModelIndex &index)
 {
-    return static_cast<Node*>(index.internalPointer());
+    return static_cast<Node *>(index.internalPointer());
 }
 
 QHash<int, QByteArray> PasswordsModel::roleNames() const
 {
-    return { { NameRole, "name" },
-             { EntryTypeRole, "type" },
-             { FullNameRole, "fullName" },
-             { PathRole, "path" },
-             { HasPasswordRole, "hasPassword" },
-             { PasswordRole, "password" } };
+    return {{NameRole, "name"},
+            {EntryTypeRole, "type"},
+            {FullNameRole, "fullName"},
+            {PathRole, "path"},
+            {HasPasswordRole, "hasPassword"},
+            {PasswordRole, "password"}};
 }
 
 int PasswordsModel::rowCount(const QModelIndex &parent) const
@@ -160,8 +160,9 @@ QModelIndex PasswordsModel::parent(const QModelIndex &child) const
     }
 
     auto &children = parentNode->parent->children;
-    const auto it = std::find_if(children.cbegin(), children.cend(),
-                         [parentNode](const auto &node) { return node.get() == parentNode; });
+    const auto it = std::find_if(children.cbegin(), children.cend(), [parentNode](const auto &node) {
+        return node.get() == parentNode;
+    });
     Q_ASSERT(it != children.cend());
     return createIndex(std::distance(children.cbegin(), it), 0, parentNode);
 }
@@ -206,10 +207,10 @@ void PasswordsModel::populate()
     endResetModel();
 }
 
-void PasswordsModel::populateDir(const QDir& dir, Node *parent)
+void PasswordsModel::populateDir(const QDir &dir, Node *parent)
 {
     mWatcher.addPath(dir.absolutePath());
-    auto entries = dir.entryInfoList({ QStringLiteral("*.gpg") }, QDir::Files, QDir::NoSort);
+    auto entries = dir.entryInfoList({QStringLiteral("*.gpg")}, QDir::Files, QDir::NoSort);
     for (const auto &entry : qAsConst(entries)) {
         new Node(entry.completeBaseName(), PasswordEntry, parent);
     }

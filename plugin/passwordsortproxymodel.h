@@ -22,8 +22,8 @@
 
 #include <QSortFilterProxyModel>
 
-namespace PlasmaPass {
-
+namespace PlasmaPass
+{
 class PasswordSortProxyModel : public QSortFilterProxyModel
 {
     Q_OBJECT

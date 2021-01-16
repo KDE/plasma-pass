@@ -30,12 +30,13 @@ class QDBusPendingCallWatcher;
 class KJob;
 class QMimeData;
 
-namespace Plasma {
+namespace Plasma
+{
 class DataEngineConsumer;
 }
 
-namespace PlasmaPass {
-
+namespace PlasmaPass
+{
 class PasswordsModel;
 
 class PasswordProvider : public QObject

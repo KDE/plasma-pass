@@ -21,22 +21,23 @@
 #define PASSWORDSMODEL_H_
 
 #include <QAbstractItemModel>
-#include <QFileSystemWatcher>
 #include <QDir>
+#include <QFileSystemWatcher>
 
 #include <memory>
 
-namespace PlasmaPass {
-
+namespace PlasmaPass
+{
 class PasswordsModel : public QAbstractItemModel
 {
     Q_OBJECT
 
     struct Node;
+
 public:
     enum EntryType {
         FolderEntry,
-        PasswordEntry
+        PasswordEntry,
     };
     Q_ENUM(EntryType)
 
@@ -54,11 +55,11 @@ public:
 
     QHash<int, QByteArray> roleNames() const override;
 
-    int rowCount(const QModelIndex & parent) const override;
-    int columnCount(const QModelIndex & parent) const override;
+    int rowCount(const QModelIndex &parent) const override;
+    int columnCount(const QModelIndex &parent) const override;
 
-    QModelIndex index(int row, int column, const QModelIndex & parent) const override;
-    QModelIndex parent(const QModelIndex & child) const override;
+    QModelIndex index(int row, int column, const QModelIndex &parent) const override;
+    QModelIndex parent(const QModelIndex &child) const override;
 
     QVariant data(const QModelIndex &index, int role) const override;
 

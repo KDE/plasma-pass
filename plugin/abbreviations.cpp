@@ -24,18 +24,21 @@
 #include <QStringList>
 #include <QVarLengthArray>
 
-namespace {
-
+namespace
+{
 constexpr const std::size_t offsetsSize = 32;
 constexpr const int maxDepth = 128;
 
 // Taken and adapted for kdevelop from katecompletionmodel.cpp
-bool matchesAbbreviationHelper(const QStringRef &word, const QStringRef &typed,
+bool matchesAbbreviationHelper(const QStringRef &word,
+                               const QStringRef &typed,
                                const QVarLengthArray<int, offsetsSize> &offsets,
-                               int &depth, int atWord = -1, int i = 0)
+                               int &depth,
+                               int atWord = -1,
+                               int i = 0)
 {
     int atLetter = 1;
-    for ( ; i < typed.size(); i++ ) {
+    for (; i < typed.size(); i++) {
         const QChar c = typed.at(i).toLower();
         bool haveNextWord = offsets.size() > atWord + 1;
         bool canCompare = atWord != -1 && word.size() > offsets.at(atWord) + atLetter;
@@ -140,7 +143,7 @@ int PlasmaPass::matchPathFilter(const QVector<QStringRef> &toFilter, const QVect
         NoMatch = -1,
         ExactMatch = 0,
         StartMatch = 1,
-        OtherMatch = 2 // and anything higher than that
+        OtherMatch = 2, // and anything higher than that
     };
     const auto &segments = toFilter;
 
@@ -154,9 +157,7 @@ int PlasmaPass::matchPathFilter(const QVector<QStringRef> &toFilter, const QVect
     int pathIndex = segments.size() - 1;
     int lastMatchIndex = -1;
     // stop early if more search fragments remain than available after path index
-    while (pathIndex >= 0 && searchIndex >= 0
-            && (pathIndex + text.size() - searchIndex - 1) < segments.size())
-    {
+    while (pathIndex >= 0 && searchIndex >= 0 && (pathIndex + text.size() - searchIndex - 1) < segments.size()) {
         const auto &segment = segments.at(pathIndex);
         const auto &typedSegment = text.at(searchIndex);
         const int matchIndex = segment.indexOf(typedSegment, 0, Qt::CaseInsensitive);

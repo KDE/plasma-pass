@@ -20,16 +20,16 @@
 #ifndef PASSWORDFILTERMODEL_H_
 #define PASSWORDFILTERMODEL_H_
 
-#include <QSortFilterProxyModel>
-#include <QVector>
-#include <QTimer>
 #include <QFuture>
+#include <QSortFilterProxyModel>
+#include <QTimer>
+#include <QVector>
 
 class QStringRef;
 class KDescendantsProxyModel;
 
-namespace PlasmaPass {
-
+namespace PlasmaPass
+{
 class PasswordFilterModel : public QSortFilterProxyModel
 {
     Q_OBJECT
@@ -67,6 +67,7 @@ private:
         result_type operator()(const QModelIndex &index) const;
 
         QString filter;
+
     private:
         void updateParts();
         QVector<QStringRef> mParts;

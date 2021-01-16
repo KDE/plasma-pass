@@ -28,8 +28,8 @@ class QStringList;
 class QStringRef;
 class QString;
 
-namespace PlasmaPass {
-
+namespace PlasmaPass
+{
 bool matchesAbbreviation(const QStringRef &word, const QStringRef &typed);
 
 bool matchesPath(const QStringRef &path, const QStringRef &typed);

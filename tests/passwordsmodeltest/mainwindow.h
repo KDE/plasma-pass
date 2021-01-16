@@ -29,7 +29,8 @@ class QPushButton;
 class QProgressBar;
 class QStackedWidget;
 
-namespace PlasmaPass {
+namespace PlasmaPass
+{
 class PasswordProvider;
 class PasswordFilterModel;
 }
@@ -60,6 +61,5 @@ private:
     QStackedWidget *mStack = nullptr;
     PlasmaPass::PasswordFilterModel *mFilterModel = nullptr;
 };
-
 
 #endif

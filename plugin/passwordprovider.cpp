@@ -21,18 +21,18 @@
 #include "klipperinterface.h"
 #include "plasmapass_debug.h"
 
-#include <QProcess>
-#include <QStandardPaths>
-#include <QCryptographicHash>
 #include <QClipboard>
+#include <QCryptographicHash>
 #include <QGuiApplication>
 #include <QMimeData>
+#include <QProcess>
+#include <QStandardPaths>
 
 #include <QDBusConnection>
 
-#include <Plasma/PluginLoader>
-#include <Plasma/DataEngineConsumer>
 #include <Plasma/DataEngine>
+#include <Plasma/DataEngineConsumer>
+#include <Plasma/PluginLoader>
 #include <Plasma/Service>
 #include <Plasma/ServiceJob>
 
@@ -44,8 +44,8 @@
 using namespace std::chrono;
 using namespace std::chrono_literals;
 
-namespace {
-
+namespace
+{
 constexpr const auto PasswordTimeout = 45s;
 constexpr const auto PasswordTimeoutUpdateInterval = 100ms;
 
@@ -61,14 +61,13 @@ PasswordProvider::PasswordProvider(const QString &path, QObject *parent)
     : QObject(parent)
 {
     mTimer.setInterval(duration_cast<milliseconds>(PasswordTimeoutUpdateInterval).count());
-    connect(&mTimer, &QTimer::timeout,
-            this, [this]() {
-                mTimeout -= mTimer.interval();
-                Q_EMIT timeoutChanged();
-                if (mTimeout == 0) {
-                    expirePassword();
-                }
-            });
+    connect(&mTimer, &QTimer::timeout, this, [this]() {
+        mTimeout -= mTimer.interval();
+        Q_EMIT timeoutChanged();
+        if (mTimeout == 0) {
+            expirePassword();
+        }
+    });
 
     bool isGpg2 = true;
     auto gpgExe = QStandardPaths::findExecutable(QStringLiteral("gpg2"));
@@ -82,43 +81,40 @@ PasswordProvider::PasswordProvider(const QString &path, QObject *parent)
         return;
     }
 
-    QStringList args = { QStringLiteral("-d"),
-                         QStringLiteral("--quiet"),
-                         QStringLiteral("--yes"),
-                         QStringLiteral("--compress-algo=none"),
-                         QStringLiteral("--no-encrypt-to"),
-                         path };
+    QStringList args = {QStringLiteral("-d"),
+                        QStringLiteral("--quiet"),
+                        QStringLiteral("--yes"),
+                        QStringLiteral("--compress-algo=none"),
+                        QStringLiteral("--no-encrypt-to"),
+                        path};
     if (isGpg2) {
-        args = QStringList{ QStringLiteral("--batch"), QStringLiteral("--use-agent") } + args;
+        args = QStringList{QStringLiteral("--batch"), QStringLiteral("--use-agent")} + args;
     }
 
     mGpg = std::make_unique<QProcess>();
     // Let's not be like animals and deal with this asynchronously
-    connect(mGpg.get(), &QProcess::errorOccurred,
-            this, [this, gpgExe](QProcess::ProcessError state) {
-                if (state == QProcess::FailedToStart) {
-                    qCWarning(PLASMAPASS_LOG, "Failed to start %s: %s", qUtf8Printable(gpgExe), qUtf8Printable(mGpg->errorString()));
-                    setError(i18n("Failed to decrypt password: Failed to start GPG"));
-                }
-            });
-    connect(mGpg.get(), &QProcess::readyReadStandardOutput,
-            this, [this]() {
-                // We only read the first line, second line usually the username
-                setPassword(QString::fromUtf8(mGpg->readLine()).trimmed());
-            });
-    connect(mGpg.get(), QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished),
-            this, [this]() {
-                const auto err = mGpg->readAllStandardError();
-                if (mPassword.isEmpty()) {
-                    if (err.isEmpty()) {
-                        setError(i18n("Failed to decrypt password"));
-                    } else {
-                        setError(i18n("Failed to decrypt password: %1", QString::fromUtf8(err)));
-                    }
-                }
+    connect(mGpg.get(), &QProcess::errorOccurred, this, [this, gpgExe](QProcess::ProcessError state) {
+        if (state == QProcess::FailedToStart) {
+            qCWarning(PLASMAPASS_LOG, "Failed to start %s: %s", qUtf8Printable(gpgExe), qUtf8Printable(mGpg->errorString()));
+            setError(i18n("Failed to decrypt password: Failed to start GPG"));
+        }
+    });
+    connect(mGpg.get(), &QProcess::readyReadStandardOutput, this, [this]() {
+        // We only read the first line, second line usually the username
+        setPassword(QString::fromUtf8(mGpg->readLine()).trimmed());
+    });
+    connect(mGpg.get(), QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished), this, [this]() {
+        const auto err = mGpg->readAllStandardError();
+        if (mPassword.isEmpty()) {
+            if (err.isEmpty()) {
+                setError(i18n("Failed to decrypt password"));
+            } else {
+                setError(i18n("Failed to decrypt password: %1", QString::fromUtf8(err)));
+            }
+        }
 
-                mGpg.reset();
-            });
+        mGpg.reset();
+    });
     mGpg->setProgram(gpgExe);
     mGpg->setArguments(args);
     mGpg->start(QIODevice::ReadOnly);
@@ -207,7 +203,6 @@ void PasswordProvider::setError(const QString &error)
     Q_EMIT errorChanged();
 }
 
-
 void PasswordProvider::removePasswordFromClipboard(const QString &password)
 {
     // Clear the WS clipboard itself
@@ -225,9 +220,7 @@ void PasswordProvider::removePasswordFromClipboard(const QString &password)
     // (see klipper/historystringitem.cpp) so we try here to obtain a service directly
     // for the history item with our password so that we can only remove the
     // password from the history without having to clear the entire history.
-    const auto service = engine->serviceForSource(
-        QString::fromLatin1(
-            QCryptographicHash::hash(password.toUtf8(), QCryptographicHash::Sha1).toBase64()));
+    const auto service = engine->serviceForSource(QString::fromLatin1(QCryptographicHash::hash(password.toUtf8(), QCryptographicHash::Sha1).toBase64()));
     if (service == nullptr) {
         qCWarning(PLASMAPASS_LOG, "Failed to obtain PlasmaService for the password, falling back to clearClipboard()");
         mEngineConsumer.reset();
@@ -242,13 +235,15 @@ void PasswordProvider::removePasswordFromClipboard(const QString &password)
     connect(job, &KJob::result, this, &PasswordProvider::onPlasmaServiceRemovePasswordResult);
 }
 
-void PasswordProvider::onPlasmaServiceRemovePasswordResult(KJob* job)
+void PasswordProvider::onPlasmaServiceRemovePasswordResult(KJob *job)
 {
     // Disconnect from the job: Klipper's ClipboardJob is buggy and emits result() twice
     disconnect(job, &KJob::result, this, &PasswordProvider::onPlasmaServiceRemovePasswordResult);
-    QTimer::singleShot(0, this, [this]() { mEngineConsumer.reset(); });
+    QTimer::singleShot(0, this, [this]() {
+        mEngineConsumer.reset();
+    });
 
-    auto serviceJob = qobject_cast<Plasma::ServiceJob*>(job);
+    auto serviceJob = qobject_cast<Plasma::ServiceJob *>(job);
     if (serviceJob->error() != 0) {
         qCWarning(PLASMAPASS_LOG, "ServiceJob for clipboard failed: %s", qUtf8Printable(serviceJob->errorString()));
         clearClipboard();

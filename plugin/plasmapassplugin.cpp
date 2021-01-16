@@ -18,16 +18,16 @@
  */
 
 #include "plasmapassplugin.h"
-#include "passwordsmodel.h"
-#include "passwordsortproxymodel.h"
 #include "passwordfiltermodel.h"
 #include "passwordprovider.h"
+#include "passwordsmodel.h"
+#include "passwordsortproxymodel.h"
 
 #include <QJSEngine>
-#include <QQmlEngine>
 #include <QQmlContext>
+#include <QQmlEngine>
 
-void PlasmaPassPlugin::registerTypes(const char* uri)
+void PlasmaPassPlugin::registerTypes(const char *uri)
 {
     Q_ASSERT(QLatin1String(uri) == QLatin1String("org.kde.plasma.private.plasmapass"));
 
