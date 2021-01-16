@@ -18,6 +18,10 @@ include(KDEInstallDirs)
 include(KDECMakeSettings)
 include(KDEFrameworkCompilerSettings NO_POLICY_SCOPE)
 include(ECMQtDeclareLoggingCategory)
+include(KDEClangFormat)
+if(ECM_VERSION VERSION_GREATER_EQUAL 5.79)
+    include(KDEGitCommitHooks)
+endif()
 
 find_package(KF5 ${KF5_MIN_VERSION} REQUIRED COMPONENTS
     Plasma
@@ -48,6 +52,10 @@ if (BUILD_TESTING)
     add_subdirectory(tests)
 endif()
 install( FILES plasma-pass.categories DESTINATION ${KDE_INSTALL_CONFDIR} )
+
+if(ECM_VERSION VERSION_GREATER_EQUAL 5.79)
+    kde_configure_git_pre_commit_hook(CHECKS CLANG_FORMAT)
+endif()
 
 feature_summary(WHAT ALL FATAL_ON_MISSING_REQUIRED_PACKAGES)
 
