@@ -21,10 +21,10 @@ ecm_qt_declare_logging_category(plasmapasslib_SRCS
 add_library(plasmapass STATIC ${plasmapasslib_SRCS})
 
 target_link_libraries(plasmapass
-    Qt5::Core
-    Qt5::DBus
-    Qt5::Qml
-    Qt5::Concurrent
+    Qt::Core
+    Qt::DBus
+    Qt::Qml
+    Qt::Concurrent
     KF5::Plasma
     KF5::I18n
     KF5::ItemModels

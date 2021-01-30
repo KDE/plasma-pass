@@ -9,8 +9,8 @@ set(passwordsmodeltest_SRCS
 add_executable(passwordsmodeltest ${passwordsmodeltest_SRCS})
 target_link_libraries(passwordsmodeltest
     plasmapass
-    Qt5::Core
-    Qt5::DBus
-    Qt5::Widgets
+    Qt::Core
+    Qt::DBus
+    Qt::Widgets
     KF5::Plasma
 )
