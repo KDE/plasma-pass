@@ -108,34 +108,34 @@ MainWindow::MainWindow(QWidget *parent)
 
 MainWindow::~MainWindow() = default;
 
-void MainWindow::setProvider(PasswordProvider *provider)
+void MainWindow::setProvider(ProviderBase *provider)
 {
     mProvider = provider;
     if (provider->isValid()) {
         mPassBtn->setVisible(false);
         mPassword->setVisible(true);
-        mPassword->setText(provider->password());
+        mPassword->setText(provider->secret());
     }
     if (provider->hasError()) {
         mError->setVisible(true);
         mError->setText(provider->error());
     }
 
-    connect(provider, &PasswordProvider::passwordChanged, this, [this, provider]() {
-        const auto pass = provider->password();
+    connect(provider, &ProviderBase::secretChanged, this, [this, provider]() {
+        const auto pass = provider->secret();
         if (!pass.isEmpty()) {
             mPassword->setVisible(true);
-            mPassword->setText(provider->password());
+            mPassword->setText(provider->secret());
         } else {
             onPasswordClicked(mCurrent);
         }
     });
-    connect(provider, &PasswordProvider::timeoutChanged, this, [this, provider]() {
+    connect(provider, &ProviderBase::timeoutChanged, this, [this, provider]() {
         mPassProgress->setVisible(true);
         mPassProgress->setMaximum(provider->defaultTimeout());
         mPassProgress->setValue(provider->timeout());
     });
-    connect(provider, &PasswordProvider::errorChanged, this, [this, provider]() {
+    connect(provider, &ProviderBase::errorChanged, this, [this, provider]() {
         mError->setVisible(true);
         mError->setText(provider->error());
     });
@@ -161,7 +161,7 @@ void MainWindow::onPasswordClicked(const QModelIndex &idx)
 
     const auto hasProvider = mCurrent.data(PasswordsModel::HasPasswordRole).toBool();
     if (hasProvider) {
-        setProvider(mCurrent.data(PasswordsModel::PasswordRole).value<PasswordProvider *>());
+        setProvider(mCurrent.data(PasswordsModel::PasswordRole).value<PasswordProvider*>());
     }
 }
 

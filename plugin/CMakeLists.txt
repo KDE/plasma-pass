@@ -2,6 +2,8 @@
 
 set(plasmapasslib_SRCS
     abbreviations.cpp
+    otpprovider.cpp
+    providerbase.cpp
     passwordfiltermodel.cpp
     passwordsmodel.cpp
     passwordsortproxymodel.cpp
@@ -28,6 +30,7 @@ target_link_libraries(plasmapass
     KF5::Plasma
     KF5::I18n
     KF5::ItemModels
+    OATH::OATH
 )
 
 ########### PLUGN ###########

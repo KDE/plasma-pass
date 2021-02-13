@@ -19,6 +19,7 @@
 
 #include "passwordsmodel.h"
 #include "passwordprovider.h"
+#include "otpprovider.h"
 
 #include <QDebug>
 #include <QDir>
@@ -81,6 +82,7 @@ struct PasswordsModel::Node {
     QString name;
     PasswordsModel::EntryType type = PasswordsModel::FolderEntry;
     QPointer<PasswordProvider> provider;
+    QPointer<OTPProvider> otpProvider;
     Node *parent = nullptr;
     std::vector<std::unique_ptr<Node>> children;
 
@@ -119,7 +121,8 @@ QHash<int, QByteArray> PasswordsModel::roleNames() const
             {FullNameRole, "fullName"},
             {PathRole, "path"},
             {HasPasswordRole, "hasPassword"},
-            {PasswordRole, "password"}};
+            {PasswordRole, "password"},
+            {OTPRole, "otp"}};
 }
 
 int PasswordsModel::rowCount(const QModelIndex &parent) const
@@ -191,6 +194,11 @@ QVariant PasswordsModel::data(const QModelIndex &index, int role) const
             node->provider = new PasswordProvider(node->path());
         }
         return QVariant::fromValue(node->provider.data());
+    case OTPRole:
+        if (node->otpProvider == nullptr) {
+            node->otpProvider = new OTPProvider(node->path());
+        }
+        return QVariant::fromValue(node->otpProvider.data());
     case HasPasswordRole:
         return !node->provider.isNull();
     default:

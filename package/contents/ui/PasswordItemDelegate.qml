@@ -19,6 +19,7 @@
 
 import QtQuick 2.0
 import QtQuick.Layouts 1.1
+import QtQuick.Controls 2.0
 
 import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.plasma.components 2.0 as PlasmaComponents
@@ -33,9 +34,10 @@ PlasmaComponents.ListItem {
     property string icon
     property var entryType
 
-    property PasswordProvider password: null
+    property ProviderBase provider: null
 
     signal itemSelected(var index)
+    signal otpClicked(var index)
 
     enabled: true
 
@@ -57,10 +59,10 @@ PlasmaComponents.ListItem {
     // When password becomes invalid again, forget about it
     Connections {
         property bool wasValid : false
-        target: root.password
+        target: root.provider
         onValidChanged: {
             if (wasValid && !target.valid) {
-                root.password = null;
+                root.provider = null;
             } else if (!wasValid && target.valid) {
                 wasValid = true;
                 // Password has become valid, wait a little bit and then close the plasmoid
@@ -88,12 +90,12 @@ PlasmaComponents.ListItem {
 
         PlasmaCore.IconItem {
             id: entryTypeIcon
-            visible: root.password == null || root.password.valid || root.password.hasError
+            visible: root.provider == null || root.provider.valid || root.provider.hasError
             source: {
-                if (root.password == null) {
+                if (root.provider == null) {
                     return root.icon;
                 } else {
-                    if (root.password.hasError) {
+                    if (root.provider.hasError) {
                         return "dialog-error";
                     } else {
                         return "dialog-ok";
@@ -106,7 +108,7 @@ PlasmaComponents.ListItem {
 
         PlasmaComponents.BusyIndicator {
             id: busyIndicator
-            visible: root.password != null && !root.password.valid && !root.password.hasError
+            visible: root.provider != null && !root.provider.valid && !root.provider.hasError
             smoothAnimation: true
 
             // Hack around BI wanting to be too large by default
@@ -135,11 +137,11 @@ PlasmaComponents.ListItem {
 
                 Layout.fillWidth: true
 
-                visible: root.password != null && root.password.valid
+                visible: root.provider != null && root.provider.valid
 
                 minimumValue: 0
-                maximumValue: root.password == null ? 0 : root.password.defaultTimeout
-                value: root.password == null ? 0 : root.password.timeout
+                maximumValue: root.provider == null ? 0 : root.provider.defaultTimeout
+                value: root.provider == null ? 0 : root.provider.timeout
             }
 
             PlasmaComponents.Label {
@@ -149,9 +151,20 @@ PlasmaComponents.ListItem {
 
                 Layout.fillWidth: true
 
-                visible: root.password != null && root.password.hasError
-                text: root.password != null ? root.password.error : ""
+                visible: root.provider != null && root.provider.hasError
+                text: root.provider != null ? root.provider.error : ""
                 wrapMode: Text.WordWrap
+            }
+        }
+
+        PlasmaComponents.ToolButton {
+            iconSource: 'clock'
+            visible: entryType == PasswordsModel.PasswordEntry
+
+            // TODO: Make tooltip work, somehow
+
+            onClicked: {
+                root.otpClicked(index);
             }
         }
     }

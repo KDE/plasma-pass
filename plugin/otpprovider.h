@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2018  Daniel Vrátil <dvratil@kde.org>
+ *   Copyright (C) 2021 Daniel Vrátil <dvratil@kde.org>
  *
  *   This program is free software; you can redistribute it and/or modify
  *   it under the terms of the GNU Library General Public License as
@@ -17,13 +17,29 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#include "passwordprovider.h"
+#ifndef OTPPROVIDER_H_
+#define OTPPROVIDER_H_
 
-using namespace PlasmaPass;
+#include "providerbase.h"
 
-ProviderBase::HandlingResult PasswordProvider::handleSecret(const QString &secret)
+namespace PlasmaPass
 {
-    setSecret(secret);
-    // We are only interested in the first line for passwords
-    return HandlingResult::Stop;
+class PasswordsModel;
+
+class OTPProvider : public ProviderBase
+{
+    Q_OBJECT
+
+    friend class PasswordsModel;
+protected:
+    explicit OTPProvider(const QString &path, QObject *parent = nullptr);
+
+    HandlingResult handleSecret(const QString &secret) override;
+
+private:
+    void handleTOTP(const QUrl &url);
+};
+
 }
+
+#endif // OTPPROVIDER_H_

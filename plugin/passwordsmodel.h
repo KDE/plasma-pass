@@ -47,6 +47,7 @@ public:
         FullNameRole,
         PathRole,
         PasswordRole,
+        OTPRole,
         HasPasswordRole,
     };
 

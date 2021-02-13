@@ -89,12 +89,15 @@ PlasmaExtras.ScrollArea {
                 entryType: model.type
 
                 onItemSelected: activate();
+                onOtpClicked: function() {
+                    delegate.provider = model.otp
+                }
 
                 function activate() {
                     if (model.type === PasswordsModel.FolderEntry) {
                         scroll.folderSelected(delegateModel.modelIndex(index), model.name)
                     } else {
-                        delegate.password = model.password
+                        delegate.provider = model.password
                     }
                 }
             }
