@@ -122,7 +122,9 @@ QHash<int, QByteArray> PasswordsModel::roleNames() const
             {PathRole, "path"},
             {HasPasswordRole, "hasPassword"},
             {PasswordRole, "password"},
-            {OTPRole, "otp"}};
+            {OTPRole, "otp"},
+            {HasOTPRole, "hasOtp"}};
+
 }
 
 int PasswordsModel::rowCount(const QModelIndex &parent) const
@@ -201,6 +203,8 @@ QVariant PasswordsModel::data(const QModelIndex &index, int role) const
         return QVariant::fromValue(node->otpProvider.data());
     case HasPasswordRole:
         return !node->provider.isNull();
+    case HasOTPRole:
+        return !node->otpProvider.isNull();
     default:
         return {};
     }

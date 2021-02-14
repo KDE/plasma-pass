@@ -88,16 +88,19 @@ PlasmaExtras.ScrollArea {
                 icon: model.type === PasswordsModel.FolderEntry ? "inode-directory" : "lock"
                 entryType: model.type
 
+                passwordProvider: model.hasPassword ? model.password : null
+                otpProvider: model.hasOTP ? model.otp : null
+
                 onItemSelected: activate();
                 onOtpClicked: function() {
-                    delegate.provider = model.otp
+                    delegate.otpProvider = model.otp
                 }
 
                 function activate() {
                     if (model.type === PasswordsModel.FolderEntry) {
                         scroll.folderSelected(delegateModel.modelIndex(index), model.name)
                     } else {
-                        delegate.provider = model.password
+                        delegate.passwordProvider = model.password
                     }
                 }
             }

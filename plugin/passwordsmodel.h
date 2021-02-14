@@ -49,6 +49,7 @@ public:
         PasswordRole,
         OTPRole,
         HasPasswordRole,
+        HasOTPRole
     };
 
     explicit PasswordsModel(QObject *parent = nullptr);

@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2018  Daniel Vrátil <dvratil@kde.org>
+ *   Copyright (C) 2021  Daniel Vrátil <dvratil@kde.org>
  *
  *   This program is free software; you can redistribute it and/or modify
  *   it under the terms of the GNU Library General Public License as
@@ -34,7 +34,10 @@ PlasmaComponents.ListItem {
     property string icon
     property var entryType
 
-    property ProviderBase provider: null
+    property PasswordProvider passwordProvider: null
+    property OTPProvider otpProvider: null
+
+    property alias provider: root.passwordProvider
 
     signal itemSelected(var index)
     signal otpClicked(var index)
@@ -42,7 +45,12 @@ PlasmaComponents.ListItem {
     enabled: true
 
     // the 1.6 comes from ToolButton's default height
-    height: Math.max(row.height, Math.round(units.gridUnit * 1.6)) + 2 * units.smallSpacing
+    implicitHeight: Math.max(column.height, otpButton.implicitHeight + 2 * units.smallSpacing)
+
+    anchors {
+        left: parent.left
+        right: parent.right
+    }
 
     onClicked: {
         root.itemSelected(index);
@@ -77,47 +85,47 @@ PlasmaComponents.ListItem {
         onTriggered: plasmoid.expanded = false;
     }
 
-
-    RowLayout {
-        spacing: Units.largeSpacing
-        id: row
-
+    Column {
+        id: column
+        spacing: Units.smallSpacing
         anchors {
             left: parent.left
             right: parent.right
-            verticalCenter: parent.verticalCenter
         }
 
-        PlasmaCore.IconItem {
-            id: entryTypeIcon
-            visible: root.provider == null || root.provider.valid || root.provider.hasError
-            source: {
-                if (root.provider == null) {
-                    return root.icon;
-                } else {
-                    if (root.provider.hasError) {
-                        return "dialog-error";
+        RowLayout {
+            spacing: Units.largeSpacing
+            id: row
+
+            width: parent.width
+
+            PlasmaCore.IconItem {
+                id: entryTypeIcon
+                visible: root.provider == null || root.provider.valid || root.provider.hasError
+                source: {
+                    if (root.provider == null) {
+                        return root.icon;
                     } else {
-                        return "dialog-ok";
+                        if (root.provider.hasError) {
+                            return "dialog-error";
+                        } else {
+                            return "dialog-ok";
+                        }
                     }
                 }
+                width: Units.iconSizes.small
+                height: Units.iconSizes.small
             }
-            width: Units.iconSizes.small
-            height: Units.iconSizes.small
-        }
 
-        PlasmaComponents.BusyIndicator {
-            id: busyIndicator
-            visible: root.provider != null && !root.provider.valid && !root.provider.hasError
-            smoothAnimation: true
+            PlasmaComponents.BusyIndicator {
+                id: busyIndicator
+                visible: root.provider != null && !root.provider.valid && !root.provider.hasError
+                smoothAnimation: true
 
-            // Hack around BI wanting to be too large by default
-            Layout.maximumWidth: entryTypeIcon.width
-            Layout.maximumHeight: entryTypeIcon.height
-        }
-
-        ColumnLayout {
-            Layout.fillWidth: true
+                // Hack around BI wanting to be too large by default
+                Layout.maximumWidth: entryTypeIcon.width
+                Layout.maximumHeight: entryTypeIcon.height
+            }
 
             PlasmaComponents.Label {
                 id: label
@@ -132,40 +140,33 @@ PlasmaComponents.ListItem {
                 textFormat: Text.StyledText
             }
 
-            PlasmaComponents.ProgressBar {
-                id: passwordTimeoutBar
+            PlasmaComponents.ToolButton {
+                id: otpButton
+                iconSource: 'clock'
+                visible: entryType == PasswordsModel.PasswordEntry
 
-                Layout.fillWidth: true
+                // TODO: Make tooltip work, somehow
 
-                visible: root.provider != null && root.provider.valid
-
-                minimumValue: 0
-                maximumValue: root.provider == null ? 0 : root.provider.defaultTimeout
-                value: root.provider == null ? 0 : root.provider.timeout
-            }
-
-            PlasmaComponents.Label {
-                id: errorLabel
-
-                height: undefined
-
-                Layout.fillWidth: true
-
-                visible: root.provider != null && root.provider.hasError
-                text: root.provider != null ? root.provider.error : ""
-                wrapMode: Text.WordWrap
+                onClicked: {
+                    root.otpClicked(index);
+                }
             }
         }
 
-        PlasmaComponents.ToolButton {
-            iconSource: 'clock'
-            visible: entryType == PasswordsModel.PasswordEntry
+        ProviderDelegate {
+            id: passwordDelegate
+            provider: root.passwordProvider
+            icon: 'lock'
+            visible: root.passwordProvider != null
+            width: parent.width
+        }
 
-            // TODO: Make tooltip work, somehow
-
-            onClicked: {
-                root.otpClicked(index);
-            }
+        ProviderDelegate {
+            id: otpDelegate
+            provider: root.otpProvider
+            icon: 'clock'
+            visible: root.otpProvider != null
+            width: parent.width
         }
     }
 }
