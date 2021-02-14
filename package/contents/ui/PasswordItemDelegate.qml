@@ -45,12 +45,7 @@ PlasmaComponents.ListItem {
     enabled: true
 
     // the 1.6 comes from ToolButton's default height
-    implicitHeight: Math.max(column.height, otpButton.implicitHeight + 2 * units.smallSpacing)
-
-    anchors {
-        left: parent.left
-        right: parent.right
-    }
+    implicitHeight: Math.max(column.height, otpButton.implicitHeight + 2 * Units.smallSpacing)
 
     onClicked: {
         root.itemSelected(index);

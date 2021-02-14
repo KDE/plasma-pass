@@ -82,8 +82,6 @@ PlasmaExtras.ScrollArea {
             delegate: PasswordItemDelegate {
                 id: delegate
 
-                width: parent.parent.width
-
                 name: model.name
                 icon: model.type === PasswordsModel.FolderEntry ? "inode-directory" : "lock"
                 entryType: model.type
