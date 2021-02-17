@@ -270,7 +270,7 @@ void ProviderBase::onPlasmaServiceRemovePasswordResult(KJob *job)
         return;
     }
 
-    qCDebug(PLASMAPASS_LOG, "Successfuly removed password from Klipper");
+    qCDebug(PLASMAPASS_LOG, "Successfully removed password from Klipper");
 }
 
 void ProviderBase::clearClipboard()
