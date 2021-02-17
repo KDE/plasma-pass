@@ -24,7 +24,7 @@ Debian/Ubuntu:
 
 2) Clone source code:
 
-    git clone https://anongit.kde.org/plasma-pass.git
+    git clone https://invent.kde.org/plasma/plasma-pass.git
 
 3) Compile:
 
