@@ -24,6 +24,7 @@ if(ECM_VERSION VERSION_GREATER_EQUAL 5.79)
 endif()
 
 find_package(OATH REQUIRED)
+find_package(QGpgme REQUIRED)
 
 find_package(KF5 ${KF5_MIN_VERSION} REQUIRED COMPONENTS
     Plasma

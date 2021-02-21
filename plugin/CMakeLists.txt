@@ -31,6 +31,7 @@ target_link_libraries(plasmapass
     KF5::I18n
     KF5::ItemModels
     OATH::OATH
+    QGpgme
 )
 
 ########### PLUGN ###########

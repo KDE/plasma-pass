@@ -41,6 +41,10 @@
 #include <chrono>
 #include <utility>
 
+#include <QGpgME/DecryptJob>
+#include <QGpgME/Protocol>
+#include <gpgme++/decryptionresult.h>
+
 using namespace std::chrono;
 using namespace std::chrono_literals;
 
@@ -59,6 +63,7 @@ using namespace PlasmaPass;
 
 ProviderBase::ProviderBase(const QString &path, QObject *parent)
     : QObject(parent)
+    , mPath(path)
     , mSecretTimeout(DefaultSecretTimeout)
 {
     mTimer.setInterval(SecretTimeoutUpdateInterval);
@@ -70,65 +75,42 @@ ProviderBase::ProviderBase(const QString &path, QObject *parent)
         }
     });
 
-    bool isGpg2 = true;
-    auto gpgExe = QStandardPaths::findExecutable(QStringLiteral("gpg2"));
-    if (gpgExe.isEmpty()) {
-        gpgExe = QStandardPaths::findExecutable(QStringLiteral("gpg"));
-        isGpg2 = false;
-    }
-    if (gpgExe.isEmpty()) {
-        qCWarning(PLASMAPASS_LOG, "Failed to find gpg or gpg2 executables");
-        setError(i18n("Failed to decrypt password: GPG is not available"));
+    QTimer::singleShot(0, this, &ProviderBase::start);
+}
+
+ProviderBase::~ProviderBase() = default;
+
+void ProviderBase::start()
+{
+    QFile file(mPath);
+    if (!file.open(QIODevice::ReadOnly)) {
+        qCWarning(PLASMAPASS_LOG, "Failed to open password file: %s", qUtf8Printable(file.errorString()));
+        setError(i18n("Failed to open password file: %s", file.errorString()));
         return;
     }
 
-    QStringList args = {QStringLiteral("-d"),
-                        QStringLiteral("--quiet"),
-                        QStringLiteral("--yes"),
-                        QStringLiteral("--compress-algo=none"),
-                        QStringLiteral("--no-encrypt-to"),
-                        path};
-    if (isGpg2) {
-        args = QStringList{QStringLiteral("--batch"), QStringLiteral("--use-agent")} + args;
-    }
-
-    mGpg = std::make_unique<QProcess>();
-    // Let's not behave like animals and deal with this asynchronously
-    connect(mGpg.get(), &QProcess::errorOccurred, this, [this, gpgExe](QProcess::ProcessError state) {
-        if (state == QProcess::FailedToStart) {
-            qCWarning(PLASMAPASS_LOG, "Failed to start %s: %s", qUtf8Printable(gpgExe), qUtf8Printable(mGpg->errorString()));
-            setError(i18n("Failed to decrypt password: Failed to start GPG"));
+    auto decryptJob = QGpgME::openpgp()->decryptJob();
+    connect(decryptJob, &QGpgME::DecryptJob::result, this, [this](const GpgME::DecryptionResult &result, const QByteArray &plainText) {
+        if (result.error()) {
+            qCWarning(PLASMAPASS_LOG, "Failed to decrypt password: %s", result.error().asString());
+            setError(i18n("Failed to dectypt password: %s", QString::fromUtf8(result.error().asString())));
+            return;
         }
-    });
-    connect(mGpg.get(), &QProcess::readyReadStandardOutput, this, [this]() {
-        while (!mGpg->atEnd()) {
-            const auto line = QString::fromUtf8(mGpg->readLine()).trimmed();
+
+        const auto data = QString::fromUtf8(plainText);
+        const auto lines = data.splitRef(QLatin1Char('\n'));
+        for (const auto &line : lines) {
             if (handleSecret(line) == HandlingResult::Stop) {
                 break;
             }
         }
     });
-    connect(mGpg.get(), QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished), this, [this]() {
-        const auto err = mGpg->readAllStandardError();
-        if (mSecret.isEmpty()) {
-            if (err.isEmpty()) {
-                setError(i18n("Failed to decrypt password"));
-            } else {
-                setError(i18n("Failed to decrypt password: %1", QString::fromUtf8(err)));
-            }
-        }
 
-        mGpg.reset();
-    });
-    mGpg->setProgram(gpgExe);
-    mGpg->setArguments(args);
-    mGpg->start(QIODevice::ReadOnly);
-}
-
-ProviderBase::~ProviderBase()
-{
-    if (mGpg) {
-        mGpg->terminate();
+    const auto error = decryptJob->start(file.readAll());
+    if (error) {
+        qCWarning(PLASMAPASS_LOG, "Failed to decrypt password: %s", error.asString());
+        setError(i18n("Failed to decrypt password: %s", QString::fromUtf8(error.asString())));
+        return;
     }
 }
 

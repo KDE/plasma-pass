@@ -35,7 +35,7 @@ class PasswordProvider : public ProviderBase
 protected:
     using ProviderBase::ProviderBase;
 
-    HandlingResult handleSecret(const QString &secret) override;
+    HandlingResult handleSecret(QStringView secret) override;
 };
 
 }

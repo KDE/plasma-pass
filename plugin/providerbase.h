@@ -25,7 +25,6 @@
 
 #include <memory>
 
-class QProcess;
 class QDBusPendingCallWatcher;
 class KJob;
 class QMimeData;
@@ -78,9 +77,10 @@ protected:
         Continue,
         Stop
     };
-    virtual HandlingResult handleSecret(const QString &secret) = 0;
+    virtual HandlingResult handleSecret(QStringView secret) = 0;
 
 private Q_SLOTS:
+    void start();
     void onPlasmaServiceRemovePasswordResult(KJob *job);
 
 private:
@@ -90,7 +90,6 @@ private:
     static void clearClipboard();
 
     std::unique_ptr<Plasma::DataEngineConsumer> mEngineConsumer;
-    std::unique_ptr<QProcess> mGpg;
     QString mPath;
     QString mError;
     QString mSecret;

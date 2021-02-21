@@ -21,9 +21,9 @@
 
 using namespace PlasmaPass;
 
-ProviderBase::HandlingResult PasswordProvider::handleSecret(const QString &secret)
+ProviderBase::HandlingResult PasswordProvider::handleSecret(QStringView secret)
 {
-    setSecret(secret);
+    setSecret(secret.toString());
     // We are only interested in the first line for passwords
     return HandlingResult::Stop;
 }

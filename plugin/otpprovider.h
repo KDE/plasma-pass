@@ -34,7 +34,7 @@ class OTPProvider : public ProviderBase
 protected:
     explicit OTPProvider(const QString &path, QObject *parent = nullptr);
 
-    HandlingResult handleSecret(const QString &secret) override;
+    HandlingResult handleSecret(QStringView secret) override;
 
 private:
     void handleTOTP(const QUrl &url);

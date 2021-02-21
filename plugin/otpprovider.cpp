@@ -51,13 +51,13 @@ OTPProvider::OTPProvider(const QString &path, QObject *parent)
     setSecretTimeout(30s);
 }
 
-ProviderBase::HandlingResult OTPProvider::handleSecret(const QString &secret)
+ProviderBase::HandlingResult OTPProvider::handleSecret(QStringView secret)
 {
     if (!secret.startsWith(otpAuthSchema)) {
         return HandlingResult::Continue;
     }
 
-    QUrl url(secret);
+    QUrl url(secret.toString());
     const auto otpType = parseOtpType(url);
     if (otpType == QLatin1String("totp")) {
         handleTOTP(url);
