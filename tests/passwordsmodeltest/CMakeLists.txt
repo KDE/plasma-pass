@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2021 Daniel Vrátil <dvratil@kde.org>
+#
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 find_package(Qt5Widgets CONFIG REQUIRED)
 include_directories(${CMAKE_SOURCE_DIR}/plugin)
 
