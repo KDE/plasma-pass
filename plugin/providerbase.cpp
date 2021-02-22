@@ -70,7 +70,7 @@ void ProviderBase::start()
     QFile file(mPath);
     if (!file.open(QIODevice::ReadOnly)) {
         qCWarning(PLASMAPASS_LOG, "Failed to open password file: %s", qUtf8Printable(file.errorString()));
-        setError(i18n("Failed to open password file: %s", file.errorString()));
+        setError(i18n("Failed to open password file: %1", file.errorString()));
         return;
     }
 
@@ -78,7 +78,7 @@ void ProviderBase::start()
     connect(decryptJob, &QGpgME::DecryptJob::result, this, [this](const GpgME::DecryptionResult &result, const QByteArray &plainText) {
         if (result.error()) {
             qCWarning(PLASMAPASS_LOG, "Failed to decrypt password: %s", result.error().asString());
-            setError(i18n("Failed to decrypt password: %s", QString::fromUtf8(result.error().asString())));
+            setError(i18n("Failed to decrypt password: %1", QString::fromUtf8(result.error().asString())));
             return;
         }
 
@@ -94,7 +94,7 @@ void ProviderBase::start()
     const auto error = decryptJob->start(file.readAll());
     if (error) {
         qCWarning(PLASMAPASS_LOG, "Failed to decrypt password: %s", error.asString());
-        setError(i18n("Failed to decrypt password: %s", QString::fromUtf8(error.asString())));
+        setError(i18n("Failed to decrypt password: %1", QString::fromUtf8(error.asString())));
         return;
     }
 }
