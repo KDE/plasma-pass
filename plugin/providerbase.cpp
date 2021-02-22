@@ -78,7 +78,7 @@ void ProviderBase::start()
     connect(decryptJob, &QGpgME::DecryptJob::result, this, [this](const GpgME::DecryptionResult &result, const QByteArray &plainText) {
         if (result.error()) {
             qCWarning(PLASMAPASS_LOG, "Failed to decrypt password: %s", result.error().asString());
-            setError(i18n("Failed to dectypt password: %s", QString::fromUtf8(result.error().asString())));
+            setError(i18n("Failed to decrypt password: %s", QString::fromUtf8(result.error().asString())));
             return;
         }
 
