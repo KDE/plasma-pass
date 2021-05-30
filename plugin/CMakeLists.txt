@@ -14,7 +14,7 @@ set(plasmapasslib_SRCS
     passwordprovider.cpp
 )
 
-qt5_add_dbus_interfaces(plasmapasslib_SRCS
+qt_add_dbus_interfaces(plasmapasslib_SRCS
     ${CMAKE_CURRENT_SOURCE_DIR}/interfaces/org.kde.klipper.klipper.xml
 )
 
