@@ -2,21 +2,23 @@
 //
 // SPDX-License-Identifier: LGPL-2.1-or-later
 
-import QtQuick 2.1
+import QtQuick 2.15
 import QtQuick.Layouts 1.1
+import QtQuick.Controls 2.15 as QQC2 // For StackView
 import org.kde.plasma.plasmoid 2.0
-import org.kde.plasma.components 2.0 as PlasmaComponents
-import org.kde.kirigami 2.0 // for Units
+import org.kde.plasma.components 3.0 as PlasmaComponents3
+import org.kde.plasma.extras 2.0 as PlasmaExtras
+import org.kde.plasma.core 2.0 as PlasmaCore
 
 import org.kde.plasma.private.plasmapass 1.0
 
 Item {
     id: root
 
-    Plasmoid.fullRepresentation: FocusScope {
-
-        Layout.minimumWidth: units.gridUnit * 5
-        Layout.minimumHeight: units.gridUnit * 5
+    Plasmoid.fullRepresentation: PlasmaExtras.Representation {
+        collapseMarginsHint: true
+        Layout.minimumWidth: PlasmaCore.Units.gridUnit * 5
+        Layout.minimumHeight: PlasmaCore.Units.gridUnit * 5
 
         property bool expanded: false
 
@@ -39,79 +41,86 @@ Item {
                 filterField.forceActiveFocus();
             } else {
                 filterField.text = "";
-                viewStack.clear();
+                viewStack.pop(null);
             }
         }
+        header: PlasmaExtras.PlasmoidHeading {
+            ColumnLayout {
+                anchors.fill: parent
 
-        ColumnLayout {
-            anchors.fill: parent
+                PasswordSortProxyModel {
+                    id: passwordsModel
 
-            PasswordSortProxyModel {
-                id: passwordsModel
+                    dynamicSortFilter: true
+                    isSortLocaleAware: true
+                    sortCaseSensitivity: Qt.CaseInsensitive
 
-                dynamicSortFilter: true
-                isSortLocaleAware: true
-                sortCaseSensitivity: Qt.CaseInsensitive
+                    sourceModel: PasswordsModel {}
+                }
 
-                sourceModel: PasswordsModel {}
-            }
+                PasswordFilterModel {
+                    id: filterModel
 
-            PasswordFilterModel {
-                id: filterModel
+                    passwordFilter: filterField.text
 
-                passwordFilter: filterField.text
+                    sourceModel: passwordsModel
+                }
 
-                sourceModel: passwordsModel
-            }
+                Component {
+                    id: passwordsPage
 
-            Component {
-                id: passwordsPage
-
-                PasswordsPage {
-                    stack: viewStack
-                    model: passwordsModel
-                    onFolderSelected: {
-                        stack.pushPage(index, name);
+                    PasswordsPage {
+                        stack: viewStack
+                        model: passwordsModel
+                        onFolderSelected: {
+                            stack.pushPage(index, name);
+                        }
                     }
                 }
-            }
 
-            Component {
-                id: filterPage
+                Component {
+                    id: filterPage
 
-                PasswordsPage {
-                    stack: viewStack
-                    model: filterModel
-                }
-            }
-
-            RowLayout {
-                PlasmaComponents.ToolButton {
-                    iconSource: "draw-arrow-back"
-                    onClicked: viewStack.popPage()
-                    enabled: viewStack.depth > 1
-                }
-
-                PlasmaComponents.Label {
-                    id: currentPath
-
-                    Layout.fillWidth: true
-
-                    property var _path: []
-
-                    function pushName(name) {
-                        _path.push(name);
-                        text = _path.join("/");
-                    }
-                    function popName() {
-                        _path.pop();
-                        text = _path.join("/");
+                    PasswordsPage {
+                        stack: viewStack
+                        model: filterModel
                     }
                 }
-            }
 
-            RowLayout {
-                PlasmaComponents.TextField {
+                RowLayout {
+                    visible: viewStack.depth > 1 && !viewStack.filterMode
+                    PlasmaComponents3.ToolButton {
+                        icon.name: LayoutMirroring.enabled ? "go-previous-symbolic-rtl" : "go-previous-symbolic"
+                        onClicked: viewStack.popPage()
+                        enabled: viewStack.depth > 1
+                    }
+
+                    PlasmaComponents3.Label {
+                        id: currentPath
+
+                        Layout.fillWidth: true
+                        HoverHandler {
+                            id: hoverHandler
+                        }
+                        PlasmaComponents3.ToolTip {
+                            text: currentPath.text
+                            visible: hoverHandler.hovered
+                        }
+
+                        property var _path: []
+
+                        function pushName(name) {
+                            _path.push(name);
+                            text = _path.join("/");
+                        }
+                        function popName() {
+                            _path.pop();
+                            text = _path.join("/");
+                        }
+                    }
+                }
+
+                PlasmaComponents3.TextField {
                     id: filterField
                     focus: true
                     activeFocusOnTab: true
@@ -124,59 +133,51 @@ Item {
                     Keys.priority: Keys.BeforeItem
                     Keys.onPressed: {
                         if (event.key == Qt.Key_Down) {
-                            viewStack.currentPage.focus = true;
+                            viewStack.currentItem.focus = true;
                             event.accepted = true;
                         } else if (event.key === Qt.Key_Enter || event.key === Qt.Key_Return) {
-                            viewStack.currentPage.activateCurrentItem();
+                            viewStack.currentItem.activateCurrentItem();
                             event.accepted = true;
                         }
                     }
                 }
             }
+        }
 
-            PlasmaComponents.PageStack {
-                id: viewStack
+        QQC2.StackView {
+            id: viewStack
+            anchors.fill: parent
 
-                Layout.fillHeight: true
-                Layout.fillWidth: true
+            readonly property bool filterMode: filterField.text !== ""
 
-                readonly property bool filterMode: filterField.text !== ""
-
-                onCurrentPageChanged: {
-                    currentPage.focus = true;
-                    currentPage.forceActiveFocus();
-                }
-
-                onFilterModeChanged: {
-                    clear();
-                    if (filterMode) {
-                        push(filterPage.createObject(viewStack, { "rootIndex": null, "stack": viewStack }));
-                    }
-                    // Keep focus on the filter field
-                    filterField.focus = true;
-                }
-
-                function pushPage(index, name) {
-                    var newPage = passwordsPage.createObject(viewStack, { "rootIndex": index, "stack": viewStack });
-                    push(newPage);
-                    currentPath.pushName(name);
-                }
-
-                function popPage() {
-                    pop();
-                    currentPath.popName();
-                }
-
-                function clear() {
-                    while (depth > 1) {
-                        popPage();
-                    }
-                }
-
-                Component.onCompleted: {
-                    initialPage = passwordsPage.createObject(viewStack);
+            onCurrentItemChanged: {
+                if (currentItem) {
+                    currentItem.focus = true;
+                    currentItem.forceActiveFocus();
                 }
             }
+
+            onFilterModeChanged: {
+                pop(null);
+                if (filterMode) {
+                    push(filterPage.createObject(viewStack, { rootIndex: null, stack: viewStack }));
+                }
+                // Keep focus on the filter field
+                filterField.focus = true;
+                filterField.forceActiveFocus();
+            }
+
+            function pushPage(index, name) {
+                const newPage = passwordsPage.createObject(viewStack, { rootIndex: index, stack: viewStack });
+                push(newPage);
+                currentPath.pushName(name);
+            }
+
+            function popPage() {
+                pop();
+                currentPath.popName();
+            }
+            initialItem: passwordsPage
         }
     }
 }

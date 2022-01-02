@@ -7,8 +7,7 @@ import QtQuick.Layouts 1.1
 import QtQuick.Controls 2.0
 
 import org.kde.plasma.core 2.0 as PlasmaCore
-import org.kde.plasma.components 2.0 as PlasmaComponents
-import org.kde.kirigami 2.0 // for Units
+import org.kde.plasma.components 3.0 as PlasmaComponents3
 
 import org.kde.plasma.private.plasmapass 1.0
 
@@ -20,24 +19,24 @@ RowLayout {
 
     PlasmaCore.IconItem {
         id: providerIcon
-        width: Units.iconSizes.small
-        height: Units.iconSizes.small
+        width: PlasmaCore.Units.iconSizes.small
+        height: PlasmaCore.Units.iconSizes.small
     }
 
     ColumnLayout {
-        PlasmaComponents.ProgressBar {
+        PlasmaComponents3.ProgressBar {
             id: timeoutBar
 
             Layout.fillWidth: true
 
             visible: root.provider != null && root.provider.valid
 
-            minimumValue: 0
-            maximumValue: root.provider == null ? 0 : root.provider.defaultTimeout
+            from: 0
+            to: root.provider == null ? 0 : root.provider.defaultTimeout
             value: root.provider == null ? 0 : root.provider.timeout
         }
 
-        PlasmaComponents.Label {
+        PlasmaComponents3.Label {
             id: errorLabel
 
             height: undefined

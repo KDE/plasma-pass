@@ -6,11 +6,12 @@ import QtQuick 2.1
 import QtQml.Models 2.1
 
 import org.kde.plasma.extras 2.0 as PlasmaExtras
-import org.kde.plasma.components 2.0 as PlasmaComponents
+import org.kde.plasma.core 2.0 as PlasmaCore
+import org.kde.plasma.components 3.0 as PlasmaComponents3
 
 import org.kde.plasma.private.plasmapass 1.0
 
-PlasmaExtras.ScrollArea {
+PlasmaComponents3.ScrollView {
     id: scroll
 
     signal folderSelected(var index, var name)
@@ -26,9 +27,23 @@ PlasmaExtras.ScrollArea {
     property alias model: delegateModel.model
 
     focus: true
+    leftPadding: PlasmaCore.Units.smallSpacing * 2
+    rightPadding: PlasmaCore.Units.smallSpacing * 2
+    background: null
 
-    ListView {
+    contentItem: ListView {
         id: listView
+
+        focus: true
+        activeFocusOnTab: true
+        highlightFollowsCurrentItem: true
+        highlight: PlasmaExtras.Highlight { }
+        highlightMoveDuration: 0
+        highlightResizeDuration: 0
+        currentIndex: -1
+        topMargin: PlasmaCore.Units.smallSpacing * 2
+        bottomMargin: PlasmaCore.Units.smallSpacing * 2
+        spacing: PlasmaCore.Units.smallSpacing
 
         onActiveFocusChanged: {
             if (activeFocus && listView.currentIndex === -1) {
@@ -55,10 +70,6 @@ PlasmaExtras.ScrollArea {
             }
         }
 
-        focus: true
-        activeFocusOnTab: true
-        highlightFollowsCurrentItem: true
-
         model: DelegateModel {
             id: delegateModel
 
@@ -70,6 +81,7 @@ PlasmaExtras.ScrollArea {
                 name: model.name
                 icon: model.type === PasswordsModel.FolderEntry ? "inode-directory" : "lock"
                 entryType: model.type
+                width: listView.width - (scroll.PlasmaComponents3.ScrollBar.vertical.visible ? PlasmaCore.Units.smallSpacing * 4 : 0)
 
                 passwordProvider: model.hasPassword ? model.password : null
                 otpProvider: model.hasOTP ? model.otp : null
@@ -88,12 +100,5 @@ PlasmaExtras.ScrollArea {
                 }
             }
         }
-
-        boundsBehavior: Flickable.StopAtBounds
-        interactive: contentHeight > height
-        highlight: PlasmaComponents.Highlight { }
-        highlightMoveDuration: 0
-        highlightResizeDuration: 0
-        currentIndex: -1
     }
 }

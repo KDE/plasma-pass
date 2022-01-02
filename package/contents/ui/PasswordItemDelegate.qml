@@ -8,7 +8,7 @@ import QtQuick.Controls 2.0
 
 import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.plasma.components 2.0 as PlasmaComponents
-import org.kde.kirigami 2.0 // for Units
+import org.kde.plasma.components 3.0 as PlasmaComponents3
 
 import org.kde.plasma.private.plasmapass 1.0
 
@@ -29,8 +29,7 @@ PlasmaComponents.ListItem {
 
     enabled: true
 
-    // the 1.6 comes from ToolButton's default height
-    implicitHeight: Math.max(column.height, otpButton.implicitHeight + 2 * Units.smallSpacing)
+    implicitHeight: Math.max(column.height, otpButton.implicitHeight + 2 * PlasmaCore.Units.smallSpacing)
 
     onClicked: {
         root.itemSelected(index);
@@ -61,20 +60,20 @@ PlasmaComponents.ListItem {
 
     Timer {
         id: hideTimer
-        interval: Units.longDuration
+        interval: PlasmaCore.Units.longDuration
         onTriggered: plasmoid.expanded = false;
     }
 
     Column {
         id: column
-        spacing: Units.smallSpacing
+        spacing: PlasmaCore.Units.smallSpacing
         anchors {
             left: parent.left
             right: parent.right
         }
 
         RowLayout {
-            spacing: Units.largeSpacing
+            spacing: PlasmaCore.Units.largeSpacing
             id: row
 
             width: parent.width
@@ -93,21 +92,20 @@ PlasmaComponents.ListItem {
                         }
                     }
                 }
-                width: Units.iconSizes.small
-                height: Units.iconSizes.small
+                width: PlasmaCore.Units.iconSizes.small
+                height: PlasmaCore.Units.iconSizes.small
             }
 
-            PlasmaComponents.BusyIndicator {
+            PlasmaComponents3.BusyIndicator {
                 id: busyIndicator
                 visible: root.provider != null && !root.provider.valid && !root.provider.hasError
-                smoothAnimation: true
 
                 // Hack around BI wanting to be too large by default
                 Layout.maximumWidth: entryTypeIcon.width
                 Layout.maximumHeight: entryTypeIcon.height
             }
 
-            PlasmaComponents.Label {
+            PlasmaComponents3.Label {
                 id: label
 
                 height: undefined // unset PlasmaComponents.Label default height
@@ -120,12 +118,14 @@ PlasmaComponents.ListItem {
                 textFormat: Text.StyledText
             }
 
-            PlasmaComponents.ToolButton {
+            PlasmaComponents3.ToolButton {
                 id: otpButton
-                iconSource: 'clock'
+                icon.name: 'clock'
                 visible: entryType == PasswordsModel.PasswordEntry
 
-                // TODO: Make tooltip work, somehow
+                PlasmaComponents3.ToolTip {
+                    text: i18n("One-time password (OTP)")
+                }
 
                 onClicked: {
                     root.otpClicked(index);
@@ -137,7 +137,7 @@ PlasmaComponents.ListItem {
             id: passwordDelegate
             provider: root.passwordProvider
             icon: 'lock'
-            visible: root.passwordProvider != null
+            visible: root.passwordProvider !== null
             width: parent.width
         }
 
@@ -145,7 +145,7 @@ PlasmaComponents.ListItem {
             id: otpDelegate
             provider: root.otpProvider
             icon: 'clock'
-            visible: root.otpProvider != null
+            visible: root.otpProvider !== null
             width: parent.width
         }
     }
