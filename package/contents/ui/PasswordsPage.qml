@@ -7,6 +7,7 @@ import QtQml.Models 2.1
 
 import org.kde.plasma.extras 2.0 as PlasmaExtras
 import org.kde.plasma.core 2.0 as PlasmaCore
+import org.kde.plasma.components 2.0 as PlasmaComponents2 // for Highlight
 import org.kde.plasma.components 3.0 as PlasmaComponents3
 
 import org.kde.plasma.private.plasmapass 1.0
@@ -27,8 +28,6 @@ PlasmaComponents3.ScrollView {
     property alias model: delegateModel.model
 
     focus: true
-    leftPadding: PlasmaCore.Units.smallSpacing * 2
-    rightPadding: PlasmaCore.Units.smallSpacing * 2
     background: null
 
     contentItem: ListView {
@@ -37,12 +36,14 @@ PlasmaComponents3.ScrollView {
         focus: true
         activeFocusOnTab: true
         highlightFollowsCurrentItem: true
-        highlight: PlasmaExtras.Highlight { }
+        highlight: PlasmaComponents2.Highlight { }
         highlightMoveDuration: 0
         highlightResizeDuration: 0
         currentIndex: -1
         topMargin: PlasmaCore.Units.smallSpacing * 2
         bottomMargin: PlasmaCore.Units.smallSpacing * 2
+        leftMargin: PlasmaCore.Units.smallSpacing * 2
+        rightMargin: PlasmaCore.Units.smallSpacing * 2
         spacing: PlasmaCore.Units.smallSpacing
 
         onActiveFocusChanged: {
@@ -81,7 +82,7 @@ PlasmaComponents3.ScrollView {
                 name: model.name
                 icon: model.type === PasswordsModel.FolderEntry ? "inode-directory" : "lock"
                 entryType: model.type
-                width: listView.width - (scroll.PlasmaComponents3.ScrollBar.vertical.visible ? PlasmaCore.Units.smallSpacing * 4 : 0)
+                width: listView.width - PlasmaCore.Units.smallSpacing * 4
 
                 passwordProvider: model.hasPassword ? model.password : null
                 otpProvider: model.hasOTP ? model.otp : null
