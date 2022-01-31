@@ -38,6 +38,13 @@ Name[x-test]=xxPlasma Passxx
 Name[zh_CN]=Plasma 密码
 Name[zh_TW]=Plasma Pass
 Comment=Access passwords from the 'pass' password manager
+Comment[az]='pass' şifrə menecerindən şifrələrə giriş
+Comment[ca]=Accés a les contrasenyes del gestor de contrasenyes «pass»
+Comment[ia]=Contrasignos de accesso  ex le gerente de contrasigno 'pass'
+Comment[nl]=Toegang tot wachtwoorden vanuit de wachtwoordenbeheerder 'pass'
+Comment[sv]=Kom åt lösenord från lösenordshanteraren 'pass'
+Comment[uk]=Доступ до паролів програми для керування паролями «pass»
+Comment[x-test]=xxAccess passwords from the 'pass' password managerxx
 
 Icon=lock
 Type=Service
