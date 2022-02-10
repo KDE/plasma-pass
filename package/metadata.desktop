@@ -51,9 +51,11 @@ Comment[it]=Accedi alle password dal gestore delle password «pass»
 Comment[nl]=Toegang tot wachtwoorden vanuit de wachtwoordenbeheerder 'pass'
 Comment[pt_BR]=Acessar senhas do gerenciador de senhas 'pass'
 Comment[ro]=Accesarea parolelor din gestionarul de parole „pass”
+Comment[ru]=Получение паролей из менеджера «pass»
 Comment[sl]=Dostopajte do gesel iz upravitelja gesla 'pass'
 Comment[sv]=Kom åt lösenord från lösenordshanteraren 'pass'
 Comment[uk]=Доступ до паролів програми для керування паролями «pass»
+Comment[vi]=Truy cập mật khẩu trong trình quản lí mật khẩu 'pass'
 Comment[x-test]=xxAccess passwords from the 'pass' password managerxx
 
 Icon=lock
