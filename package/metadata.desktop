@@ -44,6 +44,7 @@ Comment[az]='pass' şifrə menecerindən şifrələrə giriş
 Comment[ca]=Accés a les contrasenyes del gestor de contrasenyes «pass»
 Comment[ca@valencia]=Accés a les contrasenyes del gestor de contrasenyes «pass»
 Comment[es]=Acceda a las contraseñas desde el gestor de contraseñas «pass»
+Comment[fi]=Plasma-sovelma salasanojen kyselemiseksi ”pass”-salasanahallinnasta
 Comment[fr]=Accéder aux mots de passe à partir du gestionnaire de mots de passe « Pass »
 Comment[hi]='पास' कूटशब्द प्रबंधक से कूटशब्द प्राप्त करें
 Comment[hu]=Jelszavak elérésére a „pass” jelszókezelőben
@@ -58,6 +59,7 @@ Comment[sv]=Kom åt lösenord från lösenordshanteraren 'pass'
 Comment[uk]=Доступ до паролів програми для керування паролями «pass»
 Comment[vi]=Truy cập mật khẩu trong trình quản lí mật khẩu 'pass'
 Comment[x-test]=xxAccess passwords from the 'pass' password managerxx
+Comment[zh_CN]=使用“pass”密码管理器访问密码的 Plasma 小程序
 
 Icon=lock
 Type=Service
