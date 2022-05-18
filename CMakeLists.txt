@@ -10,8 +10,8 @@ project(plasma-plasmapass VERSION ${PROJECT_VERSION})
 
 set(PROJECT_VERSION_MAJOR 1)
 
-set(QT_MIN_VERSION "5.11")
-set(KF5_MIN_VERSION "5.57.0")
+set(QT_MIN_VERSION "5.15")
+set(KF5_MIN_VERSION "5.90.0")
 
 set(CMAKE_CXX_STANDARD 14)
 
@@ -20,12 +20,10 @@ set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake ${ECM_MODULE_PATH} ${ECM_KDE_MOD
 
 include(KDEInstallDirs)
 include(KDECMakeSettings)
-include(KDEFrameworkCompilerSettings NO_POLICY_SCOPE)
+include(KDECompilerSettings NO_POLICY_SCOPE)
 include(ECMQtDeclareLoggingCategory)
 include(KDEClangFormat)
-if(ECM_VERSION VERSION_GREATER_EQUAL 5.79)
-    include(KDEGitCommitHooks)
-endif()
+include(KDEGitCommitHooks)
 
 find_package(OATH REQUIRED)
 find_package(QGpgme REQUIRED)
@@ -36,7 +34,7 @@ find_package(KF5 ${KF5_MIN_VERSION} REQUIRED COMPONENTS
     ItemModels
 )
 
-find_package(Qt5 ${QT_MIN_VERSION} CONFIG REQUIRED COMPONENTS
+find_package(Qt${QT_MAJOR_VERSION} ${QT_MIN_VERSION} CONFIG REQUIRED COMPONENTS
     Core
     DBus
     Gui
@@ -58,15 +56,9 @@ add_subdirectory(plugin)
 if (BUILD_TESTING)
     add_subdirectory(tests)
 endif()
-if(ECM_VERSION VERSION_GREATER_EQUAL 5.59)
-    install(FILES plasma-pass.categories DESTINATION ${KDE_INSTALL_LOGGINGCATEGORIESDIR})
-else()
-    install(FILES plasma-pass.categories DESTINATION ${KDE_INSTALL_CONFDIR})
-endif()
+install(FILES plasma-pass.categories DESTINATION ${KDE_INSTALL_LOGGINGCATEGORIESDIR})
 
-if(ECM_VERSION VERSION_GREATER_EQUAL 5.79)
-    kde_configure_git_pre_commit_hook(CHECKS CLANG_FORMAT)
-endif()
+kde_configure_git_pre_commit_hook(CHECKS CLANG_FORMAT)
 
 feature_summary(WHAT ALL FATAL_ON_MISSING_REQUIRED_PACKAGES)
 

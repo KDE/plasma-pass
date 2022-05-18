@@ -2,7 +2,7 @@
 #
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
-find_package(Qt5Widgets CONFIG REQUIRED)
+find_package(Qt${QT_MAJOR_VERSION}Widgets CONFIG REQUIRED)
 include_directories(${CMAKE_SOURCE_DIR}/plugin)
 
 set(passwordsmodeltest_SRCS
