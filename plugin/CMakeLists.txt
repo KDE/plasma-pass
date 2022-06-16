@@ -25,7 +25,7 @@ ecm_qt_declare_logging_category(plasmapasslib_SRCS
 )
 
 add_library(plasmapass STATIC ${plasmapasslib_SRCS})
-
+set_property(TARGET plasmapass PROPERTY POSITION_INDEPENDENT_CODE ON)
 target_link_libraries(plasmapass
     Qt::Core
     Qt::DBus

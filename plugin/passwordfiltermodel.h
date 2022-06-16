@@ -9,8 +9,9 @@
 #include <QSortFilterProxyModel>
 #include <QTimer>
 #include <QVector>
-
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
 class QStringRef;
+#endif
 class KDescendantsProxyModel;
 
 namespace PlasmaPass
@@ -55,7 +56,11 @@ private:
 
     private:
         void updateParts();
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
         QVector<QStringRef> mParts;
+#else
+        QVector<QStringView> mParts;
+#endif
     };
 
     void delayedUpdateFilter();

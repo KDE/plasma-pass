@@ -83,7 +83,11 @@ void ProviderBase::start()
         }
 
         const auto data = QString::fromUtf8(plainText);
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
         const auto lines = data.splitRef(QLatin1Char('\n'));
+#else
+        const auto lines = QStringView(data).split(QLatin1Char('\n'));
+#endif
         for (const auto &line : lines) {
             if (handleSecret(line) == HandlingResult::Stop) {
                 break;
