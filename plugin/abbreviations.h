@@ -5,9 +5,8 @@
 #ifndef PLASMAPASS_ABBREVIATIONS_H
 #define PLASMAPASS_ABBREVIATIONS_H
 
+#include <QStringList>
 #include <QVector>
-
-class QStringList;
 class QStringRef;
 class QString;
 
