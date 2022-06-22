@@ -7,7 +7,6 @@
 #include "otpprovider.h"
 
 #include <QDebug>
-#include <QDir>
 #include <QPointer>
 
 using namespace PlasmaPass;

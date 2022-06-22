@@ -9,7 +9,6 @@
 #include <KDescendantsProxyModel>
 
 #include <QFutureWatcher>
-#include <QSortFilterProxyModel>
 #include <QtConcurrent>
 
 #include <chrono>

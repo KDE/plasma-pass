@@ -4,7 +4,6 @@
 
 #include "abbreviations.h"
 
-#include <QStringList>
 #include <QVarLengthArray>
 
 namespace
