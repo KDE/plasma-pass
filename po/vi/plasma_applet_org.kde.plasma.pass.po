@@ -1,0 +1,43 @@
+# Copyright (C) YEAR This file is copyright:
+# This file is distributed under the same license as the plasma-pass package.
+#
+# Phu Hung Nguyen <phu.nguyen@kdemail.net>, 2021, 2022.
+msgid ""
+msgstr ""
+"Project-Id-Version: plasma-pass\n"
+"Report-Msgid-Bugs-To: https://bugs.kde.org\n"
+"POT-Creation-Date: 2022-06-17 00:46+0000\n"
+"PO-Revision-Date: 2022-01-10 23:05+0100\n"
+"Last-Translator: Phu Hung Nguyen <phu.nguyen@kdemail.net>\n"
+"Language-Team: Vietnamese <kde-l10n-vi@kde.org>\n"
+"Language: vi\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Lokalize 20.12.2\n"
+
+#: package/contents/ui/main.qml:128
+#, kde-format
+msgid "Filter..."
+msgstr "Lọc..."
+
+#: package/contents/ui/PasswordItemDelegate.qml:127
+#, kde-format
+msgid "One-time password (OTP)"
+msgstr "Mật khẩu một lần (one-time password - OTP)"
+
+#: plugin/otpprovider.cpp:50
+#, kde-format
+msgid "Unsupported OTP type %1"
+msgstr "Kiểu OTP không được hỗ trợ %1"
+
+#: plugin/providerbase.cpp:73
+#, kde-format
+msgid "Failed to open password file: %1"
+msgstr "Mở tệp mật khẩu thất bại: %1"
+
+#: plugin/providerbase.cpp:81 plugin/providerbase.cpp:101
+#, kde-format
+msgid "Failed to decrypt password: %1"
+msgstr "Giải mật mã mật khẩu thất bại: %1"

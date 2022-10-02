@@ -1,0 +1,57 @@
+# Copyright (C) YEAR This file is copyright:
+# This file is distributed under the same license as the plasma-pass package.
+# Tommi Nieminen <translator@legisign.org>, 2019, 2021, 2022.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: plasma-pass\n"
+"Report-Msgid-Bugs-To: https://bugs.kde.org\n"
+"POT-Creation-Date: 2022-06-17 00:46+0000\n"
+"PO-Revision-Date: 2022-01-10 21:27+0200\n"
+"Last-Translator: Tommi Nieminen <translator@legisign.org>\n"
+"Language-Team: Finnish <kde-i18n-doc@kde.org>\n"
+"Language: fi\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Lokalize 20.04.2\n"
+
+#: package/contents/ui/main.qml:128
+#, kde-format
+msgid "Filter..."
+msgstr "Suodata…"
+
+#: package/contents/ui/PasswordItemDelegate.qml:127
+#, kde-format
+msgid "One-time password (OTP)"
+msgstr "Kertasalasana (OTP)"
+
+#: plugin/otpprovider.cpp:50
+#, kde-format
+msgid "Unsupported OTP type %1"
+msgstr "Ei-tuettu OTP-tyyppi %1"
+
+#: plugin/providerbase.cpp:73
+#, kde-format
+msgid "Failed to open password file: %1"
+msgstr "Salasanatiedoston avaaminen epäonnistui: %1"
+
+#: plugin/providerbase.cpp:81 plugin/providerbase.cpp:101
+#, kde-format
+msgid "Failed to decrypt password: %1"
+msgstr "Salasanan purkaminen epäonnistui: %1"
+
+#, fuzzy
+#~| msgid "Failed to decrypt password: %1"
+#~ msgid "Failed to dectypt password: %s"
+#~ msgstr "Salasanan purkaminen epäonnistui: %1"
+
+#~ msgid "Failed to decrypt password: GPG is not available"
+#~ msgstr "Salasanan purkaminen epäonnistui: GPG ei ole käytettävissä"
+
+#~ msgid "Failed to decrypt password: Failed to start GPG"
+#~ msgstr "Salasanan purkaminen epäonnistui: GPG:n käynnistys epäonnistui"
+
+#~ msgid "Failed to decrypt password"
+#~ msgstr "Salasanan purkaminen epäonnistui"

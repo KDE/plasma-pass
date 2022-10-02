@@ -1,0 +1,43 @@
+# Copyright (C) YEAR This file is copyright:
+# This file is distributed under the same license as the plasma-pass package.
+# Vit Pelcak <vit@pelcak.org>, 2018, 2021, 2022.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: plasma-pass\n"
+"Report-Msgid-Bugs-To: https://bugs.kde.org\n"
+"POT-Creation-Date: 2022-06-17 00:46+0000\n"
+"PO-Revision-Date: 2022-01-07 12:53+0100\n"
+"Last-Translator: Vit Pelcak <vpelcak@suse.cz>\n"
+"Language-Team: Czech <kde-i18n-doc@kde.org>\n"
+"Language: cs\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
+"X-Generator: Lokalize 21.12.0\n"
+
+#: package/contents/ui/main.qml:128
+#, kde-format
+msgid "Filter..."
+msgstr "Filtr..."
+
+#: package/contents/ui/PasswordItemDelegate.qml:127
+#, kde-format
+msgid "One-time password (OTP)"
+msgstr "Jednorázové heslo (OTP)"
+
+#: plugin/otpprovider.cpp:50
+#, kde-format
+msgid "Unsupported OTP type %1"
+msgstr "Nepodporovaný typ OTP %1"
+
+#: plugin/providerbase.cpp:73
+#, kde-format
+msgid "Failed to open password file: %1"
+msgstr "Nelze otevřít soubor s heslem: %1"
+
+#: plugin/providerbase.cpp:81 plugin/providerbase.cpp:101
+#, kde-format
+msgid "Failed to decrypt password: %1"
+msgstr "Dešifrování hesla selhalo: %1"
