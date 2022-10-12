@@ -12,6 +12,14 @@ set(plasmapasslib_SRCS
     passwordsmodel.cpp
     passwordsortproxymodel.cpp
     passwordprovider.cpp
+
+    abbreviations.h
+    otpprovider.h
+    providerbase.h
+    passwordfiltermodel.h
+    passwordsmodel.h
+    passwordsortproxymodel.h
+    passwordprovider.h
 )
 
 qt_add_dbus_interfaces(plasmapasslib_SRCS
