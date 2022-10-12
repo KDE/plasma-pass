@@ -43,13 +43,20 @@ target_link_libraries(plasmapass
     KF5::I18n
     KF5::ItemModels
     OATH::OATH
-    QGpgme
 )
+
+if (QT_MAJOR_VERSION STREQUAL "6")
+    target_link_libraries(plasmapass QGpgmeQt6)
+else()
+    target_link_libraries(plasmapass QGpgme)
+endif()
+
 
 ########### PLUGN ###########
 
 set(plasmapassplugin_SRCS
     plasmapassplugin.cpp
+    plasmapassplugin.h
 )
 
 add_library(plasmapassplugin SHARED ${plasmapassplugin_SRCS})

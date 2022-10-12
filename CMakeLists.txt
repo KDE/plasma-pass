@@ -26,7 +26,11 @@ include(KDEClangFormat)
 include(KDEGitCommitHooks)
 
 find_package(OATH REQUIRED)
-find_package(QGpgme REQUIRED)
+if (QT_MAJOR_VERSION STREQUAL "6")
+    find_package(QGpgmeQt6 ${GPGME_REQUIRED_VERSION} CONFIG REQUIRED)
+else()
+    find_package(QGpgme ${GPGME_REQUIRED_VERSION} CONFIG REQUIRED)
+endif()
 
 find_package(KF5 ${KF5_MIN_VERSION} REQUIRED COMPONENTS
     Plasma
