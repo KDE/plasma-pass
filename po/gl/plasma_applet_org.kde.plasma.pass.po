@@ -38,8 +38,7 @@ msgid "Failed to open password file: %1"
 msgstr "Non se puido descifrar o contrasinal: %1"
 
 #: plugin/providerbase.cpp:81 plugin/providerbase.cpp:101
-#, fuzzy, kde-format
-#| msgid "Failed to decrypt password: %1"
+#, kde-format
 msgid "Failed to decrypt password: %1"
 msgstr "Non se puido descifrar o contrasinal: %1"
 
