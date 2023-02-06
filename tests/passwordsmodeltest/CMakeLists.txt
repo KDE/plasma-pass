@@ -16,5 +16,5 @@ target_link_libraries(passwordsmodeltest
     Qt::Core
     Qt::DBus
     Qt::Widgets
-    KF5::Plasma
+    KF${KF_MAJOR_VERSION}::Plasma
 )

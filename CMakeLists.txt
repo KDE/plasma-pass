@@ -31,8 +31,14 @@ if (QT_MAJOR_VERSION STREQUAL "6")
 else()
     find_package(QGpgme ${GPGME_REQUIRED_VERSION} CONFIG REQUIRED)
 endif()
-
-find_package(KF5 ${KF5_MIN_VERSION} REQUIRED COMPONENTS
+if (QT_MAJOR_VERSION STREQUAL "6")
+    set(QT_REQUIRED_VERSION "6.4.0")
+    set(KF_MIN_VERSION "5.240.0")
+    set(KF_MAJOR_VERSION "6")
+else()
+    set(KF_MAJOR_VERSION "5")
+endif()
+find_package(KF${KF_MAJOR_VERSION} ${KF5_MIN_VERSION} REQUIRED COMPONENTS
     Plasma
     I18n
     ItemModels
