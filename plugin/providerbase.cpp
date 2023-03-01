@@ -32,6 +32,7 @@
 
 using namespace std::chrono;
 using namespace std::chrono_literals;
+using namespace PlasmaPass;
 
 namespace
 {
@@ -44,7 +45,7 @@ const QString klipperDataEngine = QStringLiteral("org.kde.plasma.clipboard");
 
 }
 
-using namespace PlasmaPass;
+KlipperUtils::State ProviderBase::sKlipperState = KlipperUtils::State::Unknown;
 
 ProviderBase::ProviderBase(const QString &path, QObject *parent)
     : QObject(parent)
@@ -214,12 +215,36 @@ void ProviderBase::removePasswordFromClipboard(const QString &password)
         clipboard->clear();
     }
 
+    if (sKlipperState == KlipperUtils::State::Unknown) {
+        sKlipperState = KlipperUtils::getState();
+    }
+
+    switch (sKlipperState) {
+    case KlipperUtils::State::Unknown:
+    case KlipperUtils::State::Missing:
+        qCDebug(PLASMAPASS_LOG, "Klipper not detected in the system, will not attempt to clear the clipboard history");
+        return;
+    case KlipperUtils::State::SupportsPasswordManagerHint:
+        // Klipper is not present in the system or is recent enough that it
+        // supports the x-kde-passwordManagerHint in which case we don't need to
+        // ask it to remove the password from its history - it would fail since the
+        // password is not there and we would end up clearing user's entire clipboard
+        // history.
+        qCDebug(PLASMAPASS_LOG, "Klipper with support for x-kde-passwordManagerHint detected, will not attempt to clear the clipboard history");
+        return;
+    case KlipperUtils::State::Available:
+        // Klipper is available but is too old to support x-kde-passwordManagerHint so
+        // we have to attempt to clear the password manually.
+        qCDebug(PLASMAPASS_LOG, "Old Klipper without x-kde-passwordManagerHint support detected, will attempt to remove the password from clipboard history");
+        break;
+    }
+
     if (!mEngineConsumer) {
         mEngineConsumer = std::make_unique<Plasma::DataEngineConsumer>();
     }
     auto engine = mEngineConsumer->dataEngine(klipperDataEngine);
 
-    // Klipper internally identifies each history entry by it's SHA1 hash
+    // Klipper internally identifies each history entry by its SHA1 hash
     // (see klipper/historystringitem.cpp) so we try here to obtain a service directly
     // for the history item with our password so that we can only remove the
     // password from the history without having to clear the entire history.

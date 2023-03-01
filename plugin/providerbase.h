@@ -8,6 +8,8 @@
 #include <QObject>
 #include <QTimer>
 
+#include "klipperutils.h"
+
 #include <memory>
 
 class QDBusPendingCallWatcher;
@@ -84,6 +86,8 @@ private:
     QTimer mTimer;
     int mTimeout = 0;
     std::chrono::seconds mSecretTimeout;
+
+    static KlipperUtils::State sKlipperState;
 };
 
 }

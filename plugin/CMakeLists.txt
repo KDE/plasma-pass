@@ -6,6 +6,7 @@
 
 set(plasmapasslib_SRCS
     abbreviations.cpp
+    klipperutils.cpp
     otpprovider.cpp
     providerbase.cpp
     passwordfiltermodel.cpp
@@ -14,6 +15,7 @@ set(plasmapasslib_SRCS
     passwordprovider.cpp
 
     abbreviations.h
+    klipperutils.h
     otpprovider.h
     providerbase.h
     passwordfiltermodel.h
