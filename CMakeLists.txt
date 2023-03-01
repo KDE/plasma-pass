@@ -24,8 +24,15 @@ include(KDECompilerSettings NO_POLICY_SCOPE)
 include(ECMQtDeclareLoggingCategory)
 include(KDEClangFormat)
 include(KDEGitCommitHooks)
+include(FeatureSummary)
 
-find_package(OATH REQUIRED)
+find_package(OATH)
+set_package_properties(OATH
+    PROPERTIES
+    TYPE REQUIRED
+    DESCRIPTION "Provides components to build one-time password authentication systems"
+    PURPOSE "Generates OTP from secret stored in password files")
+
 if (QT_MAJOR_VERSION STREQUAL "6")
     find_package(QGpgmeQt6 ${GPGME_REQUIRED_VERSION} CONFIG REQUIRED)
 else()

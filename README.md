@@ -22,11 +22,11 @@ it can be customized through `PASSWORD_STORE_DIR` environment variable.
 
 Fedora:
 
-    dnf install qt5-qtbase-devel qt5-qtdeclarative-devel kf5-plasma-devel kf5-ki18n-devel kf5-kitemmodels-devel liboath-devel qgpgme-devel
+    dnf install qt5-qtbase-devel qt5-qtdeclarative-devel kf5-plasma-devel kf5-ki18n-devel kf5-kitemmodels-devel liboath-devel qgpgme-devel liboath-devel
 
 Debian/Ubuntu:
 
-    apt-get install qtbase5-dev qtdeclarative5-dev libkf5plasma-dev libkf5i18n-dev libkf5itemmodels-dev liboauth-dev libgpgmepp-dev
+    apt-get install qtbase5-dev qtdeclarative5-dev libkf5plasma-dev libkf5i18n-dev libkf5itemmodels-dev liboauth-dev libgpgmepp-dev liboath-dev
 
 2) Clone source code:
 
