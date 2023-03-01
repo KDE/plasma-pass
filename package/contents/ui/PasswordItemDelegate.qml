@@ -115,7 +115,7 @@ PlasmaComponents.ListItem {
                 maximumLineCount: 1
                 verticalAlignment: Text.AlignLeft
                 elide: Text.ElideRight
-                textFormat: Text.StyledText
+                textFormat: Text.PlainText
             }
 
             PlasmaComponents3.ToolButton {
