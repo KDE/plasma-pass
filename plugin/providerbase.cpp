@@ -194,6 +194,18 @@ void ProviderBase::setError(const QString &error)
     Q_EMIT errorChanged();
 }
 
+void ProviderBase::reset()
+{
+    mError.clear();
+    mSecret.clear();
+    mTimer.stop();
+    Q_EMIT errorChanged();
+    Q_EMIT validChanged();
+    Q_EMIT secretChanged();
+
+    QTimer::singleShot(0, this, &ProviderBase::start);
+}
+
 void ProviderBase::removePasswordFromClipboard(const QString &password)
 {
     // Clear the WS clipboard itself

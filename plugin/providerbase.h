@@ -45,6 +45,9 @@ public:
     bool hasError() const;
     QString error() const;
 
+public Q_SLOTS:
+    void reset();
+
 Q_SIGNALS:
     void secretChanged();
     void validChanged();

@@ -97,6 +97,9 @@ PlasmaComponents3.ScrollView {
                         scroll.folderSelected(delegateModel.modelIndex(index), model.name)
                     } else {
                         delegate.passwordProvider = model.password
+                        if (delegate.passwordProvider.hasError) {
+                            delegate.passwordProvider.reset()
+                        }
                     }
                 }
             }
