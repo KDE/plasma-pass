@@ -233,8 +233,6 @@ void ProviderBase::removePasswordFromClipboard(const QString &password)
 
     auto job = service->startOperationCall(service->operationDescription(QStringLiteral("remove")));
 
-    // FIXME: KJob::result() is an overloaded QPrivateSignal and cannot be QOverload()ed,
-    // so we have to do it the old-school way
     connect(job, &KJob::result, this, &ProviderBase::onPlasmaServiceRemovePasswordResult);
 }
 
