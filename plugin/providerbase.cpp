@@ -83,6 +83,12 @@ void ProviderBase::start()
         }
 
         const auto data = QString::fromUtf8(plainText);
+        if (data.isEmpty()) {
+            qCWarning(PLASMAPASS_LOG, "Password file is empty!");
+            setError(i18n("No password found"));
+            return;
+        }
+
 #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
         const auto lines = data.splitRef(QLatin1Char('\n'));
 #else
