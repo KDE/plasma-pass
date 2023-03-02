@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: plasma_applet_org\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2022-06-17 00:46+0000\n"
+"POT-Creation-Date: 2023-03-02 00:56+0000\n"
 "PO-Revision-Date: 2022-01-06 12:46+0100\n"
 "Last-Translator: Eloy Cuadra <ecuadra@eloihr.net>\n"
 "Language-Team: Spanish <kde-l10n-es@kde.org>\n"
@@ -34,15 +34,20 @@ msgstr "Contraseña de un solo uso (OTP)"
 msgid "Unsupported OTP type %1"
 msgstr "Tipo OTP %1 no permitido"
 
-#: plugin/providerbase.cpp:73
+#: plugin/providerbase.cpp:74
 #, kde-format
 msgid "Failed to open password file: %1"
 msgstr "No se ha podido abrir el archivo de contraseñas: %1"
 
-#: plugin/providerbase.cpp:81 plugin/providerbase.cpp:101
+#: plugin/providerbase.cpp:82 plugin/providerbase.cpp:108
 #, kde-format
 msgid "Failed to decrypt password: %1"
 msgstr "No se ha podido descifrar la contraseña: %1"
+
+#: plugin/providerbase.cpp:89
+#, kde-format
+msgid "No password found"
+msgstr ""
 
 #~| msgid "Failed to decrypt password: %1"
 #~ msgid "Failed to dectypt password: %s"

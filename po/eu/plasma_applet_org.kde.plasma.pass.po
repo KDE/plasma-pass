@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: plasma-pass\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2022-06-17 00:46+0000\n"
+"POT-Creation-Date: 2023-03-02 00:56+0000\n"
 "PO-Revision-Date: 2022-02-24 22:32+0100\n"
 "Last-Translator: Iñigo Salvador Azurmendi <xalba@ni.eus>\n"
 "Language-Team: Basque <kde-i18n-eu@kde.org>\n"
@@ -35,15 +35,20 @@ msgstr "Erabilera-bakarreko pasahitza (OTP)"
 msgid "Unsupported OTP type %1"
 msgstr "Euskarririk gabeko %1 OTP mota"
 
-#: plugin/providerbase.cpp:73
+#: plugin/providerbase.cpp:74
 #, kde-format
 msgid "Failed to open password file: %1"
 msgstr "Pasahitz-fitxategia irekitzea huts egin du: %1"
 
-#: plugin/providerbase.cpp:81 plugin/providerbase.cpp:101
+#: plugin/providerbase.cpp:82 plugin/providerbase.cpp:108
 #, kde-format
 msgid "Failed to decrypt password: %1"
 msgstr "Pasahitza deszifratzea huts egin du: %1"
+
+#: plugin/providerbase.cpp:89
+#, kde-format
+msgid "No password found"
+msgstr ""
 
 #, fuzzy
 #~| msgid "Failed to decrypt password: %1"

@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: plasma-pass\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2022-06-17 00:46+0000\n"
+"POT-Creation-Date: 2023-03-02 00:56+0000\n"
 "PO-Revision-Date: 2022-02-05 19:20+0000\n"
 "Last-Translator: Sergiu Bivol <sergiu@cip.md>\n"
 "Language-Team: Romanian\n"
@@ -33,15 +33,20 @@ msgstr "Parolă de unică folosință (OTP)"
 msgid "Unsupported OTP type %1"
 msgstr "Tip OTP %1 nesusținut"
 
-#: plugin/providerbase.cpp:73
+#: plugin/providerbase.cpp:74
 #, kde-format
 msgid "Failed to open password file: %1"
 msgstr "Fișierul cu parole nu a putut fi deschis: %1"
 
-#: plugin/providerbase.cpp:81 plugin/providerbase.cpp:101
+#: plugin/providerbase.cpp:82 plugin/providerbase.cpp:108
 #, kde-format
 msgid "Failed to decrypt password: %1"
 msgstr "Parola nu a putut fi decriptată: %1"
+
+#: plugin/providerbase.cpp:89
+#, kde-format
+msgid "No password found"
+msgstr ""
 
 #, fuzzy
 #~| msgid "Failed to decrypt password: %1"
