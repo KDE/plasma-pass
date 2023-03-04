@@ -1,13 +1,13 @@
 # Copyright (C) YEAR This file is copyright:
 # This file is distributed under the same license as the plasma-pass package.
 #
-# Freek de Kruijf <freekdekruijf@kde.nl>, 2019, 2021, 2022.
+# Freek de Kruijf <freekdekruijf@kde.nl>, 2019, 2021, 2022, 2023.
 msgid ""
 msgstr ""
 "Project-Id-Version: plasma-pass\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2023-03-02 00:56+0000\n"
-"PO-Revision-Date: 2022-01-06 17:46+0100\n"
+"PO-Revision-Date: 2023-03-02 12:53+0100\n"
 "Last-Translator: Freek de Kruijf <freekdekruijf@kde.nl>\n"
 "Language-Team: \n"
 "Language: nl\n"
@@ -15,7 +15,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Lokalize 21.12.0\n"
+"X-Generator: Lokalize 22.12.2\n"
 
 #: package/contents/ui/main.qml:128
 #, kde-format
@@ -45,7 +45,7 @@ msgstr "Ontcijferen van wachtwoord is mislukt: %1"
 #: plugin/providerbase.cpp:89
 #, kde-format
 msgid "No password found"
-msgstr ""
+msgstr "Geen wachtwoord gevonden"
 
 #~| msgid "Failed to decrypt password: %1"
 #~ msgid "Failed to dectypt password: %s"

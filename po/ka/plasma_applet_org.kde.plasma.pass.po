@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: plasma-pass\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2023-03-02 00:56+0000\n"
-"PO-Revision-Date: 2022-05-15 05:31+0200\n"
+"PO-Revision-Date: 2023-03-03 06:24+0100\n"
 "Last-Translator: Temuri Doghonadze <temuri.doghonadze@gmail.com>\n"
 "Language-Team: Georgian <kde-i18n-doc@kde.org>\n"
 "Language: ka\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 3.0.1\n"
+"X-Generator: Poedit 3.2.2\n"
 
 #: package/contents/ui/main.qml:128
 #, kde-format
@@ -46,4 +46,4 @@ msgstr "პაროლის გაშიფვრის შეცდომა:
 #: plugin/providerbase.cpp:89
 #, kde-format
 msgid "No password found"
-msgstr ""
+msgstr "პაროლი ვერ ვიპოვე"
