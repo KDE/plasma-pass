@@ -8,6 +8,7 @@ Dependencies:
     'frameworks/plasma-framework': '@latest-kf6'
     'frameworks/ki18n': '@latest-kf6'
     'frameworks/kitemmodels': '@latest-kf6'
+    'plasma/plasma5support': '@same'
 
 - 'on': ['Linux/Qt5', 'FreeBSD/Qt5']
   'require':
