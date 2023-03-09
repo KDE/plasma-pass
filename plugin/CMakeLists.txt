@@ -41,16 +41,15 @@ target_link_libraries(plasmapass
     Qt::DBus
     Qt::Qml
     Qt::Concurrent
-    KF${KF_MAJOR_VERSION}::Plasma
     KF${KF_MAJOR_VERSION}::I18n
     KF${KF_MAJOR_VERSION}::ItemModels
     OATH::OATH
 )
 
 if (QT_MAJOR_VERSION STREQUAL "6")
-    target_link_libraries(plasmapass QGpgmeQt6)
+    target_link_libraries(plasmapass QGpgmeQt6 KF6::Plasma5Support Qt::Gui KF6::ConfigCore KF6::CoreAddons)
 else()
-    target_link_libraries(plasmapass QGpgme)
+    target_link_libraries(plasmapass QGpgme KF${KF_MAJOR_VERSION}::Plasma)
 endif()
 
 

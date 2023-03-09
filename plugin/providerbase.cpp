@@ -15,11 +15,19 @@
 
 #include <QDBusConnection>
 
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
 #include <Plasma/DataEngine>
 #include <Plasma/DataEngineConsumer>
 #include <Plasma/PluginLoader>
 #include <Plasma/Service>
 #include <Plasma/ServiceJob>
+#else
+#include <Plasma5Support/DataEngine>
+#include <Plasma5Support/DataEngineConsumer>
+#include <Plasma5Support/PluginLoader>
+#include <Plasma5Support/Service>
+#include <Plasma5Support/ServiceJob>
+#endif
 
 #include <KLocalizedString>
 
@@ -240,7 +248,11 @@ void ProviderBase::removePasswordFromClipboard(const QString &password)
     }
 
     if (!mEngineConsumer) {
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
         mEngineConsumer = std::make_unique<Plasma::DataEngineConsumer>();
+#else
+        mEngineConsumer = std::make_unique<Plasma5Support::DataEngineConsumer>();
+#endif
     }
     auto engine = mEngineConsumer->dataEngine(klipperDataEngine);
 
@@ -268,8 +280,11 @@ void ProviderBase::onPlasmaServiceRemovePasswordResult(KJob *job)
     QTimer::singleShot(0, this, [this]() {
         mEngineConsumer.reset();
     });
-
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     auto serviceJob = qobject_cast<Plasma::ServiceJob *>(job);
+#else
+    auto serviceJob = qobject_cast<Plasma5Support::ServiceJob *>(job);
+#endif
     if (serviceJob->error() != 0) {
         qCWarning(PLASMAPASS_LOG, "ServiceJob for clipboard failed: %s", qUtf8Printable(serviceJob->errorString()));
         clearClipboard();
