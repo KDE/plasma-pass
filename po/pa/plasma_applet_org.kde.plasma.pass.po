@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: plasma-pass\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-03-02 00:56+0000\n"
+"POT-Creation-Date: 2023-03-10 00:49+0000\n"
 "PO-Revision-Date: 2021-05-01 23:29-0700\n"
 "Last-Translator: A S Alam <aalam@satluj.org>\n"
 "Language-Team: Punjabi <punjabi-users@lists.sf.net>\n"
@@ -32,17 +32,17 @@ msgstr ""
 msgid "Unsupported OTP type %1"
 msgstr "ਗ਼ੈਰ-ਸਹਾਇਕ OTP ਕਿਸਮ %1"
 
-#: plugin/providerbase.cpp:74
+#: plugin/providerbase.cpp:82
 #, kde-format
 msgid "Failed to open password file: %1"
 msgstr "ਪਾਸਵਰਡ ਫਾਇਲ ਖੋਲ੍ਹਣ ਲਈ ਅਸਫ਼ਲ: %1"
 
-#: plugin/providerbase.cpp:82 plugin/providerbase.cpp:108
+#: plugin/providerbase.cpp:90 plugin/providerbase.cpp:116
 #, kde-format
 msgid "Failed to decrypt password: %1"
 msgstr "ਪਾਸਵਰਡ ਡਿਕ੍ਰਿਪਟ ਕਰਨ ਲਈ ਅਸਫ਼ਲ: %1"
 
-#: plugin/providerbase.cpp:89
+#: plugin/providerbase.cpp:97
 #, kde-format
 msgid "No password found"
 msgstr ""

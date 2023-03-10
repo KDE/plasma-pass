@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: plasma-pass\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-03-02 00:56+0000\n"
+"POT-Creation-Date: 2023-03-10 00:49+0000\n"
 "PO-Revision-Date: 2023-03-04 09:20+0100\n"
 "Last-Translator: Łukasz Wojniłowicz <lukasz.wojnilowicz@gmail.com>\n"
 "Language-Team: Polish <kde-i18n-doc@kde.org>\n"
@@ -33,17 +33,17 @@ msgstr "Hasło jednorazowe (OTP)"
 msgid "Unsupported OTP type %1"
 msgstr "Nieobsługiwany rodzaj OTP %1"
 
-#: plugin/providerbase.cpp:74
+#: plugin/providerbase.cpp:82
 #, kde-format
 msgid "Failed to open password file: %1"
 msgstr "Nie udało się otworzyć pliku hasła: %1"
 
-#: plugin/providerbase.cpp:82 plugin/providerbase.cpp:108
+#: plugin/providerbase.cpp:90 plugin/providerbase.cpp:116
 #, kde-format
 msgid "Failed to decrypt password: %1"
 msgstr "Nie udało się odszyfrować hasła: %1"
 
-#: plugin/providerbase.cpp:89
+#: plugin/providerbase.cpp:97
 #, kde-format
 msgid "No password found"
 msgstr "Nie znaleziono żadnego hasła"
