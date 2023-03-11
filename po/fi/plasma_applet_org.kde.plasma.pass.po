@@ -1,13 +1,13 @@
 # Copyright (C) YEAR This file is copyright:
 # This file is distributed under the same license as the plasma-pass package.
-# Tommi Nieminen <translator@legisign.org>, 2019, 2021, 2022.
+# Tommi Nieminen <translator@legisign.org>, 2019, 2021, 2022, 2023.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: plasma-pass\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2023-03-10 00:49+0000\n"
-"PO-Revision-Date: 2022-01-10 21:27+0200\n"
+"PO-Revision-Date: 2023-03-04 20:04+0200\n"
 "Last-Translator: Tommi Nieminen <translator@legisign.org>\n"
 "Language-Team: Finnish <kde-i18n-doc@kde.org>\n"
 "Language: fi\n"
@@ -15,7 +15,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Lokalize 20.04.2\n"
+"X-Generator: Lokalize 22.12.3\n"
 
 #: package/contents/ui/main.qml:128
 #, kde-format
@@ -45,7 +45,7 @@ msgstr "Salasanan purkaminen epäonnistui: %1"
 #: plugin/providerbase.cpp:97
 #, kde-format
 msgid "No password found"
-msgstr ""
+msgstr "Salasanaa ei löytynyt"
 
 #, fuzzy
 #~| msgid "Failed to decrypt password: %1"
