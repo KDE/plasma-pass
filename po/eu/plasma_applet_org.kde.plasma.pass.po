@@ -1,16 +1,16 @@
 # Translation for plasma_applet_org.kde.plasma.pass.po to Euskara/Basque (eu).
-# Copyright (C) 2020-2022, This file is copyright:
+# Copyright (C) 2020-2023 This file is copyright:
 # This file is distributed under the same license as the plasma-pass package.
 # KDE euskaratzeko proiektuko arduraduna <xalba@ni.eus>.
 #
 # Translators:
-# Iñigo Salvador Azurmendi <xalba@ni.eus>, 2020, 2021, 2022.
+# Iñigo Salvador Azurmendi <xalba@ni.eus>, 2020, 2021, 2022, 2023.
 msgid ""
 msgstr ""
 "Project-Id-Version: plasma-pass\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2023-03-10 00:49+0000\n"
-"PO-Revision-Date: 2022-02-24 22:32+0100\n"
+"PO-Revision-Date: 2023-04-10 23:03+0200\n"
 "Last-Translator: Iñigo Salvador Azurmendi <xalba@ni.eus>\n"
 "Language-Team: Basque <kde-i18n-eu@kde.org>\n"
 "Language: eu\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Lokalize 21.12.2\n"
+"X-Generator: Lokalize 22.12.3\n"
 
 #: package/contents/ui/main.qml:128
 #, kde-format
@@ -48,7 +48,7 @@ msgstr "Pasahitza deszifratzea huts egin du: %1"
 #: plugin/providerbase.cpp:97
 #, kde-format
 msgid "No password found"
-msgstr ""
+msgstr "Ez da pasahitzik aurkitu"
 
 #, fuzzy
 #~| msgid "Failed to decrypt password: %1"
