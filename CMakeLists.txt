@@ -49,6 +49,7 @@ find_package(KF${KF_MAJOR_VERSION} ${KF5_MIN_VERSION} REQUIRED COMPONENTS
     Plasma
     I18n
     ItemModels
+    KIO
 )
 
 if (QT_MAJOR_VERSION STREQUAL "6")
