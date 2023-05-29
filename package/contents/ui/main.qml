@@ -42,6 +42,7 @@ Item {
             } else {
                 filterField.text = "";
                 viewStack.pop(null);
+                currentPath.clearName();
             }
         }
         header: PlasmaExtras.PlasmoidHeading {
@@ -116,6 +117,9 @@ Item {
                         function popName() {
                             _path.pop();
                             text = _path.join("/");
+                        }
+                        function clearName() {
+                            _path = []
                         }
                     }
                 }
