@@ -266,3 +266,5 @@ bool PasswordFilterModel::lessThan(const QModelIndex &source_left, const QModelI
 
     return weightLeft < weightRight;
 }
+
+#include "moc_passwordfiltermodel.cpp"

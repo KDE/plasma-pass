@@ -310,3 +310,5 @@ void ProviderBase::clearClipboard()
     klipper.clearClipboardHistory();
     klipper.clearClipboardContents();
 }
+
+#include "moc_providerbase.cpp"

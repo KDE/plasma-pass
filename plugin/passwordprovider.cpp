@@ -12,3 +12,5 @@ ProviderBase::HandlingResult PasswordProvider::handleSecret(QStringView secret)
     // We are only interested in the first line for passwords
     return HandlingResult::Stop;
 }
+
+#include "moc_passwordprovider.cpp"

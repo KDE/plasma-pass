@@ -155,3 +155,5 @@ void MainWindow::onSearchChanged(const QString &text)
     mStack->setCurrentIndex(text.isEmpty() ? 0 : 1);
     mFilterModel->setPasswordFilter(text);
 }
+
+#include "moc_mainwindow.cpp"

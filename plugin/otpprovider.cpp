@@ -75,5 +75,4 @@ void OTPProvider::handleTOTP(const QUrl &url)
     setSecret(QString::fromLatin1(output_otp, sizeof(output_otp)));
 }
 
-
-
+#include "moc_otpprovider.cpp"

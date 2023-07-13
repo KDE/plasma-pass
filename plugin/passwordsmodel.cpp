@@ -216,3 +216,5 @@ void PasswordsModel::populateDir(const QDir &dir, Node *parent)
         populateDir(entry.absoluteFilePath(), node);
     }
 }
+
+#include "moc_passwordsmodel.cpp"

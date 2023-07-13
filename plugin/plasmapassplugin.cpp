@@ -26,3 +26,5 @@ void PlasmaPassPlugin::registerTypes(const char *uri)
 
     qmlProtectModule("org.kde.plasma.private.plasmapass", 1);
 }
+
+#include "moc_plasmapassplugin.cpp"

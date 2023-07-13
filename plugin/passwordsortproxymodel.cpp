@@ -27,3 +27,5 @@ bool PasswordSortProxyModel::lessThan(const QModelIndex &source_left, const QMod
 
     return QSortFilterProxyModel::lessThan(source_left, source_right);
 }
+
+#include "moc_passwordsortproxymodel.cpp"
