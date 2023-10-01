@@ -35,12 +35,12 @@ msgstr "Tipo de OTP incompatíbel %1"
 #: plugin/providerbase.cpp:82
 #, kde-format
 msgid "Failed to open password file: %1"
-msgstr "Non se puido abrir o ficheiro de contrasinais: %1"
+msgstr "Non foi posíbel abrir o ficheiro de contrasinais: %1"
 
 #: plugin/providerbase.cpp:90 plugin/providerbase.cpp:116
 #, kde-format
 msgid "Failed to decrypt password: %1"
-msgstr "Non se puido descifrar o contrasinal: %1"
+msgstr "Non foi posíbel descifrar o contrasinal: %1"
 
 #: plugin/providerbase.cpp:97
 #, kde-format
