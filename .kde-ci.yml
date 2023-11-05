@@ -5,14 +5,14 @@ Dependencies:
 - 'on': ['Linux/Qt6', 'FreeBSD/Qt6']
   'require':
     'frameworks/extra-cmake-modules': '@latest-kf6'
-    'frameworks/plasma-framework': '@latest-kf6'
     'frameworks/ki18n': '@latest-kf6'
     'frameworks/kitemmodels': '@latest-kf6'
+    'plasma/plasma-framework': '@latest-kf6'
     'plasma/plasma5support': '@same'
 
 - 'on': ['Linux/Qt5', 'FreeBSD/Qt5']
   'require':
     'frameworks/extra-cmake-modules': '@latest'
-    'frameworks/plasma-framework': '@latest'
     'frameworks/ki18n': '@latest'
     'frameworks/kitemmodels': '@latest'
+    'plasma/plasma-framework': '@latest'
