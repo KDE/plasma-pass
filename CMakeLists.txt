@@ -47,14 +47,15 @@ else()
     set(KF_MAJOR_VERSION "5")
 endif()
 find_package(KF${KF_MAJOR_VERSION} ${KF5_MIN_VERSION} REQUIRED COMPONENTS
-    Plasma
     I18n
     ItemModels
     KIO
 )
 
+find_package(KF${QT_MAJOR_VERSION}Plasma REQUIRED)
+
 if (QT_MAJOR_VERSION STREQUAL "6")
-find_package(KF${KF_MAJOR_VERSION} ${KF5_MIN_VERSION} REQUIRED COMPONENTS Plasma5Support)
+find_package(KF6Plasma5Support REQUIRED)
 endif()
 
 find_package(Qt${QT_MAJOR_VERSION} ${QT_MIN_VERSION} CONFIG REQUIRED COMPONENTS
