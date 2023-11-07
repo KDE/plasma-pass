@@ -40,6 +40,7 @@ Name[ta]=பிளாஸ்மா பாஸ்
 Name[tr]=Plasma Pass
 Name[uk]=Паролі Плазми
 Name[vi]=Pass Plasma
+Name[x-test]=xxPlasma Passxx
 Name[zh_CN]=Plasma 密码
 Name[zh_TW]=Plasma Pass
 Comment=Access passwords from the 'pass' password manager
@@ -78,6 +79,7 @@ Comment[ta]='pass' கடவுச்சொல் மேலாளியிலு
 Comment[tr]=Parolalara 'pass' parola yöneticisinden erişin
 Comment[uk]=Доступ до паролів програми для керування паролями «pass»
 Comment[vi]=Truy cập mật khẩu trong trình quản lí mật khẩu 'pass'
+Comment[x-test]=xxAccess passwords from the 'pass' password managerxx
 Comment[zh_CN]=使用“pass”密码管理器访问密码的 Plasma 小程序
 
 Icon=lock
