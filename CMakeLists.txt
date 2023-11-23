@@ -52,10 +52,11 @@ find_package(KF${KF_MAJOR_VERSION} ${KF5_MIN_VERSION} REQUIRED COMPONENTS
     KIO
 )
 
-find_package(KF${QT_MAJOR_VERSION}Plasma REQUIRED)
-
 if (QT_MAJOR_VERSION STREQUAL "6")
-find_package(KF6Plasma5Support REQUIRED)
+    find_package(Plasma REQUIRED)
+    find_package(KF6Plasma5Support REQUIRED)
+else()
+    find_package(KF5Plasma REQUIRED)
 endif()
 
 find_package(Qt${QT_MAJOR_VERSION} ${QT_MIN_VERSION} CONFIG REQUIRED COMPONENTS
