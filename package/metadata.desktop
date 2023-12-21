@@ -81,6 +81,7 @@ Comment[uk]=Доступ до паролів програми для керув�
 Comment[vi]=Truy cập mật khẩu trong trình quản lí mật khẩu 'pass'
 Comment[x-test]=xxAccess passwords from the 'pass' password managerxx
 Comment[zh_CN]=使用“pass”密码管理器访问密码的 Plasma 小程序
+Comment[zh_TW]=存取來自「Pass」密碼管理程式的密碼
 
 Icon=lock
 Type=Service
