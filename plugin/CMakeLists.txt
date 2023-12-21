@@ -47,7 +47,7 @@ target_link_libraries(plasmapass
 )
 
 if (QT_MAJOR_VERSION STREQUAL "6")
-    target_link_libraries(plasmapass QGpgmeQt6 KF6::Plasma5Support Qt::Gui KF6::ConfigCore KF6::CoreAddons)
+    target_link_libraries(plasmapass QGpgmeQt6 Plasma::Plasma5Support Qt::Gui KF6::ConfigCore KF6::CoreAddons)
 else()
     target_link_libraries(plasmapass QGpgme KF${KF_MAJOR_VERSION}::Plasma)
 endif()
