@@ -4,7 +4,7 @@
 
 cmake_minimum_required(VERSION 3.16)
 
-set(PROJECT_VERSION "1.2.1")
+set(PROJECT_VERSION "1.2.2")
 
 project(plasma-plasmapass VERSION ${PROJECT_VERSION})
 
