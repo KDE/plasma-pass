@@ -16,3 +16,6 @@ Dependencies:
     'frameworks/ki18n': '@latest'
     'frameworks/kitemmodels': '@latest'
     'plasma/libplasma': '@latest'
+
+Options:
+  require-passing-tests-on: ['Linux', 'FreeBSD', 'Windows']
