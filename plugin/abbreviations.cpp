@@ -12,14 +12,6 @@ constexpr const std::size_t offsetsSize = 32;
 constexpr const int maxDepth = 128;
 
 // Taken and adapted for kdevelop from katecompletionmodel.cpp
-#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
-bool matchesAbbreviationHelper(const QStringRef &word,
-                               const QStringRef &typed,
-                               const QVarLengthArray<int, offsetsSize> &offsets,
-                               int &depth,
-                               int atWord = -1,
-                               int i = 0)
-#else
 bool matchesAbbreviationHelper(const QStringView &word,
                                const QStringView &typed,
                                const QVarLengthArray<int, offsetsSize> &offsets,
@@ -27,7 +19,6 @@ bool matchesAbbreviationHelper(const QStringView &word,
                                int atWord = -1,
                                int i = 0)
 
-#endif
 {
     int atLetter = 1;
     for (; i < typed.size(); i++) {
@@ -73,11 +64,7 @@ bool matchesAbbreviationHelper(const QStringView &word,
 }
 
 }
-#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
-bool PlasmaPass::matchesAbbreviation(const QStringRef &word, const QStringRef &typed)
-#else
 bool PlasmaPass::matchesAbbreviation(const QStringView &word, const QStringView &typed)
-#endif
 {
     // A mismatch is very likely for random even for the first letter,
     // thus this optimization makes sense.
@@ -116,11 +103,7 @@ bool PlasmaPass::matchesAbbreviation(const QStringView &word, const QStringView 
     int depth = 0;
     return matchesAbbreviationHelper(word, typed, offsets, depth);
 }
-#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
-bool PlasmaPass::matchesPath(const QStringRef &path, const QStringRef &typed)
-#else
 bool PlasmaPass::matchesPath(const QStringView &path, const QStringView &typed)
-#endif
 {
     int consumed = 0;
     int pos = 0;
@@ -134,11 +117,7 @@ bool PlasmaPass::matchesPath(const QStringView &path, const QStringView &typed)
     }
     return consumed == typed.size();
 }
-#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
-int PlasmaPass::matchPathFilter(const QVector<QStringRef> &toFilter, const QVector<QStringRef> &text)
-#else
 int PlasmaPass::matchPathFilter(const QVector<QStringView> &toFilter, const QVector<QStringView> &text)
-#endif
 {
     enum PathFilterMatchQuality {
         NoMatch = -1,

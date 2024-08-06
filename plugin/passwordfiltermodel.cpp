@@ -124,21 +124,13 @@ PasswordFilterModel::PathFilter &PasswordFilterModel::PathFilter::operator=(Path
 
 void PasswordFilterModel::PathFilter::updateParts()
 {
-#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
-    mParts = filter.splitRef(QLatin1Char('/'), Qt::SkipEmptyParts);
-#else
     mParts = QStringView(filter).split(QLatin1Char('/'), Qt::SkipEmptyParts);
-#endif
 }
 
 PasswordFilterModel::PathFilter::result_type PasswordFilterModel::PathFilter::operator()(const QModelIndex &index) const
 {
     const auto path = index.model()->data(index, PasswordsModel::FullNameRole).toString();
-#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
-    const auto weight = matchPathFilter(path.splitRef(QLatin1Char('/')), mParts);
-#else
     const auto weight = matchPathFilter(QStringView(path).split(QLatin1Char('/')), mParts);
-#endif
     return std::make_pair(index, weight);
 }
 

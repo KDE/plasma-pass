@@ -46,11 +46,7 @@ target_link_libraries(plasmapass
     OATH::OATH
 )
 
-if (QT_MAJOR_VERSION STREQUAL "6")
-    target_link_libraries(plasmapass QGpgmeQt6 Plasma::Plasma5Support Qt::Gui KF6::ConfigCore KF6::CoreAddons)
-else()
-    target_link_libraries(plasmapass QGpgme KF${KF_MAJOR_VERSION}::Plasma)
-endif()
+target_link_libraries(plasmapass QGpgmeQt6 Plasma::Plasma5Support Qt::Gui KF6::ConfigCore KF6::CoreAddons)
 
 
 ########### PLUGN ###########

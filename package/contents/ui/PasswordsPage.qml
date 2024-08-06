@@ -2,17 +2,18 @@
 //
 // SPDX-License-Identifier: LGPL-2.1-or-later
 
-import QtQuick 2.1
-import QtQml.Models 2.1
+import QtQuick
+import QtQml.Models
 
-import org.kde.plasma.extras 2.0 as PlasmaExtras
-import org.kde.plasma.core 2.0 as PlasmaCore
-import org.kde.plasma.components 2.0 as PlasmaComponents2 // for Highlight
-import org.kde.plasma.components 3.0 as PlasmaComponents3
+import org.kde.plasma.extras as PlasmaExtras
+import org.kde.plasma.core as PlasmaCore
+import org.kde.plasma.components as PlasmaComponents
 
-import org.kde.plasma.private.plasmapass 1.0
+import org.kde.plasma.private.plasmapass
 
-PlasmaComponents3.ScrollView {
+import org.kde.kirigami as Kirigami
+
+PlasmaComponents.ScrollView {
     id: scroll
 
     signal folderSelected(var index, var name)
@@ -36,15 +37,15 @@ PlasmaComponents3.ScrollView {
         focus: true
         activeFocusOnTab: true
         highlightFollowsCurrentItem: true
-        highlight: PlasmaComponents2.Highlight { }
+        highlight: PlasmaExtras.Highlight { }
         highlightMoveDuration: 0
         highlightResizeDuration: 0
         currentIndex: -1
-        topMargin: PlasmaCore.Units.smallSpacing * 2
-        bottomMargin: PlasmaCore.Units.smallSpacing * 2
-        leftMargin: PlasmaCore.Units.smallSpacing * 2
-        rightMargin: PlasmaCore.Units.smallSpacing * 2
-        spacing: PlasmaCore.Units.smallSpacing
+        topMargin: Kirigami.Units.smallSpacing * 2
+        bottomMargin: Kirigami.Units.smallSpacing * 2
+        leftMargin: Kirigami.Units.smallSpacing * 2
+        rightMargin: Kirigami.Units.smallSpacing * 2
+        spacing: Kirigami.Units.smallSpacing
 
         onActiveFocusChanged: {
             if (activeFocus && listView.currentIndex === -1) {
@@ -82,7 +83,7 @@ PlasmaComponents3.ScrollView {
                 name: model.name
                 icon: model.type === PasswordsModel.FolderEntry ? "inode-directory" : "lock"
                 entryType: model.type
-                width: listView.width - PlasmaCore.Units.smallSpacing * 4
+                width: listView.width - Kirigami.Units.smallSpacing * 4
 
                 passwordProvider: model.hasPassword ? model.password : null
                 otpProvider: model.hasOTP ? model.otp : null

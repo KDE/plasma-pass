@@ -2,17 +2,18 @@
 //
 // SPDX-License-Identifier: LGPL-2.1-or-later
 
-import QtQuick 2.0
-import QtQuick.Layouts 1.1
-import QtQuick.Controls 2.0
+import QtQuick
+import QtQuick.Layouts
+import QtQuick.Controls
 
-import org.kde.plasma.core 2.0 as PlasmaCore
-import org.kde.plasma.components 2.0 as PlasmaComponents
-import org.kde.plasma.components 3.0 as PlasmaComponents3
+import org.kde.plasma.core as PlasmaCore
+import org.kde.plasma.components as PlasmaComponents
 
-import org.kde.plasma.private.plasmapass 1.0
+import org.kde.plasma.private.plasmapass
 
-PlasmaComponents.ListItem {
+import org.kde.kirigami as Kirigami
+
+MouseArea {
     id: root
 
     property alias name: label.text
@@ -29,7 +30,7 @@ PlasmaComponents.ListItem {
 
     enabled: true
 
-    implicitHeight: Math.max(column.height, otpButton.implicitHeight + 2 * PlasmaCore.Units.smallSpacing)
+    implicitHeight: Math.max(column.height, otpButton.implicitHeight + 2 * Kirigami.Units.smallSpacing)
 
     onClicked: {
         root.itemSelected(index);
@@ -47,7 +48,7 @@ PlasmaComponents.ListItem {
     Connections {
         property bool wasValid : false
         target: root.provider
-        onValidChanged: {
+        function onValidChanged() {
             if (wasValid && !target.valid) {
                 root.provider = null;
             } else if (!wasValid && target.valid) {
@@ -60,25 +61,25 @@ PlasmaComponents.ListItem {
 
     Timer {
         id: hideTimer
-        interval: PlasmaCore.Units.longDuration
+        interval: Kirigami.Units.longDuration
         onTriggered: plasmoid.expanded = false;
     }
 
     Column {
         id: column
-        spacing: PlasmaCore.Units.smallSpacing
+        spacing: Kirigami.Units.smallSpacing
         anchors {
             left: parent.left
             right: parent.right
         }
 
         RowLayout {
-            spacing: PlasmaCore.Units.largeSpacing
+            spacing: Kirigami.Units.largeSpacing
             id: row
 
             width: parent.width
 
-            PlasmaCore.IconItem {
+            Kirigami.Icon {
                 id: entryTypeIcon
                 visible: root.provider == null || root.provider.valid || root.provider.hasError
                 source: {
@@ -92,11 +93,11 @@ PlasmaComponents.ListItem {
                         }
                     }
                 }
-                width: PlasmaCore.Units.iconSizes.small
-                height: PlasmaCore.Units.iconSizes.small
+                width: Kirigami.Units.iconSizes.small
+                height: Kirigami.Units.iconSizes.small
             }
 
-            PlasmaComponents3.BusyIndicator {
+            PlasmaComponents.BusyIndicator {
                 id: busyIndicator
                 visible: root.provider != null && !root.provider.valid && !root.provider.hasError
 
@@ -105,7 +106,7 @@ PlasmaComponents.ListItem {
                 Layout.maximumHeight: entryTypeIcon.height
             }
 
-            PlasmaComponents3.Label {
+            PlasmaComponents.Label {
                 id: label
 
                 height: undefined // unset PlasmaComponents.Label default height
@@ -118,12 +119,12 @@ PlasmaComponents.ListItem {
                 textFormat: Text.PlainText
             }
 
-            PlasmaComponents3.ToolButton {
+            PlasmaComponents.ToolButton {
                 id: otpButton
                 icon.name: 'clock'
                 visible: entryType == PasswordsModel.PasswordEntry
 
-                PlasmaComponents3.ToolTip {
+                PlasmaComponents.ToolTip {
                     text: i18n("One-time password (OTP)")
                 }
 

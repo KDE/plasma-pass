@@ -16,11 +16,7 @@ class QDBusPendingCallWatcher;
 class KJob;
 class QMimeData;
 
-#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
-namespace Plasma
-#else
 namespace Plasma5Support
-#endif
 {
 class DataEngineConsumer;
 }
@@ -82,11 +78,7 @@ private:
 
     void removePasswordFromClipboard(const QString &password);
     static void clearClipboard();
-#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
-    std::unique_ptr<Plasma::DataEngineConsumer> mEngineConsumer;
-#else
     std::unique_ptr<Plasma5Support::DataEngineConsumer> mEngineConsumer;
-#endif
     QString mPath;
     QString mError;
     QString mSecret;

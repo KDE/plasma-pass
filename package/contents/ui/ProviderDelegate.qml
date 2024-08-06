@@ -2,14 +2,16 @@
 //
 // SPDX-License-Identifier: LGPL-2.1-or-later
 
-import QtQuick 2.0
-import QtQuick.Layouts 1.1
-import QtQuick.Controls 2.0
+import QtQuick
+import QtQuick.Layouts
+import QtQuick.Controls
 
-import org.kde.plasma.core 2.0 as PlasmaCore
-import org.kde.plasma.components 3.0 as PlasmaComponents3
+import org.kde.plasma.core as PlasmaCore
+import org.kde.plasma.components as PlasmaComponents3
 
-import org.kde.plasma.private.plasmapass 1.0
+import org.kde.plasma.private.plasmapass
+
+import org.kde.kirigami as Kirigami
 
 RowLayout {
     id: root
@@ -17,10 +19,10 @@ RowLayout {
     property ProviderBase provider: null
     property alias icon: providerIcon.source
 
-    PlasmaCore.IconItem {
+    Kirigami.Icon {
         id: providerIcon
-        width: PlasmaCore.Units.iconSizes.small
-        height: PlasmaCore.Units.iconSizes.small
+        width: Kirigami.Units.iconSizes.small
+        height: Kirigami.Units.iconSizes.small
     }
 
     ColumnLayout {

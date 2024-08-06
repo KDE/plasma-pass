@@ -2,33 +2,35 @@
 //
 // SPDX-License-Identifier: LGPL-2.1-or-later
 
-import QtQuick 2.15
-import QtQuick.Layouts 1.1
-import QtQuick.Controls 2.15 as QQC2 // For StackView
-import org.kde.plasma.plasmoid 2.0
-import org.kde.plasma.components 3.0 as PlasmaComponents3
-import org.kde.plasma.extras 2.0 as PlasmaExtras
-import org.kde.plasma.core 2.0 as PlasmaCore
+import QtQuick
+import QtQuick.Layouts
+import QtQuick.Controls as QQC2 // For StackView
+import org.kde.plasma.plasmoid
+import org.kde.plasma.components as PlasmaComponents
+import org.kde.plasma.extras as PlasmaExtras
+import org.kde.plasma.core as PlasmaCore
 
-import org.kde.plasma.private.plasmapass 1.0
+import org.kde.plasma.private.plasmapass
 
-Item {
+import org.kde.kirigami as Kirigami
+
+PlasmoidItem {
     id: root
 
-    Plasmoid.fullRepresentation: PlasmaExtras.Representation {
+    fullRepresentation: PlasmaExtras.Representation {
         collapseMarginsHint: true
-        Layout.minimumWidth: PlasmaCore.Units.gridUnit * 5
-        Layout.minimumHeight: PlasmaCore.Units.gridUnit * 5
+        Layout.minimumWidth: Kirigami.Units.gridUnit * 5
+        Layout.minimumHeight: Kirigami.Units.gridUnit * 5
 
         property bool expanded: false
 
         Component.onCompleted: {
             // FIXME: I'm probably doing something wrong, but I'm unable to access
             // "plasmoid" from elsewhere
-            expanded = Qt.binding(function() { return plasmoid.expanded; });
+            expanded = Qt.binding(function() { return root.expanded; });
         }
 
-        Keys.onPressed: {
+        Keys.onPressed: event=> {
             if (!viewStack.filterMode && event.key === Qt.Key_Backspace) {
                 viewStack.popPage();
                 event.accepted = true;
@@ -73,7 +75,7 @@ Item {
                     PasswordsPage {
                         stack: viewStack
                         model: passwordsModel
-                        onFolderSelected: {
+                        onFolderSelected: (index, name)=> {
                             stack.pushPage(index, name);
                         }
                     }
@@ -90,20 +92,20 @@ Item {
 
                 RowLayout {
                     visible: viewStack.depth > 1 && !viewStack.filterMode
-                    PlasmaComponents3.ToolButton {
+                    PlasmaComponents.ToolButton {
                         icon.name: LayoutMirroring.enabled ? "go-previous-symbolic-rtl" : "go-previous-symbolic"
                         onClicked: viewStack.popPage()
                         enabled: viewStack.depth > 1
                     }
 
-                    PlasmaComponents3.Label {
+                    PlasmaComponents.Label {
                         id: currentPath
 
                         Layout.fillWidth: true
                         HoverHandler {
                             id: hoverHandler
                         }
-                        PlasmaComponents3.ToolTip {
+                        PlasmaComponents.ToolTip {
                             text: currentPath.text
                             visible: hoverHandler.hovered
                         }
@@ -124,7 +126,7 @@ Item {
                     }
                 }
 
-                PlasmaComponents3.TextField {
+                PlasmaComponents.TextField {
                     id: filterField
                     focus: true
                     activeFocusOnTab: true
@@ -135,7 +137,7 @@ Item {
                     Layout.fillWidth: true
 
                     Keys.priority: Keys.BeforeItem
-                    Keys.onPressed: {
+                    Keys.onPressed: event=> {
                         if (event.key == Qt.Key_Down) {
                             viewStack.currentItem.focus = true;
                             event.accepted = true;
