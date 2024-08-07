@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: plasma-pass\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-11-05 12:36+0000\n"
+"POT-Creation-Date: 2024-08-07 01:48+0000\n"
 "PO-Revision-Date: 2023-05-29 22:14+0400\n"
 "Last-Translator: Kheyyam <xxmn77@gmail.com>\n"
 "Language-Team: Azerbaijani <kde-i18n-doc@kde.org>\n"
@@ -17,12 +17,12 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Lokalize 23.04.1\n"
 
-#: package/contents/ui/main.qml:132
+#: package/contents/ui/main.qml:134
 #, kde-format
 msgid "Filter..."
 msgstr "Süzgəc..."
 
-#: package/contents/ui/PasswordItemDelegate.qml:127
+#: package/contents/ui/PasswordItemDelegate.qml:128
 #, kde-format
 msgid "One-time password (OTP)"
 msgstr "Birdəfəlik şifrə (OTP)"
@@ -32,17 +32,17 @@ msgstr "Birdəfəlik şifrə (OTP)"
 msgid "Unsupported OTP type %1"
 msgstr "Dəstəklənməyən OTP növü %1"
 
-#: plugin/providerbase.cpp:82
+#: plugin/providerbase.cpp:74
 #, kde-format
 msgid "Failed to open password file: %1"
 msgstr "Şifrə faylı açıla bilmədi: %1"
 
-#: plugin/providerbase.cpp:90 plugin/providerbase.cpp:116
+#: plugin/providerbase.cpp:82 plugin/providerbase.cpp:104
 #, kde-format
 msgid "Failed to decrypt password: %1"
 msgstr "Şifrəni açmaq baş tutmadı: %1"
 
-#: plugin/providerbase.cpp:97
+#: plugin/providerbase.cpp:89
 #, kde-format
 msgid "No password found"
 msgstr "Şifrə tapılmadı..."

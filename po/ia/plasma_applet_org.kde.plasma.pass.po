@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: plasma-pass\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-11-05 12:36+0000\n"
+"POT-Creation-Date: 2024-08-07 01:48+0000\n"
 "PO-Revision-Date: 2023-04-06 11:58+0200\n"
 "Last-Translator: giovanni <g.sora@tiscali.it>\n"
 "Language-Team: Interlingua <kde-i18n-doc@kde.org>\n"
@@ -17,12 +17,12 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: Lokalize 21.12.3\n"
 
-#: package/contents/ui/main.qml:132
+#: package/contents/ui/main.qml:134
 #, kde-format
 msgid "Filter..."
 msgstr "Filtrar..."
 
-#: package/contents/ui/PasswordItemDelegate.qml:127
+#: package/contents/ui/PasswordItemDelegate.qml:128
 #, kde-format
 msgid "One-time password (OTP)"
 msgstr "Contrasigno de un vice , i.e. One-time password (OTP)"
@@ -32,17 +32,17 @@ msgstr "Contrasigno de un vice , i.e. One-time password (OTP)"
 msgid "Unsupported OTP type %1"
 msgstr "Typo de OTP %1 non supportate"
 
-#: plugin/providerbase.cpp:82
+#: plugin/providerbase.cpp:74
 #, kde-format
 msgid "Failed to open password file: %1"
 msgstr "Il falleva a aperir file de contrasigno: %1"
 
-#: plugin/providerbase.cpp:90 plugin/providerbase.cpp:116
+#: plugin/providerbase.cpp:82 plugin/providerbase.cpp:104
 #, kde-format
 msgid "Failed to decrypt password: %1"
 msgstr "Il falleva decryptar contrasigno: %1"
 
-#: plugin/providerbase.cpp:97
+#: plugin/providerbase.cpp:89
 #, kde-format
 msgid "No password found"
 msgstr "Nulle contrasigno trovate"

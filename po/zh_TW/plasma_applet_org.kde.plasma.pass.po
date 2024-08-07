@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: plasma-pass\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-11-05 12:36+0000\n"
+"POT-Creation-Date: 2024-08-07 01:48+0000\n"
 "PO-Revision-Date: 2023-12-20 17:39+0900\n"
 "Last-Translator: Kisaragi Hiu <mail@kisaragi-hiu.com>\n"
 "Language-Team: Traditional Chinese <zh-l10n@lists.slat.org>\n"
@@ -19,12 +19,12 @@ msgstr ""
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Generator: Lokalize 23.08.4\n"
 
-#: package/contents/ui/main.qml:132
+#: package/contents/ui/main.qml:134
 #, kde-format
 msgid "Filter..."
 msgstr "篩選…"
 
-#: package/contents/ui/PasswordItemDelegate.qml:127
+#: package/contents/ui/PasswordItemDelegate.qml:128
 #, kde-format
 msgid "One-time password (OTP)"
 msgstr "一次性密碼 (OTP)"
@@ -34,17 +34,17 @@ msgstr "一次性密碼 (OTP)"
 msgid "Unsupported OTP type %1"
 msgstr "不支援的 OTP 類型 %1"
 
-#: plugin/providerbase.cpp:82
+#: plugin/providerbase.cpp:74
 #, kde-format
 msgid "Failed to open password file: %1"
 msgstr "無法開啟密碼檔案：%1"
 
-#: plugin/providerbase.cpp:90 plugin/providerbase.cpp:116
+#: plugin/providerbase.cpp:82 plugin/providerbase.cpp:104
 #, kde-format
 msgid "Failed to decrypt password: %1"
 msgstr "無法將密碼解密：%1"
 
-#: plugin/providerbase.cpp:97
+#: plugin/providerbase.cpp:89
 #, kde-format
 msgid "No password found"
 msgstr "未找到密碼"

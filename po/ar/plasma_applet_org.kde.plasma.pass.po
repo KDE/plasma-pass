@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: plasma-pass\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-11-05 12:36+0000\n"
+"POT-Creation-Date: 2024-08-07 01:48+0000\n"
 "PO-Revision-Date: 2023-03-04 22:40+0400\n"
 "Last-Translator: Zayed Al-Saidi <zayed.alsaidi@gmail.com>\n"
 "Language-Team: ar\n"
@@ -17,12 +17,12 @@ msgstr ""
 "Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 "
 "&& n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5;\n"
 
-#: package/contents/ui/main.qml:132
+#: package/contents/ui/main.qml:134
 #, kde-format
 msgid "Filter..."
 msgstr "رشّح..."
 
-#: package/contents/ui/PasswordItemDelegate.qml:127
+#: package/contents/ui/PasswordItemDelegate.qml:128
 #, kde-format
 msgid "One-time password (OTP)"
 msgstr "كلمة مرور لمرة واحدة (OTP)"
@@ -32,17 +32,17 @@ msgstr "كلمة مرور لمرة واحدة (OTP)"
 msgid "Unsupported OTP type %1"
 msgstr "نوع كلمة مرور لمرة واحدة غير مدعوم %1"
 
-#: plugin/providerbase.cpp:82
+#: plugin/providerbase.cpp:74
 #, kde-format
 msgid "Failed to open password file: %1"
 msgstr "فشل فتح ملف كلمة السر: %1"
 
-#: plugin/providerbase.cpp:90 plugin/providerbase.cpp:116
+#: plugin/providerbase.cpp:82 plugin/providerbase.cpp:104
 #, kde-format
 msgid "Failed to decrypt password: %1"
 msgstr "فشل فك تشفير كلمة سر: %1"
 
-#: plugin/providerbase.cpp:97
+#: plugin/providerbase.cpp:89
 #, kde-format
 msgid "No password found"
 msgstr "لم يعثر على كلمة سر"
