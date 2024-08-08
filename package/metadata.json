@@ -3,17 +3,36 @@
         "Authors": [
             {
                 "Email": "dvratil@kde.org",
-                "Name": "Daniel Vrátil"
+                "Name": "Daniel Vrátil",
+                "Name[x-test]": "xxDaniel Vrátilxx"
             }
         ],
         "Category": "Utilities",
         "Description": "Access passwords from the 'pass' password manager",
+        "Description[ca@valencia]": "Accés a les contrasenyes del gestor de contrasenyes «pass»",
+        "Description[sv]": "Kom åt lösenord från lösenordshanteraren 'pass'",
+        "Description[uk]": "Доступ до паролів програми для керування паролями «pass»",
+        "Description[x-test]": "xxAccess passwords from the 'pass' password managerxx",
         "EnabledByDefault": true,
         "Icon": "lock",
         "Id": "org.kde.plasma.pass",
         "KPackageStructure": "Plasma/Applet",
         "License": "LGPLv2+",
         "Name": "Plasma Pass",
+        "Name[ar]": "بلازما باس",
+        "Name[bg]": "Пропуск на Plasma",
+        "Name[gl]": "Pass para Plasma",
+        "Name[he]": "פלזמה „Pass”",
+        "Name[hi]": "प्लाज़्मा पास",
+        "Name[ko]": "Plasma 패스",
+        "Name[pa]": "ਪਲਾਜ਼ਮਾ ਪਾਸ",
+        "Name[pl]": "Plazma Hasło",
+        "Name[sv]": "Plasma pass",
+        "Name[ta]": "பிளாஸ்மா பாஸ்",
+        "Name[uk]": "Паролі Плазми",
+        "Name[vi]": "Pass Plasma",
+        "Name[x-test]": "xxPlasma Passxx",
+        "Name[zh_CN]": "Plasma 密码",
         "Version": "1.0",
         "Website": "https://www.kde.org/plasma-desktop"
     },
