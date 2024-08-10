@@ -4,6 +4,7 @@
             {
                 "Email": "dvratil@kde.org",
                 "Name": "Daniel Vrátil",
+                "Name[he]": "דניאל וראטיל",
                 "Name[x-test]": "xxDaniel Vrátilxx"
             }
         ],
@@ -11,6 +12,8 @@
         "Description": "Access passwords from the 'pass' password manager",
         "Description[ca@valencia]": "Accés a les contrasenyes del gestor de contrasenyes «pass»",
         "Description[ca]": "Accés a les contrasenyes del gestor de contrasenyes «pass»",
+        "Description[gl]": "Accede aos contrasinais do xestor de contrasinais «pass».",
+        "Description[he]": "גישה לסיסמאות ממנהל הסיסמאות ‚pass’",
         "Description[ka]": "'pass' პაროლების მმართველში შენახულ პაროლებთან წვდომა",
         "Description[nl]": "Toegang tot wachtwoorden vanuit de wachtwoordenbeheerder 'pass'",
         "Description[nn]": "Få tilgang til passord frå passord­handsamaren «pass»",
