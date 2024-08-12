@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: plasma-pass\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-08-07 01:48+0000\n"
-"PO-Revision-Date: 2021-06-15 23:17+0300\n"
+"PO-Revision-Date: 2024-08-12 00:20+0300\n"
 "Last-Translator: Moo\n"
 "Language-Team: lt\n"
 "Language: lt\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=4; plural=(n==1 ? 0 : n%10>=2 && (n%100<10 || n"
 "%100>=20) ? 1 : n%10==0 || (n%100>10 && n%100<20) ? 2 : 3);\n"
-"X-Generator: Poedit 3.0\n"
+"X-Generator: Poedit 3.4.2\n"
 
 #: package/contents/ui/main.qml:134
 #, kde-format
@@ -27,7 +27,7 @@ msgstr "Filtruoti..."
 #: package/contents/ui/PasswordItemDelegate.qml:128
 #, kde-format
 msgid "One-time password (OTP)"
-msgstr ""
+msgstr "Vienkartinis slaptažodis (OTP)"
 
 #: plugin/otpprovider.cpp:50
 #, kde-format
@@ -47,7 +47,7 @@ msgstr "Nepavyko iššifruoti slaptažodžio: %1"
 #: plugin/providerbase.cpp:89
 #, kde-format
 msgid "No password found"
-msgstr ""
+msgstr "Nerasta jokio slaptažodžio"
 
 #, fuzzy
 #~| msgid "Failed to decrypt password: %1"
