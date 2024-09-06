@@ -4,6 +4,7 @@
             {
                 "Email": "dvratil@kde.org",
                 "Name": "Daniel Vrátil",
+                "Name[ar]": "دانييل فراتيل",
                 "Name[bg]": "Daniel Vrátil",
                 "Name[ca@valencia]": "Daniel Vrátil",
                 "Name[ca]": "Daniel Vrátil",
@@ -35,6 +36,7 @@
         ],
         "Category": "Utilities",
         "Description": "Access passwords from the 'pass' password manager",
+        "Description[ar]": "الوصول إلى كلمات السر من مدير كلمات السر 'pass'",
         "Description[bg]": "Достъп до пароли от мениджъра на пароли \"Пропуск\"",
         "Description[ca@valencia]": "Accés a les contrasenyes del gestor de contrasenyes «pass»",
         "Description[ca]": "Accés a les contrasenyes del gestor de contrasenyes «pass»",
