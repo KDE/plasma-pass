@@ -139,7 +139,7 @@ PlasmoidItem {
                     Keys.priority: Keys.BeforeItem
                     Keys.onPressed: event=> {
                         if (event.key == Qt.Key_Down) {
-                            viewStack.currentItem.focus = true;
+                            viewStack.focus = true;
                             event.accepted = true;
                         } else if (event.key === Qt.Key_Enter || event.key === Qt.Key_Return) {
                             viewStack.currentItem.activateCurrentItem();
