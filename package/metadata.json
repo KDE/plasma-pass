@@ -1,4 +1,5 @@
 {
+    "KPackageStructure": "Plasma/Applet",
     "KPlugin": {
         "Authors": [
             {
@@ -80,7 +81,6 @@
         "EnabledByDefault": true,
         "Icon": "lock",
         "Id": "org.kde.plasma.pass",
-        "KPackageStructure": "Plasma/Applet",
         "License": "LGPLv2+",
         "Name": "Plasma Pass",
         "Name[ar]": "بلازما باس",
