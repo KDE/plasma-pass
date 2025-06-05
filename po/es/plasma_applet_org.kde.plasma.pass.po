@@ -1,15 +1,15 @@
 # Spanish translations for plasma_applet_org.kde.plasma.pass.po package.
-# Copyright (C) 2019 This file is copyright:
+# Copyright (C) 2019-2025 This file is copyright:
 # This file is distributed under the same license as the plasma-pass package.
-#
 # Automatically generated, 2019.
-# Eloy Cuadra <ecuadra@eloihr.net>, 2019, 2021, 2022, 2023.
+#
+# SPDX-FileCopyrightText: 2019, 2021, 2022, 2023, 2025 Eloy Cuadra <ecuadra@eloihr.net>
 msgid ""
 msgstr ""
-"Project-Id-Version: plasma_applet_org\n"
+"Project-Id-Version: plasma_applet_org.kde.plasma.pass\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-08-07 01:48+0000\n"
-"PO-Revision-Date: 2023-03-02 11:52+0100\n"
+"PO-Revision-Date: 2025-06-04 19:18+0100\n"
 "Last-Translator: Eloy Cuadra <ecuadra@eloihr.net>\n"
 "Language-Team: Spanish <kde-l10n-es@kde.org>\n"
 "Language: es\n"
@@ -22,7 +22,7 @@ msgstr ""
 #: package/contents/ui/main.qml:134
 #, kde-format
 msgid "Filter..."
-msgstr "Filtro..."
+msgstr "Filtro…"
 
 #: package/contents/ui/PasswordItemDelegate.qml:128
 #, kde-format
@@ -48,17 +48,3 @@ msgstr "No se ha podido descifrar la contraseña: %1"
 #, kde-format
 msgid "No password found"
 msgstr "No se ha encontrado ninguna contraseña"
-
-#~| msgid "Failed to decrypt password: %1"
-#~ msgid "Failed to dectypt password: %s"
-#~ msgstr "No se ha podido descifrar la contraseña: %s"
-
-#~ msgid "Failed to decrypt password: GPG is not available"
-#~ msgstr "No se ha podido descifrar la contraseña: GPG no está disponible."
-
-#~ msgid "Failed to decrypt password: Failed to start GPG"
-#~ msgstr ""
-#~ "No se ha podido descifrar la contraseña: No se ha podido iniciar GPG."
-
-#~ msgid "Failed to decrypt password"
-#~ msgstr "No se ha podido descifrar la contraseña"
