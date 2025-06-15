@@ -41,8 +41,8 @@ target_link_libraries(plasmapass
     Qt::DBus
     Qt::Qml
     Qt::Concurrent
-    KF${KF_MAJOR_VERSION}::I18n
-    KF${KF_MAJOR_VERSION}::ItemModels
+    KF6::I18n
+    KF6::ItemModels
     OATH::OATH
 )
 

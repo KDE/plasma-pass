@@ -35,11 +35,8 @@ set_package_properties(OATH
     PURPOSE "Generates OTP from secret stored in password files")
 
 find_package(QGpgmeQt6 ${GPGME_REQUIRED_VERSION} CONFIG REQUIRED)
-set(QT_REQUIRED_VERSION "6.6.0")
-set(KF_MIN_VERSION "6.3.0")
-set(KF_MAJOR_VERSION "6")
 
-find_package(KF${KF_MAJOR_VERSION} ${KF6_MIN_VERSION} REQUIRED COMPONENTS
+find_package(KF6 ${KF6_MIN_VERSION} REQUIRED COMPONENTS
     I18n
     ItemModels
     KIO
@@ -48,7 +45,7 @@ find_package(KF${KF_MAJOR_VERSION} ${KF6_MIN_VERSION} REQUIRED COMPONENTS
 find_package(Plasma REQUIRED)
 find_package(Plasma5Support REQUIRED)
 
-find_package(Qt${QT_MAJOR_VERSION} ${QT_MIN_VERSION} CONFIG REQUIRED COMPONENTS
+find_package(Qt6 ${QT_MIN_VERSION} CONFIG REQUIRED COMPONENTS
     Core
     DBus
     Gui
@@ -56,10 +53,9 @@ find_package(Qt${QT_MAJOR_VERSION} ${QT_MIN_VERSION} CONFIG REQUIRED COMPONENTS
     Concurrent
 )
 add_definitions(-DQT_DISABLE_DEPRECATED_BEFORE=0x050d00)
-add_definitions(-DQT_NO_FOREACH)
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -pedantic")
-set(CMAKE_C_FLAGS "${CMAKE_CXX_FLAGS} -Wall -pedantic")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall")
+set(CMAKE_C_FLAGS "${CMAKE_CXX_FLAGS} -Wall")
 
 # plasmoid
 plasma_install_package(package org.kde.plasma.pass)
