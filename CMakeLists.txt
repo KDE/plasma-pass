@@ -23,6 +23,7 @@ include(KDEInstallDirs)
 include(KDECMakeSettings)
 include(KDECompilerSettings NO_POLICY_SCOPE)
 include(ECMQtDeclareLoggingCategory)
+include(ECMDeprecationSettings)
 include(KDEClangFormat)
 include(KDEGitCommitHooks)
 include(FeatureSummary)
@@ -52,7 +53,7 @@ find_package(Qt6 ${QT_MIN_VERSION} CONFIG REQUIRED COMPONENTS
     Qml
     Concurrent
 )
-add_definitions(-DQT_DISABLE_DEPRECATED_BEFORE=0x050d00)
+ecm_set_disabled_deprecation_versions(QT 6.5)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall")
 set(CMAKE_C_FLAGS "${CMAKE_CXX_FLAGS} -Wall")
