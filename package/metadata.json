@@ -36,7 +36,6 @@
                 "Name[ta]": "டேனியல் விராட்டில்",
                 "Name[tr]": "Daniel Vrátil",
                 "Name[uk]": "Daniel Vrátil",
-                "Name[x-test]": "xxDaniel Vrátilxx",
                 "Name[zh_CN]": "Daniel Vrátil",
                 "Name[zh_TW]": "Daniel Vrátil"
             }
@@ -75,7 +74,6 @@
         "Description[ta]": "'pass' கடவுச்சொல் மேலாளியிலுள்ள கடவுச்சொற்களை காட்டும்",
         "Description[tr]": "Parolalara “pass” parola yöneticisinden erişin",
         "Description[uk]": "Доступ до паролів програми для керування паролями «pass»",
-        "Description[x-test]": "xxAccess passwords from the 'pass' password managerxx",
         "Description[zh_CN]": "访问来自 Plasma 密码管理器的密码",
         "Description[zh_TW]": "存取來自「Pass」密碼管理程式的密碼",
         "EnabledByDefault": true,
@@ -126,7 +124,6 @@
         "Name[tr]": "Plasma Pass",
         "Name[uk]": "Паролі Плазми",
         "Name[vi]": "Pass Plasma",
-        "Name[x-test]": "xxPlasma Passxx",
         "Name[zh_CN]": "Plasma 密码",
         "Name[zh_TW]": "Plasma Pass",
         "Version": "1.0",
