@@ -11,7 +11,7 @@ project(plasma-plasmapass VERSION ${PROJECT_VERSION})
 set(PROJECT_VERSION_MAJOR 1)
 
 set(QT_MIN_VERSION "6.6.0")
-set(KF6_MIN_VERSION "6.3.0")
+set(KF6_MIN_VERSION "6.18.0")
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -60,6 +60,7 @@ set(CMAKE_C_FLAGS "${CMAKE_CXX_FLAGS} -Wall")
 
 # plasmoid
 plasma_install_package(package org.kde.plasma.pass)
+kpackage_generate_appstream_metadata(package org.kde.plasma.pass)
 
 # qml extension plugin
 add_subdirectory(plugin)
