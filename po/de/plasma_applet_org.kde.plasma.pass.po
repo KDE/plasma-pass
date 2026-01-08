@@ -20,7 +20,7 @@ msgstr ""
 #: package/contents/ui/main.qml:134
 #, kde-format
 msgid "Filter..."
-msgstr "Filter ..."
+msgstr "Filter …"
 
 #: package/contents/ui/PasswordItemDelegate.qml:128
 #, kde-format
