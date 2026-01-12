@@ -38,12 +38,12 @@ msgstr "Tipus d'OTP %1 no acceptat"
 #: plugin/providerbase.cpp:74
 #, kde-format
 msgid "Failed to open password file: %1"
-msgstr "No s'ha pogut obrir el fitxer de contrasenyes: %1"
+msgstr "Ha fallat mentre s'obria el fitxer de contrasenyes: %1"
 
 #: plugin/providerbase.cpp:82 plugin/providerbase.cpp:104
 #, kde-format
 msgid "Failed to decrypt password: %1"
-msgstr "No s'ha pogut desencriptar la contrasenya: %1"
+msgstr "Ha fallat mentre es desencriptava la contrasenya: %1"
 
 #: plugin/providerbase.cpp:89
 #, kde-format
