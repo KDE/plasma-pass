@@ -166,7 +166,7 @@ PlasmoidItem {
             onFilterModeChanged: {
                 pop(null);
                 if (filterMode) {
-                    push(filterPage.createObject(viewStack, { rootIndex: null, stack: viewStack }));
+                    pushItem(filterPage, { rootIndex: null, stack: viewStack });
                 }
                 // Keep focus on the filter field
                 filterField.focus = true;
@@ -174,8 +174,7 @@ PlasmoidItem {
             }
 
             function pushPage(index, name) {
-                const newPage = passwordsPage.createObject(viewStack, { rootIndex: index, stack: viewStack });
-                push(newPage);
+                pushItem(passwordsPage, { rootIndex: index, stack: viewStack });
                 currentPath.pushName(name);
             }
 
