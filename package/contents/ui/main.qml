@@ -21,6 +21,8 @@ PlasmoidItem {
         collapseMarginsHint: true
         Layout.minimumWidth: Kirigami.Units.gridUnit * 5
         Layout.minimumHeight: Kirigami.Units.gridUnit * 5
+        Layout.preferredWidth: Kirigami.Units.gridUnit * 20
+        Layout.preferredHeight: Kirigami.Units.gridUnit * 24
 
         property bool expanded: false
 
